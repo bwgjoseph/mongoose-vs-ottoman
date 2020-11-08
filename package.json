@@ -1,0 +1,19 @@
+{
+  "name": "mongoose-vs-ottoman",
+  "version": "1.0.0",
+  "description": "feature comparison between mongoose and ottoman",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*.js --exit"
+  },
+  "keywords": [],
+  "author": "bwgjoseph",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.10.13",
+    "ottoman": "^2.0.0-alpha.8"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  }
+}
