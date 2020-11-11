@@ -75,8 +75,3 @@ To list collections:
 /opt/couchbase/bin/cbstats -u admin -p password -b testBucket localhost:11210 collections
 /opt/couchbase/bin/cbstats -u admin -p password -b testBucket localhost:11210 collections-details
 ```
-
-## Questions
-
-1. Does otterman support scope/collection now?
-2. Is there a way for otterman to drop bucket/scope/collection? or drop multiple docs?
