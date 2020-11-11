@@ -34,11 +34,27 @@ Document: 6cbd3cbd-8f49-46ce-bdca-d9b71cb43734 has been saved
 
 Any idea what could be causing it?
 
+    Yes, as it stands today (subject to change we can talk about it in our next meeting) determining if scopes and collections are enabled is configuration driven.
+
+    look at this example instead : https://github.com/httpJunkie/ottoman-demo/blob/with-scopes-and-collections/scopes-and-collections/01-create-with-id-and-save.js
+
+    Same repo different branch that has examples with Scopes and Collections Enabled.
+
 2. How do I specify in the connection to connect to a specific scope/collection? I see there is some [configurationOptions](https://v2.ottomanjs.com/guides/connections.html#global-config) but don't really understand what does each of them mean. Would it be better to explain those options in the doc, and/or have a link to somewhere if there is a explanation elsewhere?
+
+    You are right, the global configuration is not well defined. We will reach out to the team and ask them about it. Also looks like the global settings doesnt       allow you to specify defaultCollections. We will have to get back to you on this but in the meanwhile you can try and see if this works
+
+       const { setGlobalConfig } = require('ottoman')
+
+       ottoman.globalConfig({ defaultScope: '<YOUR_SCOPE_NAME>' })
 
 3. Is there any way to drop a specific bucket/scope/collection? In `mongoose`, I have [dropDatabase](https://mongoosejs.com/docs/api/connection.html#connection_Connection-dropDatabase) and [dropCollection](https://mongoosejs.com/docs/api.html#connection_Connection-dropCollection)
 
+       No, there is no explicity Data Definition Languages exposed via Ottoman, is there a specifc usecase that you are targeting? This should be possible via Nodejs SDK. (Need to double check).
+
 4. In `mongoose`, I have [remove](https://mongoosejs.com/docs/api.html#model_Model.remove), [deleteOne](https://mongoosejs.com/docs/api.html#query_Query-deleteOne), [deleteMany](https://mongoosejs.com/docs/api.html#query_Query-deleteMany) to remove one or more document at one go. How can I do the same in `Otterman`? In the docs, I only see one sample which is using [remove](https://v2.ottomanjs.com/classes/document.html#remove)
+
+       Remove is the only Key Value operation supported via Ottoman, however if you want to do more operations you can use its powerful N1QL feature and write N1QL queries which Mongoose doesnt have.
 
 5. I notice something weird but not sure what is the issue. Whenever I setup a fresh couchbase using `docker-compose up -d` (can follow the setup in [README](./README.md)), and after setting up, I set to run only `ottoman-create.test.js` test suite and then I ran `npm test`.
 
@@ -124,8 +140,12 @@ I am also able to replicate this issue by re-setup the couchbase (`docker-compos
 
 ![couchbase-logs-1](images/couchbase-logs-1.jpg)
 
+          We will get back to you on this.
+
 6. For the `ottoman.connect`, is my only option to wait for the connection to be ready is to run `await ottoman.ensureIndexes()`? I don't seem to be able to run `await ottoman.connect` since it just returns a `ConnectionManager`. Is it `ottoman.start`?
 
+          We will get back to you on this.
+        
 7. You will find that in `ottoman-create.test.js` Line 42, it print the data using `Airline.find()`, but it will not print out any data even though the data has been created, and verified in the UI. However, if I were to run the same test again, and now, the log will shows that there is one result (where it have been two, and ui does have two data). Why does it seem like it is lagging behind one operation? Am I not using the API correctly? Did I missed out anything?
 
 ```
@@ -183,3 +203,7 @@ I am also able to replicate this issue by re-setup the couchbase (`docker-compos
 }
 ```
 
+     You will have to specify  the Consistency as a  `Find Option`  find uses n1ql behind the scenes and the index consistency defines 
+     the accuracy of data you need. By default its none, specifying and passin in the consistency will give you the data you created.
+
+    const options = { consistency: ottoman.SearchConsistency.LOCAL }
