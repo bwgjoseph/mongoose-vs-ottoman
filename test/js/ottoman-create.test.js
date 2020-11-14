@@ -28,8 +28,8 @@ describe.only('test create function', async () => {
         await ottoman.ensureIndexes();
     })
 
-    it('ottoman - should create new doc', async () => {
-        const airlineSchema = new Schema(schema);
+    it('ottoman - should create new doc 1234', async () => {
+        const airlineSchema = new ottoman.Schema(schema);
         const Airline = model('Airline', airlineSchema);
         const cbAirlines = new Airline(doc);
 

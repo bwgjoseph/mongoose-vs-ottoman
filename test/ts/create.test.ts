@@ -1,7 +1,14 @@
-const mongoose = require('mongoose');
-const ottoman = require('ottoman');
-const { model, Schema } = require('ottoman');
-const assert = require('assert');
+import assert from 'assert';
+import mongoose from 'mongoose';
+import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
+
+interface AirlineInterface {
+    callsign: string;
+    country: string;
+    name: string;
+}
+
+type AirlineModel = AirlineInterface & mongoose.Document;
 
 describe.only('test create function', async () => {
     const schema = {
@@ -28,7 +35,7 @@ describe.only('test create function', async () => {
         await mongoose.connection.dropDatabase();
 
         // how to connect to scope/collection?
-        ottoman.connect({
+        connect({
             connectionString: 'couchbase://localhost',
             bucketName: 'testBucket',
             username: 'user',
@@ -37,12 +44,12 @@ describe.only('test create function', async () => {
 
         // how to drop the bucket/scope/collection?
         // how to remove all docs from a bucket/scope/collection?
-        await ottoman.start();
+        await start();
     })
 
     it('mongoose - should create new doc', async () => {
         const airlineSchema = new mongoose.Schema(schema)
-        const Airline = mongoose.model('Airline', airlineSchema);
+        const Airline = mongoose.model<AirlineModel>('Airline', airlineSchema);
         const cbAirlines = new Airline(doc);
 
         const created = await Airline.create(cbAirlines);
@@ -66,7 +73,7 @@ describe.only('test create function', async () => {
 
         // Because not sure how to remove all docs before the test run,
         // there will always have multiple copies
-        const options = { consistency: ottoman.SearchConsistency.LOCAL }
+        const options = { consistency: SearchConsistency.LOCAL }
         const find = await Airline.find({}, options);
         assert.strictEqual(find.rows.length, 1);
     });
