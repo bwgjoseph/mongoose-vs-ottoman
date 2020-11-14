@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const ottoman = require('ottoman');
 const { model, Schema } = require('ottoman');
 const assert = require('assert');
@@ -31,7 +30,7 @@ describe.only('test create function', async () => {
 
     it('ottoman - should create new doc', async () => {
         const airlineSchema = new Schema(schema);
-        const Airline = Model('Airline', airlineSchema);
+        const Airline = model('Airline', airlineSchema);
         const cbAirlines = new Airline(doc);
 
         const created = await Airline.create(cbAirlines);
@@ -39,6 +38,7 @@ describe.only('test create function', async () => {
         assert.strictEqual(created.country, cbAirlines.country);
         assert.strictEqual(created.name, cbAirlines.name);
 
-        console.log(await Airline.find());
+        const options = { consistency: ottoman.SearchConsistency.LOCAL }
+        console.log(await Airline.find({}, options));
     });
 })

@@ -3,7 +3,7 @@ const ottoman = require('ottoman');
 const { model, Schema } = require('ottoman');
 const assert = require('assert');
 
-describe('test create function', async () => {
+describe.only('test create function', async () => {
     const schema = {
         callsign: String,
         country: String,
@@ -37,7 +37,7 @@ describe('test create function', async () => {
 
         // how to drop the bucket/scope/collection?
         // how to remove all docs from a bucket/scope/collection?
-        await ottoman.ensureIndexes();
+        await ottoman.start();
     })
 
     it('mongoose - should create new doc', async () => {
@@ -66,7 +66,8 @@ describe('test create function', async () => {
 
         // Because not sure how to remove all docs before the test run,
         // there will always have multiple copies
-        // const find = await Airline.find();
-        // assert.strictEqual(find.length, 1);
+        const options = { consistency: ottoman.SearchConsistency.LOCAL }
+        const find = await Airline.find({}, options);
+        assert.strictEqual(find.rows.length, 1);
     });
 })
