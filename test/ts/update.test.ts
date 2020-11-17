@@ -1,16 +1,16 @@
-import assert from 'assert';
 import mongoose from 'mongoose';
 import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
+import assert from 'assert';
 
 interface AirlineInterface {
     callsign: string;
-    country: string;
+    contry: string;
     name: string;
 }
 
 type AirlineModel = AirlineInterface & mongoose.Document;
 
-describe('test create function', async () => {
+describe('test update function', async () => {
     const schema = {
         callsign: String,
         country: String,
@@ -19,7 +19,7 @@ describe('test create function', async () => {
 
     const doc = {
         callsign: 'Couchbase',
-        country: 'United States',
+        country: 'United State',
         name: 'Couchbase Airlines'
     };
 
@@ -34,7 +34,6 @@ describe('test create function', async () => {
 
         await mongoose.connection.dropDatabase();
 
-        // how to connect to scope/collection?
         connect({
             connectionString: 'couchbase://localhost',
             bucketName: 'testBucket',
@@ -42,39 +41,33 @@ describe('test create function', async () => {
             password: 'password'
         });
 
-        // how to drop the bucket/scope/collection?
-        // how to remove all docs from a bucket/scope/collection?
         await start();
     })
 
-    it('mongoose - should create new doc', async () => {
-        const airlineSchema = new mongoose.Schema(schema)
+    it('mongoose - should patch doc', async () => {
+        const airlineSchema = new mongoose.Schema(schema);
         const Airline = mongoose.model<AirlineModel>('Airline', airlineSchema);
         const cbAirlines = new Airline(doc);
-
         const created = await Airline.create(cbAirlines);
-        assert.strictEqual(created.callsign, cbAirlines.callsign);
-        assert.strictEqual(created.country, cbAirlines.country);
-        assert.strictEqual(created.name, cbAirlines.name);
 
-        const find = await Airline.find();
-        assert.strictEqual(find.length, 1);
+        cbAirlines.callsign = 'aab';
+        await Airline.updateOne({ _id: cbAirlines._id }, cbAirlines);
+        console.log(await Airline.find());
+        assert.strictEqual(created.callsign, cbAirlines.callsign);
     });
 
-    it('ottoman - should create new doc', async () => {
+    it('ottoman - should update doc', async () => {
         const airlineSchema = new Schema(schema);
         const Airline = model('Airline', airlineSchema);
         const cbAirlines = new Airline(doc);
-
         const created = await Airline.create(cbAirlines);
-        assert.strictEqual(created.callsign, cbAirlines.callsign);
-        assert.strictEqual(created.country, cbAirlines.country);
-        assert.strictEqual(created.name, cbAirlines.name);
-
-        // Because not sure how to remove all docs before the test run,
-        // there will always have multiple copies
         const options = { consistency: SearchConsistency.LOCAL }
+
+        const change = await Airline.update({ callsign: 'abc' }, created.id);
         const find = await Airline.find({}, options);
-        assert.strictEqual(find.rows.length, 1);
+        console.log(find);
+        assert.strictEqual(find.rows[0].callsign, change.callsign);
+        
+        await Airline.remove(created.id);
     });
 })
