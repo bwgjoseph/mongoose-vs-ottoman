@@ -1,5 +1,5 @@
 import assert from 'assert';
-import mongoose, { Collection } from 'mongoose';
+import mongoose from 'mongoose';
 import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
 
 interface AirlineInterface {
@@ -11,7 +11,7 @@ interface AirlineInterface {
 
 type AirlineModel = AirlineInterface & mongoose.Document;
 
-describe.only('test save function', async () => {
+describe('test save function', async () => {
     const schema = {
         callsign: String,
         country: String,
@@ -67,14 +67,11 @@ describe.only('test save function', async () => {
         const created = await Airline.create(cbAirlines);
         const options = { consistency: SearchConsistency.LOCAL }
 
-
-        cbAirlines.callsign = "Hi";
-        await cbAirlines.save();
-        console.log(2,cbAirlines);
+        created.callsign = "Hi";
+        await created.save();
 
         const find = await Airline.find({}, options);
-        console.log(3,find);
-        assert.strictEqual(find.rows[0].callsign, cbAirlines.callsign);
+        assert.strictEqual(find.rows[0].callsign, created.callsign);
 
         await Airline.remove(created.id);
     })
