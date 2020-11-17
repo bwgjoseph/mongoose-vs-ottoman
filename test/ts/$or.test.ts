@@ -68,25 +68,25 @@ describe('test $or function', async () => {
         const find = await Airline.find({
             $or: [
                 {
-                    callsign: "Couchbase"
-                }, 
+                    callsign: 'Couchbase'
+                },
                 {
-                    callsign: "Mongo"
+                    callsign: 'Mongo'
                 }
             ]
-        });
+        }).exec();
 
         //results should show nothing
         const find2 = await Airline.find({
             $or: [
                 {
-                    callsign: "Airbase"
-                }, 
+                    callsign: 'Airbase'
+                },
                 {
-                    callsign: "Mango"
+                    callsign: 'Mango'
                 }
             ]
-        });
+        }).exec();
         console.log(find);
         assert.strictEqual(find.length, 2);
         assert.strictEqual(find2.length, 0);
@@ -101,15 +101,15 @@ describe('test $or function', async () => {
         const created1 = await Airline.create(mgAirlines);
         const created2 = await Airline.create(cbAirlines);
         const options = { consistency: SearchConsistency.LOCAL }
- 
+
         //results should show 2 data set
         const find = await Airline.find({
             $or: [
                 {
-                    callsign: "Couchbase"
-                }, 
+                    callsign: 'Couchbase'
+                },
                 {
-                    callsign: "Mongo"
+                    callsign: 'Mongo'
                 }
             ]
         }, options);
@@ -118,10 +118,10 @@ describe('test $or function', async () => {
         const find2 = await Airline.find({
             $or: [
                 {
-                    callsign: "Airbase"
-                }, 
+                    callsign: 'Airbase'
+                },
                 {
-                    callsign: "Mango"
+                    callsign: 'Mango'
                 }
             ]
         }, options);

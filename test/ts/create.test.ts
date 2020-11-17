@@ -57,7 +57,7 @@ describe('test create function', async () => {
         assert.strictEqual(created.country, cbAirlines.country);
         assert.strictEqual(created.name, cbAirlines.name);
 
-        const find = await Airline.find();
+        const find = await Airline.find().exec();
         assert.strictEqual(find.length, 1);
     });
 

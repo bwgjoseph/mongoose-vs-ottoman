@@ -62,13 +62,13 @@ describe('test $and function', async () => {
         const find = await Airline.find({
             $and: [
                 {
-                    callsign: "Mongo"
+                    callsign: 'Mongo'
                 },
                 {
-                    country: "Malaysia"
+                    country: 'Malaysia'
                 }
             ]
-        });
+        }).exec();
         assert.strictEqual(find.length, 0);
         console.log(find);
     });
@@ -85,17 +85,17 @@ describe('test $and function', async () => {
         const find = await Airline.find({
             $and: [
                 {
-                    callsign: "Mongo"
+                    callsign: 'Mongo'
                 },
                 {
-                    country: "Singapore"
+                    country: 'Singapore'
                 }
             ]
         }, options);
 
         const find2 = await Airline.find({
-            callsign: "Mongo",
-            country: "Singapore"
+            callsign: 'Mongo',
+            country: 'Singapore'
         }, options)
 
         console.log(1,find);
@@ -103,7 +103,7 @@ describe('test $and function', async () => {
 
         assert.strictEqual(find.rows.length, 1);
         assert.strictEqual(find2.rows.length, 1);
-       
+
         await Airline.remove(created1.id);
         await Airline.remove(created2.id);
     });

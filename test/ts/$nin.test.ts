@@ -62,12 +62,12 @@ describe('test $nin function', async () => {
 
         const find = await Airline.find({
             country : {
-                $nin : ["United State"]
+                $nin : ['United State']
             }
-        });
+        }).exec();
         assert.strictEqual(find.length, 1);
         console.log(find);
-        
+
     });
 
     it('ottoman - simple $nin should be able to work', async () => {
@@ -82,7 +82,7 @@ describe('test $nin function', async () => {
         const find = await Airline.find({
             $not: [{
                 $in : {
-                    search_expr: 'country', 
+                    search_expr: 'country',
                     target_expr: ['United State'],
                 }
             }]

@@ -2,7 +2,7 @@ const ottoman = require('ottoman');
 const { model, Schema } = require('ottoman');
 const assert = require('assert');
 
-describe.only('test create function', async () => {
+describe('test create function', async () => {
     const schema = {
         callsign: String,
         country: String,

@@ -1,6 +1,6 @@
+import assert from 'assert';
 import mongoose from 'mongoose';
 import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
-import assert from 'assert';
 
 interface AirlineInterface {
     callsign: string;
@@ -51,8 +51,8 @@ describe('test update function', async () => {
         const created = await Airline.create(cbAirlines);
 
         cbAirlines.callsign = 'aab';
-        await Airline.updateOne({ _id: cbAirlines._id }, cbAirlines);
-        console.log(await Airline.find());
+        await Airline.updateOne({ _id: cbAirlines._id }, cbAirlines).exec();
+        console.log(await Airline.find().exec());
         assert.strictEqual(created.callsign, cbAirlines.callsign);
     });
 
@@ -67,7 +67,7 @@ describe('test update function', async () => {
         const find = await Airline.find({}, options);
         console.log(find);
         assert.strictEqual(find.rows[0].callsign, change.callsign);
-        
+
         await Airline.remove(created.id);
     });
 })

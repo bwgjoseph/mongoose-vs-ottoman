@@ -1,6 +1,6 @@
+import assert from 'assert';
 import mongoose from 'mongoose';
 import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
-import assert from 'assert';
 
 interface AirlineInterface {
     callsign: string;
@@ -60,12 +60,12 @@ describe('test $in function', async () => {
 
         const find = await Airline.find({
             country : {
-                 $in : "United State"
+                 $in : 'United State'
                  }
-        });
+        }).exec();
         console.log(find);
         assert.strictEqual(find.length, 1);
-        
+
     });
 
     it('ottoman - simple $in should be able to work', async () => {
@@ -78,7 +78,7 @@ describe('test $in function', async () => {
         const created2 =await Airline.create(cbAirlines);
 
         const find = await Airline.find({
-            $in: { 
+            $in: {
                 search_expr: 'country',
                 target_expr: ['Singapore']
                  }

@@ -55,7 +55,7 @@ describe('test save function', async () => {
 
         cbAirlines.callsign = "Hello";
         await cbAirlines.save();
-        const find = await Airline.find(cbAirlines);
+        const find = await Airline.find(cbAirlines).exec();
         console.log(find);
         assert.strictEqual(created.callsign, cbAirlines.callsign);
     })

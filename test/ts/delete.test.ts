@@ -1,6 +1,6 @@
+import assert from 'assert';
 import mongoose from 'mongoose';
 import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
-import assert from 'assert';
 
 interface AirlineInterface {
     callsign: string;
@@ -51,7 +51,7 @@ describe('test delete function', async () => {
         await Airline.create(cbAirlines);
 
         await cbAirlines.remove();
-        const find = await Airline.find();
+        const find = await Airline.find().exec();
         assert.strictEqual(find.length, 0);
         console.log(find);
         //assert.strictEqual(find.length, 0);
