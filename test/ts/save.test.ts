@@ -1,68 +1,22 @@
 import assert from 'assert';
-import mongoose from 'mongoose';
-import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
+import { SearchConsistency } from 'ottoman';
+import doc from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 
-interface AirlineInterface {
-    callsign: string;
-    country: string;
-    name: string;
-    // timeOfFlight: number;
-}
-
-type AirlineModel = AirlineInterface & mongoose.Document;
-
-describe('test save function', async () => {
-    const schema = {
-        callsign: String,
-        country: String,
-        name: String,
-        // timeOfFlight: Number
-    };
-
-    const doc = {
-        callsign: 'Couchbase',
-        country: 'United State',
-        name: 'Couchbase Airlines',
-
-    };
-
-    before(async () => {
-        mongoose.set('useFindAndModify', false);
-
-        await mongoose.connect('mongodb://root:password@localhost:28017/test?authSOurce=admin', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            family: 4
-        });
-
-        await mongoose.connection.dropDatabase();
-
-        connect({
-            connectionString: 'couchbase://localhost',
-            bucketName: 'testBucket',
-            username: 'user',
-            password: 'password'
-        });
-
-        await start();
-    })
-
+describe.only('test save function', async () => {
     it('mongoose - should save doc', async () => {
-        const airlineSchema = new mongoose.Schema(schema);
-        const Airline = mongoose.model<AirlineModel>('Airline', airlineSchema);
+        const Airline = getMongooseModel();
         const cbAirlines = new Airline(doc);
         const created = await Airline.create(cbAirlines);
 
-        cbAirlines.callsign = "Hello";
-        await cbAirlines.save();
+        created.callsign = "Hello";
+        await created.save();
         const find = await Airline.find(cbAirlines).exec();
-        console.log(find);
-        assert.strictEqual(created.callsign, cbAirlines.callsign);
+        assert.strictEqual(find[0].callsign, created.callsign);
     })
 
     it('ottoman - should save doc', async () => {
-        const airlineSchema = new Schema(schema);
-        const Airline = model('Airline', airlineSchema);
+        const Airline = getOttomanModel();
         const cbAirlines = new Airline(doc);
         const created = await Airline.create(cbAirlines);
         const options = { consistency: SearchConsistency.LOCAL }
