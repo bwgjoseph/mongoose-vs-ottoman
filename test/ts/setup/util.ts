@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { getDefaultConnection } from 'ottoman';
 
 const assertAirline = (actual: any, expected: any) => {
     assert.strictEqual(actual.callsign, expected.callsign);
@@ -6,4 +7,11 @@ const assertAirline = (actual: any, expected: any) => {
     assert.strictEqual(actual.name, expected.name);
 }
 
-export default assertAirline;
+const removeDocuments = async () => {
+    const query = `
+    DELETE FROM \`testBucket\`
+    `
+    await getDefaultConnection().query(query);
+}
+
+export { assertAirline, removeDocuments };

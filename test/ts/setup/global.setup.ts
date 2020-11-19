@@ -5,12 +5,18 @@ interface AirlineInterface {
     callsign: string;
     country: string;
     name: string;
+    hpnumber?: number;
+    operational?: boolean;
+    flyingTo?: [string];
 }
 
 const schema = {
     callsign: String,
     country: String,
-    name: String
+    name: String,
+    hpnumber: Number,
+    operational: Boolean,
+    flyingTo: [String]
 };
 
 type MongooseAirlineModel = AirlineInterface & mongoose.Document;
@@ -43,7 +49,7 @@ const initOttoman = async () => {
     await ottoman.start();
 }
 
-const getMongooseModel = (): Model<MongooseAirlineModel> => mongoose.models.Airline || mongoose.model<MongooseAirlineModel>('Airline', mongooseAirlineSchema);
+const getMongooseModel = () => mongoose.models.Airline || mongoose.model<MongooseAirlineModel>('Airline', mongooseAirlineSchema);
 const getOttomanModel = () => ottoman.model('Airline', ottomanAirlineSchema);
 
 before(async () => {

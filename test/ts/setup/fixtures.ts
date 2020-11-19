@@ -1,7 +1,22 @@
 const doc = {
     callsign: 'Couchbase',
-    country: 'United States',
-    name: 'Couchbase Airlines'
+    country: 'United State',
+    name: 'Couchbase Airlines',
+    hpnumber: 1234,
+    operational: true,
+    flyingTo: ['Japan', 'Indonesia', 'Korea', 'China', 'Japan']
 };
 
-export default doc;
+const doc2 = {
+    callsign: 'Mongo',
+    country: 'Singapore',
+    name: 'Mongo Airlines',
+    hpnumber: 5678,
+    operational: true,
+    flyingTo: ['Thailand', 'UK', 'USA', 'Malaysia', 'Japan', 'Japan']
+};
+
+export { 
+    doc, 
+    doc2
+};

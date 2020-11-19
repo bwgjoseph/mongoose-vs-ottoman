@@ -1,52 +1,12 @@
 import assert from 'assert';
-import mongoose from 'mongoose';
-import { connect, model, Schema, SearchConsistency, start } from 'ottoman';
-
-interface AirlineInterface {
-    callsign: string;
-    contry: string;
-    name: string;
-}
-
-type AirlineModel = AirlineInterface & mongoose.Document;
+import { SearchConsistency } from 'ottoman';
+import { doc } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/global.setup';
+import { removeDocuments } from './setup/util';
 
 describe('test update function', async () => {
-    const schema = {
-        callsign: String,
-        country: String,
-        name: String
-    };
-
-    const doc = {
-        callsign: 'Couchbase',
-        country: 'United State',
-        name: 'Couchbase Airlines'
-    };
-
-    before(async () => {
-        mongoose.set('useFindAndModify', false);
-
-        await mongoose.connect('mongodb://root:password@localhost:28017/test?authSource=admin', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            family: 4
-        });
-
-        await mongoose.connection.dropDatabase();
-
-        connect({
-            connectionString: 'couchbase://localhost',
-            bucketName: 'testBucket',
-            username: 'user',
-            password: 'password'
-        });
-
-        await start();
-    })
-
     it('mongoose - should patch doc', async () => {
-        const airlineSchema = new mongoose.Schema(schema);
-        const Airline = mongoose.model<AirlineModel>('Airline', airlineSchema);
+        const Airline = getMongooseModel();
         const cbAirlines = new Airline(doc);
         const created = await Airline.create(cbAirlines);
 
@@ -57,8 +17,7 @@ describe('test update function', async () => {
     });
 
     it('ottoman - should update doc', async () => {
-        const airlineSchema = new Schema(schema);
-        const Airline = model('Airline', airlineSchema);
+        const Airline = getOttomanModel();
         const cbAirlines = new Airline(doc);
         const created = await Airline.create(cbAirlines);
         const options = { consistency: SearchConsistency.LOCAL }
@@ -68,6 +27,6 @@ describe('test update function', async () => {
         console.log(find);
         assert.strictEqual(find.rows[0].callsign, change.callsign);
 
-        await Airline.remove(created.id);
+        await removeDocuments();  
     });
 })

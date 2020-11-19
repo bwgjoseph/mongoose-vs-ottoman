@@ -1,9 +1,10 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import doc from './setup/fixtures';
+import { doc } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/global.setup';
+import { removeDocuments } from './setup/util';
 
-describe.only('test save function', async () => {
+describe('test save function', async () => {
     it('mongoose - should save doc', async () => {
         const Airline = getMongooseModel();
         const cbAirlines = new Airline(doc);
@@ -27,6 +28,6 @@ describe.only('test save function', async () => {
         const find = await Airline.find({}, options);
         assert.strictEqual(find.rows[0].callsign, created.callsign);
 
-        await Airline.remove(created.id);
+        await removeDocuments(); 
     })
 })
