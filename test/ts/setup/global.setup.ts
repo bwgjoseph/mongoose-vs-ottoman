@@ -22,10 +22,9 @@ const schema = {
     direction: {
         type: String,
         enum: [
-            'a',
-            'b',
-            'c',
             'A',
+            'B',
+            'C',
         ],
         uppercase: true,
     },

@@ -33,7 +33,7 @@ const doc4 = {
     hpnumber: 1234,
     operational: true,
     flyingTo: ['Japan', 'Indonesia', 'Korea', 'China', 'Japan'],
-    direction: 'A',
+    direction: 'a',
     timeOfFlight: Date.now()
 };
 
