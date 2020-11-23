@@ -8,6 +8,8 @@ interface AirlineInterface {
     hpnumber?: number;
     operational?: boolean;
     flyingTo?: [string];
+    direction?: string;
+    timeOfFlight?: Date;
 }
 
 const schema = {
@@ -16,7 +18,18 @@ const schema = {
     name: String,
     hpnumber: Number,
     operational: Boolean,
-    flyingTo: [String]
+    flyingTo: [String],
+    direction: {
+        type: String,
+        enum: [
+            'a',
+            'b',
+            'c',
+            'A',
+        ],
+        uppercase: true,
+    },
+    timeOfFlight: Date
 };
 
 type MongooseAirlineModel = AirlineInterface & mongoose.Document;
