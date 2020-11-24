@@ -1,9 +1,8 @@
-import { SearchConsistency, getDefaultConnection, Query } from 'ottoman';
+import assert from 'assert';
+import { SearchConsistency } from 'ottoman';
 import { doc, doc2 } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
-import assert from 'assert';
-
 
 describe('test $limit function', async () => {
     it('mongoose - simple limit should be able to work', async () => {
@@ -15,14 +14,9 @@ describe('test $limit function', async () => {
 
         const limitResult = await Airline.find({
              operational: true
-             },
-            null,
-            {
-                limit:2
-            });
-        console.log(limitResult);
+        }).limit(2).exec();
+        assert.ok(limitResult.length === 2);
     });
-
 
     it('ottoman - simple limit should be able to work', async () => {
         const Airline = getOttomanModel();
@@ -31,11 +25,10 @@ describe('test $limit function', async () => {
         await Airline.create(mgAirlines);
         await Airline.create(cbAirlines);
 
-         const options = { consistency: SearchConsistency.LOCAL };
         // const where = {
         //     operational: { $eq: true }
-        // }    
-        
+        // }
+
         // const query = new Query({where}, 'testBucket')
         // .select([
         //     {$field: 'name'},
@@ -52,19 +45,20 @@ describe('test $limit function', async () => {
         // const showResults = await getDefaultConnection().query(result);
         // console.log('show results', showResults);
 
-
         // const results = await getDefaultConnection().query(query);
         // console.log('results', results);
 
-        const find = await Airline.find({
-             operational: true
-             },
+        const find = await Airline.find(
             {
-                limit: 2
-            }, options);
-        console.log(JSON.stringify(find.rows, null, 2));
+                operational: true
+            },
+            {
+                limit: 2,
+                consistency: SearchConsistency.LOCAL
+            },
+        );
+        assert.ok(find.rows.length === 2, 'expected to have 2 result, with limit');
 
-
-        await removeDocuments(); 
+        await removeDocuments();
     });
 });
