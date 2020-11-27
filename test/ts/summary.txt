@@ -1,0 +1,34 @@
+Operator Comparison
+
+- By comparing ottoman and mongoose, ottoman has most of the operator functions compared to mongoose. ottoman does not support $push & $pull but both should have a workaround in ottoman using update 
+
+Things to note: 
+- operator $neq and $eq works for number but not for String in Ottoman
+- Ottoman uses $not {$in} instead of $nin
+
+Model Option Comparison
+
+- Ottoman does not support the String validation of minLength and maxLength.
+- Ottoman does not support uppercase/lowercase
+- type: Buffer not supported in Ottoman
+- type: Object is not support in Ottoman (no mixed type)
+- While trying out the $gt, Ottoman is unable to compare the Date type as it stores the Date as a string (how to do date filter)
+
+Operators
+- Tested and works:
+  1. $in/$nin
+  2. $and/$or
+  3. $gt
+  4. $limit
+  5. $skip
+  6. $sort
+  7. $eq/neq
+  8. create/delete/update/select/save
+   
+Model Options
+- Tested and works: 
+  1. min/max
+  2. required:true
+  3. default: {value}
+  4. enum
+  5. type: Date
