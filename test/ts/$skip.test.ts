@@ -15,9 +15,8 @@ describe('test $skip function', async () => {
         await Airline.create(neAirlines);
 
         const result = await Airline.find({
-             operational: true
+            operational: true
         }).skip(1).exec();
-        console.log(result);
         assert.ok(result.length === 2);
     });
 
@@ -29,7 +28,6 @@ describe('test $skip function', async () => {
         await Airline.create(mgAirlines);
         await Airline.create(cbAirlines);
         await Airline.create(neAirlines);
-        const options = { consistency: SearchConsistency.LOCAL };
 
         const find = await Airline.find(
             {
@@ -37,10 +35,9 @@ describe('test $skip function', async () => {
             },
             {
                 skip: 1,
-                options
+                consistency: SearchConsistency.LOCAL
             },
         );
-        console.log(find);
         assert.ok(find.rows.length === 2);
 
         await removeDocuments();
