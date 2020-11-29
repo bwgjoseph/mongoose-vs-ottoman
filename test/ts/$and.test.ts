@@ -23,7 +23,6 @@ describe('test $and function', async () => {
             ]
         }).exec();
         assert.strictEqual(find.length, 0);
-        console.log(find);
     });
 
     it('ottoman - simple $and should be able to work', async () => {
@@ -34,7 +33,20 @@ describe('test $and function', async () => {
         await Airline.create(cbAirlines);
 
         const options = { consistency: SearchConsistency.LOCAL }
+
         const find = await Airline.find({
+            $and: [
+                {
+                    callsign: 'Mongo'
+                },
+                {
+                    country: 'Malaysia'
+                }
+            ]
+        }, options);
+        assert.strictEqual(find.rows.length, 0);
+
+        const find2 = await Airline.find({
             $and: [
                 {
                     callsign: 'Mongo'
@@ -44,18 +56,14 @@ describe('test $and function', async () => {
                 }
             ]
         }, options);
+        assert.strictEqual(find2.rows.length, 1);
 
-        const find2 = await Airline.find({
+        const find3 = await Airline.find({
             callsign: 'Mongo',
             country: 'Singapore'
         }, options)
+        assert.strictEqual(find3.rows.length, 1);
 
-        console.log(1,find);
-        console.log(2,find2);
-
-        assert.strictEqual(find.rows.length, 1);
-        assert.strictEqual(find2.rows.length, 1);
-
-        await removeDocuments(); 
+        await removeDocuments();
     });
 });

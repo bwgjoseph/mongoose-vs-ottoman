@@ -23,12 +23,10 @@ describe('test create function', async () => {
         const created = await Airline.create(cbAirlines);
         assertAirline(created, cbAirlines);
 
-        // Because not sure how to remove all docs before the test run,
-        // there will always have multiple copies
         const options = { consistency: SearchConsistency.LOCAL }
         const find = await Airline.find({}, options);
         assert.strictEqual(find.rows.length, 1);
 
-        await removeDocuments(); 
+        await removeDocuments();
     });
 })

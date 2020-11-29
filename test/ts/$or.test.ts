@@ -1,8 +1,8 @@
+import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
 import { doc, doc2 } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
-import assert from 'assert';
 
 describe('test $or function', async () => {
     it('mongoose - simple $or should be able to work', async () => {
@@ -23,6 +23,7 @@ describe('test $or function', async () => {
                 }
             ]
         }).exec();
+        assert.strictEqual(find.length, 2);
 
         //results should show nothing
         const find2 = await Airline.find({
@@ -35,8 +36,6 @@ describe('test $or function', async () => {
                 }
             ]
         }).exec();
-        console.log(find);
-        assert.strictEqual(find.length, 2);
         assert.strictEqual(find2.length, 0);
     });
 
@@ -59,6 +58,7 @@ describe('test $or function', async () => {
                 }
             ]
         }, options);
+        assert.strictEqual(find.rows.length, 2);
 
         //results should show nothing
         const find2 = await Airline.find({
@@ -71,10 +71,8 @@ describe('test $or function', async () => {
                 }
             ]
         }, options);
-        console.log(find);
-        assert.strictEqual(find.rows.length, 2);
         assert.strictEqual(find2.rows.length, 0);
 
-        await removeDocuments(); 
+        await removeDocuments();
     });
 });

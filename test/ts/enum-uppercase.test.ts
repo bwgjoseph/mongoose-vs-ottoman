@@ -28,6 +28,6 @@ describe('test enum function', async () => {
         assert.strictEqual(find.rows.length, 1);
         assert.strictEqual(find.rows[0].direction, 'A');
 
-        await removeDocuments(); 
+        await removeDocuments();
     });
 })

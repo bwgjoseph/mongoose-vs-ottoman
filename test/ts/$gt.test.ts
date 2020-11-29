@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { SearchConsistency, Query, getDefaultConnection } from 'ottoman';
+import { SearchConsistency } from 'ottoman';
 import { doc, doc2, doc3 } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
@@ -14,22 +14,20 @@ describe('test $gt function', async () => {
         await Airline.create(cbAirlines);
         await Airline.create(sqAirlines);
 
-           const find = await Airline.find({
-               hpnumber: {
-                   $gt: 1235
-               }
-           });
-           console.log(find);
+        const find = await Airline.find({
+            quantity: {
+                $gt: 100
+            }
+        }).exec();
+        assert.strictEqual(find.length, 2);
 
-           const find2 = await Airline.find({
-               timeOfFlight: {
-                   $gt: Date.now()
-               }
-           });
-           console.log("$gt time", find2);
-           assert.strictEqual(find.length, 2);
-           
-        });
+        const find2 = await Airline.find({
+            timeOfFlight: {
+                $gt: Date.now()
+            }
+        }).exec();
+        assert.strictEqual(find2.length, 1);
+    });
 
     it('ottoman - simple $gt should be able to work', async () => {
         const Airline = getOttomanModel();
@@ -41,33 +39,23 @@ describe('test $gt function', async () => {
         await Airline.create(sqAirlines);
         const options = { consistency: SearchConsistency.LOCAL };
 
-
-        // options = { consistency: SearchConsistency.LOCAL }
-
-        const find =  await Airline.find(
-            {
-                hpnumber: {
-                    $gt: 1235
-                },
-            }, options
-            );
-        
-        console.log("basic $gt", find);
-        const x = new Date();
-        console.log(x);
-
-        const find2 =  await Airline.find(
-            {
-                timeOfFlight: {
-                    $gt: x
-                },
+        const find =  await Airline.find({
+            quantity: {
+                $gt: 100
             },
-            options
-            );
-    
-    console.log("$gt time", find2);
-    //assert.strictEqual(find.rows.length, 2);
+        }, options);
+        assert.strictEqual(find.rows.length, 2);
 
-    await removeDocuments();
+        // can't query for date
+        const find2 =  await Airline.find({
+            timeOfFlight: {
+                $gt: Date.now()
+            },
+        }, options);
+
+        console.log("$gt time", find2);
+        // assert.strictEqual(find.rows.length, 2);
+
+        await removeDocuments();
     });
 })

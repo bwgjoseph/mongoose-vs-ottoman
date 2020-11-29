@@ -1,5 +1,6 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose from 'mongoose';
 import * as ottoman from 'ottoman';
+import { removeDocuments } from './util';
 
 interface AirlineInterface {
     callsign: string;
@@ -10,6 +11,7 @@ interface AirlineInterface {
     flyingTo?: [string];
     direction?: string;
     timeOfFlight?: Date;
+    quantity?: number;
     //a: object;
 }
 
@@ -22,7 +24,6 @@ const schema = {
     name: String,
     hpnumber: {
         type: Number
-
     },
     operational: {
         type: Boolean,
@@ -41,6 +42,7 @@ const schema = {
     timeOfFlight: {
         type: Date,
     },
+    quantity: Number,
     // a: {
     //     type: Object,
     //     required: true,
@@ -81,6 +83,8 @@ const initOttoman = async () => {
     // how to drop the bucket/scope/collection?
     // how to remove all docs from a bucket/scope/collection?
     await ottoman.start();
+
+    await removeDocuments();
 }
 
 const getMongooseModel = () => mongoose.models.Airline || mongoose.model<MongooseAirlineModel>('Airline', mongooseAirlineSchema);

@@ -1,9 +1,8 @@
+import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
 import { doc, doc2 } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
-import assert from 'assert';
-
 
 describe('test $in function', async () => {
     it('mongoose - simple $in should be able to work', async () => {
@@ -18,7 +17,6 @@ describe('test $in function', async () => {
                  $in : 'United State'
                  }
         }).exec();
-        console.log('mongoose', find);
         assert.strictEqual(find.length, 1);
 
     });
@@ -39,6 +37,6 @@ describe('test $in function', async () => {
         }, option);
         assert.strictEqual(find.rows.length, 1);
 
-        await removeDocuments(); 
+        await removeDocuments();
     });
 });

@@ -24,8 +24,7 @@ describe('test delete function', async () => {
         await Airline.remove(created.id);
         const find = await Airline.find({}, option);
         assert.strictEqual(find.rows.length, 0);
-        console.log('aa', await Airline.find());
 
-        await removeDocuments(); 
+        await removeDocuments();
     });
 })

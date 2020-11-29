@@ -25,29 +25,6 @@ describe('test $limit function', async () => {
         await Airline.create(mgAirlines);
         await Airline.create(cbAirlines);
 
-        // const where = {
-        //     operational: { $eq: true }
-        // }
-
-        // const query = new Query({where}, 'testBucket')
-        // .select([
-        //     {$field: 'name'},
-        //     {$field: 'callsign'},
-        //     {$field: 'id'},
-        //     {$field: 'operational'},
-        //     {$field: 'flyingTo'}
-        // ])
-        // .limit(1)
-        // .build();
-        //const result = await Airline.find([{$field: 'flyingTo'}]).limit(2).build();
-        //const find = await Airline.find(result, options);
-        // console.log('query language', query);
-        // const showResults = await getDefaultConnection().query(result);
-        // console.log('show results', showResults);
-
-        // const results = await getDefaultConnection().query(query);
-        // console.log('results', results);
-
         const find = await Airline.find(
             {
                 operational: true

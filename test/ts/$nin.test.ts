@@ -1,8 +1,8 @@
+import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
 import { doc, doc2 } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
-import assert from 'assert';
 
 describe('test $nin function', async () => {
     it('mongoose - simple $nin should be able to work', async () => {
@@ -18,7 +18,6 @@ describe('test $nin function', async () => {
             }
         }).exec();
         assert.strictEqual(find.length, 1);
-        console.log(find);
 
     });
 
@@ -40,8 +39,6 @@ describe('test $nin function', async () => {
         }, option);
         assert.strictEqual(find.rows.length, 1);
 
-        console.log(find);
-
-        await removeDocuments(); 
+        await removeDocuments();
     });
 });

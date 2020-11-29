@@ -28,6 +28,6 @@ describe('test save function', async () => {
         const find = await Airline.find({}, options);
         assert.strictEqual(find.rows[0].callsign, created.callsign);
 
-        await removeDocuments(); 
+        await removeDocuments();
     })
 })

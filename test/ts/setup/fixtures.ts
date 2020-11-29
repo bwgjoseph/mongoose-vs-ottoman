@@ -5,6 +5,7 @@ const doc = {
     hpnumber: 1234,
     flyingTo: ['Japan', 'Indonesia', 'Korea', 'China', 'Japan'],
     timeOfFlight: Date.now(),
+    quantity: 100,
     // data: Buffer.from('a'),
     //a: {"name": "Joe", "rank": "Sergeant", "gender": "M", "StaffID": 12344}
 };
@@ -15,8 +16,8 @@ const doc2 = {
     name: 'Mongo Airlines',
     hpnumber: 5678,
     flyingTo: ['Thailand', 'UK', 'USA', 'Malaysia', 'Japan', 'Japan'],
-    timeOfFlight: new Date('20 Dec 2020 00:00')
-
+    timeOfFlight: new Date('20 Dec 2020 00:00'),
+    quantity: 200,
 };
 
 const doc3 = {
@@ -27,6 +28,7 @@ const doc3 = {
     operational: false,
     flyingTo: [],
     timeOfFlight: new Date('10 Jan 2015 14:30'),
+    quantity: 300,
 };
 
 const doc4 = {
@@ -36,7 +38,8 @@ const doc4 = {
     hpnumber: 1234,
     flyingTo: ['Japan', 'Indonesia', 'Korea', 'China', 'Japan'],
     direction: 'a',
-    timeOfFlight: Date.now()
+    timeOfFlight: Date.now(),
+    quantity: 400,
 };
 
 const doc5 = {
@@ -53,8 +56,8 @@ const doc6 = {
     timeOfFlight: Date.now()
 };
 
-export { 
-    doc, 
+export {
+    doc,
     doc2,
     doc3,
     doc4,

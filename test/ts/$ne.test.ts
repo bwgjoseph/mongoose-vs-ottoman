@@ -1,9 +1,8 @@
+import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
 import { doc, doc2 } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
-import assert from 'assert';
-
 
 describe('test $ne function', async () => {
     it('mongoose - simple $ne should be able to work', async () => {
@@ -19,8 +18,6 @@ describe('test $ne function', async () => {
             }
         }).exec();
         assert.strictEqual(find.length, 1);
-        console.log(find);
-
     });
 
     it('ottoman - simple $neq should be able to work', async () => {
@@ -37,16 +34,16 @@ describe('test $ne function', async () => {
                 $neq : 1234
             }
         }, option);
+        assert.strictEqual(find.rows.length, 1);
+
         const find2 = await Airline.find({
             country : {
                 $neq : 'Singapore'
             }
         }, option);
-        console.log(1, find);
-        console.log(2, find2);
-        assert.strictEqual(find.rows.length, 1);
+        // Bug: https://github.com/bwgjoseph/mongoose-vs-ottoman/issues/20, https://github.com/couchbaselabs/node-ottoman/pull/313
+        assert.strictEqual(find2.rows.length, 1);
 
-
-        await removeDocuments(); 
+        await removeDocuments();
     });
 });
