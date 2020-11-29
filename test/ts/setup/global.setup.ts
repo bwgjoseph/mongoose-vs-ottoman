@@ -12,7 +12,6 @@ interface AirlineInterface {
     direction?: string;
     timeOfFlight?: Date;
     quantity?: number;
-    //a: object;
 }
 
 const schema = {
@@ -43,10 +42,6 @@ const schema = {
         type: Date,
     },
     quantity: Number,
-    // a: {
-    //     type: Object,
-    //     required: true,
-    // }
 };
 
 const schemaRef = {

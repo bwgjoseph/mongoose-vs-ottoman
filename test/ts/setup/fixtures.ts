@@ -6,8 +6,6 @@ const doc = {
     flyingTo: ['Japan', 'Indonesia', 'Korea', 'China', 'Japan'],
     timeOfFlight: Date.now(),
     quantity: 100,
-    // data: Buffer.from('a'),
-    //a: {"name": "Joe", "rank": "Sergeant", "gender": "M", "StaffID": 12344}
 };
 
 const doc2 = {

@@ -26,6 +26,8 @@ describe('test enum function', async () => {
         const options = { consistency: SearchConsistency.LOCAL }
         const find = await Airline.find({}, options);
         assert.strictEqual(find.rows.length, 1);
+        // Test case will fail
+        // See: https://github.com/bwgjoseph/mongoose-vs-ottoman/issues/19
         assert.strictEqual(find.rows[0].direction, 'A');
 
         await removeDocuments();
