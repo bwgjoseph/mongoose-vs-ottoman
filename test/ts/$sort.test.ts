@@ -1,53 +1,53 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc, doc2, doc6 } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
+import { falcon, hawk, sparrow } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 
 describe('test $sort function', async () => {
     it('mongoose - simple $sort should be able to work', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        const neAirlines = new Airline(doc6);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
-        await Airline.create(neAirlines);
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const sparrowAirplane = new Airplane(sparrow);
+        const falconAirplane = new Airplane(falcon);
+        await Airplane.create(sparrowAirplane);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(falconAirplane);
 
-        const find = await Airline.find(
+        const find = await Airplane.find(
             {
                 operational: true
             })
-            .sort({ 'name': 1 })
+            .sort({ 'callsign': 1 })
             .exec();
 
-        assert.strictEqual(find[0].name, "Couchbase Airlines");
-        assert.strictEqual(find[1].name, "Mongo Airlines");
-        assert.strictEqual(find[2].name, "NE Airlines");
+        assert.strictEqual(find[0].callsign, "Falcon");
+        assert.strictEqual(find[1].callsign, "Hawk");
+        assert.strictEqual(find[2].callsign, "Sparrow");
     });
 
     it('ottoman - simple sort should be able to work', async () => {
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        const neAirlines = new Airline(doc6);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
-        await Airline.create(neAirlines);
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const falconAirplane = new Airplane(falcon);
+        const sparrowAirplane = new Airplane(sparrow);
+        await Airplane.create(falconAirplane);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(sparrowAirplane);
 
-        const find = await Airline.find(
+        const find = await Airplane.find(
             {
                 operational: true
             },
             {
                 sort: {
-                    name: 'ASC'
+                    callsign: 'ASC'
                 },
                 consistency: SearchConsistency.LOCAL
             });
-        assert.strictEqual(find.rows[0].name, "Couchbase Airlines");
-        assert.strictEqual(find.rows[1].name, "Mongo Airlines");
-        assert.strictEqual(find.rows[2].name, "NE Airlines");
+        assert.strictEqual(find.rows[0].callsign, "Falcon");
+        assert.strictEqual(find.rows[1].callsign, "Hawk");
+        assert.strictEqual(find.rows[2].callsign, "Sparrow");
 
         await removeDocuments();
     });

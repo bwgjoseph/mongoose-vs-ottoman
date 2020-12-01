@@ -2,59 +2,6 @@ import mongoose from 'mongoose';
 import * as ottoman from 'ottoman';
 import { removeDocuments } from './util';
 
-interface AirlineInterface {
-    callsign: string;
-    country: string;
-    name: string;
-    hpnumber?: number;
-    operational?: boolean;
-    flyingTo?: [string];
-    direction?: string;
-    timeOfFlight?: Date;
-    quantity?: number;
-}
-
-const schema = {
-    callsign: {
-        type: String,
-        required: true,
-    },
-    country: String,
-    name: String,
-    hpnumber: {
-        type: Number
-    },
-    operational: {
-        type: Boolean,
-        default: true
-    },
-    flyingTo: [String],
-    direction: {
-        type: String,
-        enum: [
-            'A',
-            'B',
-            'C',
-        ],
-        uppercase: true,
-    },
-    timeOfFlight: {
-        type: Date,
-    },
-    quantity: Number,
-};
-
-const schemaRef = {
-    nameRef: String,
-
-}
-
-type MongooseAirlineModel = AirlineInterface & mongoose.Document;
-
-const mongooseAirlineSchema = new mongoose.Schema(schema);
-const ottomanAirlineSchema = new ottoman.Schema(schema);
-const ottomanRefSchema = new ottoman.Schema(schemaRef);
-
 const initMongoose = async () => {
     mongoose.set('useFindAndModify', false);
 
@@ -82,20 +29,8 @@ const initOttoman = async () => {
     await removeDocuments();
 }
 
-const getMongooseModel = () => mongoose.models.Airline || mongoose.model<MongooseAirlineModel>('Airline', mongooseAirlineSchema);
-const getOttomanModel = () => ottoman.model('Airline', ottomanAirlineSchema);
-const getOttomanModelRef = () => ottoman.model('ref', ottomanRefSchema);
-
-before(async () => {
-    await initMongoose();
-    await initOttoman();
-});
 
 export {
-    mongooseAirlineSchema,
-    ottomanAirlineSchema,
-    ottomanRefSchema,
-    getMongooseModel,
-    getOttomanModel,
-    getOttomanModelRef
+    initMongoose,
+    initOttoman,
 };

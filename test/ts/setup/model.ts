@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import * as ottoman from 'ottoman';
+import { initMongoose, initOttoman } from './global.setup';
 
-type Position = [lon: number, lat: number, alt: number];
+// type Position = [lon: number, lat: number, alt: number];
 
 interface Location {
     type: 'Point',
@@ -23,7 +24,7 @@ interface AirplaneInterface {
     model: 'A380' | '737 NG' | '767-300F'; // test enum
     size: string; // test enum [s, m, l], test uppercase
     info: AirplaneInfo; // test nested object query
-    location: Location; // test geo-spatial query
+    // location: Location; // test geo-spatial query
     // additional
     // test buffer, mixed type
 }
@@ -84,7 +85,7 @@ const airplaneSchema = {
         uppercase: true,
     },
     info: airplaneInfoSchema,
-    location: locationSchema,
+    // location: locationSchema,
 }
 
 type MongooseAirplaneModel = AirplaneInterface & mongoose.Document;
@@ -95,7 +96,13 @@ const ottomanAirplaneSchema = new ottoman.Schema(airplaneSchema);
 const getMongooseModel = () => mongoose.models.Airplane || mongoose.model<MongooseAirplaneModel>('Airplane', mongooseAirplaneSchema);
 const getOttomanModel = () => ottoman.model('Airplane', ottomanAirplaneSchema);
 
+before(async () => {
+    await initMongoose();
+    await initOttoman();
+});
+
 export {
+    AirplaneInterface,
     mongooseAirplaneSchema,
     ottomanAirplaneSchema,
     getMongooseModel,

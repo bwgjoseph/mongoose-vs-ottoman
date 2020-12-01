@@ -1,24 +1,24 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc, doc2 } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
+import { hawk, eagle } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test $and function', async () => {
-    it('mongoose - simple $and should be able to work. There should be no findings as no data has callsign Mongo & Malaysia', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+    it('mongoose - simple $and should be able to work. There should be no findings as no data has callsign Hawk & name Emirates Airline', async () => {
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane);
 
-        const find = await Airline.find({
+        const find = await Airplane.find({
             $and: [
                 {
-                    callsign: 'Mongo'
+                    callsign: 'Hawk'
                 },
                 {
-                    country: 'Malaysia'
+                    name: 'Emirates Airlines'
                 }
             ]
         }).exec();
@@ -26,44 +26,56 @@ describe('test $and function', async () => {
     });
 
     it('ottoman - simple $and should be able to work', async () => {
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
 
-        const options = { consistency: SearchConsistency.LOCAL }
-
-        const find = await Airline.find({
+        const find = await Airplane.find({
             $and: [
                 {
-                    callsign: 'Mongo'
+                    callsign: 'Hawk'
                 },
                 {
-                    country: 'Malaysia'
+                    name: 'Emirates Airlines'
                 }
             ]
-        }, options);
+        }, 
+        {
+            consistency: SearchConsistency.LOCAL
+        });
         assert.strictEqual(find.rows.length, 0);
 
-        const find2 = await Airline.find({
+        const find2 = await Airplane.find({
             $and: [
                 {
-                    callsign: 'Mongo'
+                    callsign: 'Hawk'
                 },
                 {
-                    country: 'Singapore'
+                    name: 'Couchbase Airlines'
                 }
             ]
-        }, options);
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
         assert.strictEqual(find2.rows.length, 1);
+        assert.strictEqual(find2.rows[0].callsign, "Hawk");
+        assert.strictEqual(find2.rows[0].name, "Couchbase Airlines");
 
-        const find3 = await Airline.find({
-            callsign: 'Mongo',
-            country: 'Singapore'
-        }, options)
+        const find3 = await Airplane.find({
+            callsign: 'Hawk',
+            name: 'Couchbase Airlines'
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
         assert.strictEqual(find3.rows.length, 1);
+        assert.strictEqual(find3.rows[0].callsign, "Hawk");
+        assert.strictEqual(find3.rows[0].name, "Couchbase Airlines");
 
         await removeDocuments();
+
     });
 });

@@ -1,57 +1,63 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc, doc2, doc3 } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
+import { eagle, falcon, hawk } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 
 describe('test $gt function', async () => {
     it('mongoose - simple $gt should be able to work', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        const sqAirlines = new Airline(doc3);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
-        await Airline.create(sqAirlines);
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        const falconAirplane = new Airplane(falcon);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane); 
+        await Airplane.create(falconAirplane);
 
-        const find = await Airline.find({
-            quantity: {
-                $gt: 100
+        const find = await Airplane.find({
+            capacity: {
+                $gt: 499
             }
         }).exec();
         assert.strictEqual(find.length, 2);
 
-        const find2 = await Airline.find({
-            timeOfFlight: {
-                $gt: Date.now()
+        const find2 = await Airplane.find({
+            scheduledAt: {
+                $gt: new Date('1 Dec 2020 00:00')
             }
         }).exec();
-        assert.strictEqual(find2.length, 1);
+        assert.strictEqual(find2.length, 2);
     });
 
     it('ottoman - simple $gt should be able to work', async () => {
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        const sqAirlines = new Airline(doc3);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
-        await Airline.create(sqAirlines);
-        const options = { consistency: SearchConsistency.LOCAL };
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        const falconAirplane = new Airplane(falcon);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(falconAirplane);
 
-        const find =  await Airline.find({
-            quantity: {
+        const find =  await Airplane.find({
+            capacity: {
                 $gt: 100
             },
-        }, options);
-        assert.strictEqual(find.rows.length, 2);
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
+        assert.strictEqual(find.rows.length, 3);
+
 
         // can't query for date
-        const find2 =  await Airline.find({
+        const find2 =  await Airplane.find({
             timeOfFlight: {
-                $gt: Date.now()
+                $gt: new Date('1 Dec 2020 00:00')
             },
-        }, options);
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
 
         console.log("$gt time", find2);
         // assert.strictEqual(find.rows.length, 2);

@@ -1,31 +1,37 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc, doc2 } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
+import { eagle, hawk, vulture } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 
 describe('test $limit function', async () => {
     it('mongoose - simple limit should be able to work', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        const vultureAirplane = new Airplane(vulture);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(vultureAirplane);
 
-        const limitResult = await Airline.find({
+
+        const limitResult = await Airplane.find({
              operational: true
         }).limit(2).exec();
         assert.ok(limitResult.length === 2);
     });
 
     it('ottoman - simple limit should be able to work', async () => {
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        const vultureAirplane = new Airplane(vulture);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(vultureAirplane);
 
-        const find = await Airline.find(
+
+        const find = await Airplane.find(
             {
                 operational: true
             },

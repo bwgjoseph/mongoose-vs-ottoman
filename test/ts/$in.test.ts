@@ -1,41 +1,44 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc, doc2 } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
+import { eagle, hawk } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 
 describe('test $in function', async () => {
     it('mongoose - simple $in should be able to work', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane);
 
-        const find = await Airline.find({
-            country : {
-                 $in : 'United State'
+        const find = await Airplane.find({
+            model : {
+                 $in : '767-300F'
                  }
         }).exec();
         assert.strictEqual(find.length, 1);
-
+        assert.strictEqual(find[0].model, '767-300F');
     });
 
     it('ottoman - simple $in should be able to work', async () => {
-        const option = {consistency: SearchConsistency.LOCAL};
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
 
-        const find = await Airline.find({
+        const find = await Airplane.find({
             $in: {
-                search_expr: 'country',
-                target_expr: ['Singapore']
-                 }
-        }, option);
+                search_expr: 'model',
+                target_expr: ['767-300F']
+                }
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
         assert.strictEqual(find.rows.length, 1);
+        assert.strictEqual(find.rows[0].model, '767-300F');
 
         await removeDocuments();
     });

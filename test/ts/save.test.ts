@@ -1,31 +1,34 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
+import { hawk } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 
 describe('test save function', async () => {
     it('mongoose - should save doc', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const created = await Airline.create(cbAirlines);
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const created = await Airplane.create(hawkAirplane);
 
         created.callsign = "Hello";
         await created.save();
-        const find = await Airline.find(cbAirlines).exec();
+        const find = await Airplane.find(hawkAirplane).exec();
         assert.strictEqual(find[0].callsign, created.callsign);
     })
 
     it('ottoman - should save doc', async () => {
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const created = await Airline.create(cbAirlines);
-        const options = { consistency: SearchConsistency.LOCAL }
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const created = await Airplane.create(hawkAirplane);
 
-        created.callsign = "Hi";
+        created.callsign = "Hello";
         await created.save();
 
-        const find = await Airline.find({}, options);
+        const find = await Airplane.find(
+            {},
+            { 
+                consistency: SearchConsistency.LOCAL 
+            });
         assert.strictEqual(find.rows[0].callsign, created.callsign);
 
         await removeDocuments();

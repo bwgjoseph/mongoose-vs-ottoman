@@ -1,28 +1,30 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
+import { hawk } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 
 describe('test update function', async () => {
     it('mongoose - should update doc', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const created = await Airline.create(cbAirlines);
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const created = await Airplane.create(hawkAirplane);
 
-        cbAirlines.callsign = 'aab';
-        await Airline.updateOne({ _id: cbAirlines._id }, cbAirlines).exec();
-        assert.strictEqual(created.callsign, cbAirlines.callsign);
+        hawkAirplane.callsign = 'aab';
+        await Airplane.updateOne({ _id: hawkAirplane._id }, hawkAirplane).exec();
+        assert.strictEqual(created.callsign, hawkAirplane.callsign);
     });
 
     it('ottoman - should update doc', async () => {
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const created = await Airline.create(cbAirlines);
-        const options = { consistency: SearchConsistency.LOCAL }
-
-        const change = await Airline.update({ callsign: 'abc' }, created.id);
-        const find = await Airline.find({}, options);
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const created = await Airplane.create(hawkAirplane);
+        const change = await Airplane.update({ callsign: 'abc' }, created.id);
+        const find = await Airplane.find(
+            {},
+            {
+                consistency: SearchConsistency.LOCAL
+            });
         assert.strictEqual(find.rows[0].callsign, change.callsign);
 
         await removeDocuments();

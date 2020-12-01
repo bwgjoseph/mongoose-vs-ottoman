@@ -1,38 +1,38 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { doc, doc2 } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/global.setup';
 import { removeDocuments } from './setup/util';
+import { eagle, hawk } from './setup/fixtures';
+import { getMongooseModel, getOttomanModel } from './setup/model';
 
 describe('test $or function', async () => {
     it('mongoose - simple $or should be able to work', async () => {
-        const Airline = getMongooseModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
 
         //results should show 2 data set
-        const find = await Airline.find({
+        const find = await Airplane.find({
             $or: [
                 {
-                    callsign: 'Couchbase'
+                    callsign: 'Hawk'
                 },
                 {
-                    callsign: 'Mongo'
+                    callsign: 'Eagle'
                 }
             ]
         }).exec();
         assert.strictEqual(find.length, 2);
 
         //results should show nothing
-        const find2 = await Airline.find({
+        const find2 = await Airplane.find({
             $or: [
                 {
-                    callsign: 'Airbase'
+                    callsign: 'Howk'
                 },
                 {
-                    callsign: 'Mango'
+                    callsign: 'Egle'
                 }
             ]
         }).exec();
@@ -40,34 +40,34 @@ describe('test $or function', async () => {
     });
 
     it('ottoman - simple $or should be able to work', async () => {
-        const Airline = getOttomanModel();
-        const cbAirlines = new Airline(doc);
-        const mgAirlines = new Airline(doc2);
-        await Airline.create(mgAirlines);
-        await Airline.create(cbAirlines);
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
         const options = { consistency: SearchConsistency.LOCAL }
 
         //results should show 2 data set
-        const find = await Airline.find({
+        const find = await Airplane.find({
             $or: [
                 {
-                    callsign: 'Couchbase'
+                    callsign: 'Hawk'
                 },
                 {
-                    callsign: 'Mongo'
+                    callsign: 'Eagle'
                 }
             ]
         }, options);
         assert.strictEqual(find.rows.length, 2);
 
         //results should show nothing
-        const find2 = await Airline.find({
+        const find2 = await Airplane.find({
             $or: [
                 {
-                    callsign: 'Airbase'
+                    callsign: 'Howk'
                 },
                 {
-                    callsign: 'Mango'
+                    callsign: 'Egle'
                 }
             ]
         }, options);
