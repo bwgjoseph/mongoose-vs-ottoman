@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import * as ottoman from 'ottoman';
 import { initMongoose, initOttoman } from './global.setup';
 
-// type Position = [lon: number, lat: number, alt: number];
+type Position = [lon: number, lat: number, alt?: number];
 
 interface Location {
     type: 'Point',

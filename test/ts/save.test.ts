@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
 import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { removeDocuments } from './setup/util';
 
 describe('test save function', async () => {
     it('mongoose - should save doc', async () => {
@@ -26,8 +26,8 @@ describe('test save function', async () => {
 
         const find = await Airplane.find(
             {},
-            { 
-                consistency: SearchConsistency.LOCAL 
+            {
+                consistency: SearchConsistency.LOCAL
             });
         assert.strictEqual(find.rows[0].callsign, created.callsign);
 
