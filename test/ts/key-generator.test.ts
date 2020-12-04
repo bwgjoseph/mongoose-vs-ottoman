@@ -15,11 +15,11 @@ describe('test keyGenerator function', async () => {
             id: { type: String, default: () => 'mycustom::id' }});
         const generator = ottoman.model('DummyDate', schema, { keyGenerator, idKey });
         await generator.create();
-        const options = { consistency: SearchConsistency.LOCAL };
+        const options = { select: ['meta().id', 'customGKey'], consistency: SearchConsistency.LOCAL }
         const doc = await generator.find({}, options);
         assert.strictEqual(doc.rows.length, 1);
         assert.ok(Object.keys(doc.rows[0]).includes(idKey));
-        // to assert generated key value
+        assert.ok(Object.keys(doc.rows[0].id === `gen::_default--DummyDate::${doc.id}`));
 
         await removeDocuments();
     });
