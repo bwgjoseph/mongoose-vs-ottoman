@@ -3,7 +3,7 @@ import * as ottoman from 'ottoman';
 import { SearchConsistency } from 'ottoman';
 import { removeDocuments } from './setup/util';
 
-describe('test $gt function', async () => {
+describe('test $lt, $gt, $btw operator for gh-#21', async () => {
     it('verify gh-#21 p1 - date parsing', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
         const DummyDate = ottoman.model('DummyDate', schema);
