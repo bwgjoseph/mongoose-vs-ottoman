@@ -51,7 +51,7 @@ describe('test $gt function', async () => {
 
         // can't query for date
         const find2 =  await Airplane.find({
-            timeOfFlight: {
+            scheduledAt: {
                 $gt: new Date('1 Dec 2020 00:00')
             },
         },
