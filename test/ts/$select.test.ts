@@ -1,15 +1,14 @@
 import assert from 'assert';
+import mongoose from 'mongoose';
 import { SearchConsistency } from 'ottoman';
 import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
-import mongoose from 'mongoose';
 
-describe.only('test $select function', async () => {
-
+describe('test $select function', async () => {
     beforeEach(async () => {
         await mongoose.connection.dropDatabase();
-    }) ; 
+    }) ;
 
     it('mongoose - simple $select should be able to work', async () => {
         const Airplane = getMongooseModel();
@@ -47,7 +46,7 @@ describe.only('test $select function', async () => {
     });
 
     // select only 'callsign' but 'operational', 'capacity' and 'scheduledAt' is shown too
-    //select only 'operational', 'capacity' and 'scheduledAt' will be shown. Both scenarios would give default values 
+    //select only 'operational', 'capacity' and 'scheduledAt' will be shown. Both scenarios would give default values
     it('ottoman - simple $select should be able to work', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
@@ -56,21 +55,19 @@ describe.only('test $select function', async () => {
         const find = await Airplane.find(
             {},
             {
-                select: 'name', 
+                select: 'name',
                 consistency: SearchConsistency.LOCAL
             });
 
-        console.log(find);
         assert.strictEqual(find.rows[0].name, 'Couchbase Airlines');
 
         const find2 = await Airplane.find(
             {},
             {
-                select: 'operational, callsign, name, destination', 
+                select: 'operational, callsign, name, destination',
                 consistency: SearchConsistency.LOCAL
             });
 
-        console.log(find2);
         assert.strictEqual(find2.rows[0].name, 'Couchbase Airlines');
         assert.strictEqual(find2.rows[0].callsign, 'Hawk');
         assert.strictEqual(find2.rows[0].operational, true);
@@ -88,7 +85,7 @@ describe.only('test $select function', async () => {
         const find = await Airplane.find(
             {},
             {
-                select: 'info', 
+                select: 'info',
                 consistency: SearchConsistency.LOCAL
             });
         console.log(JSON.stringify(find));
@@ -96,7 +93,7 @@ describe.only('test $select function', async () => {
         await removeDocuments();
     });
 
-    //results shown differs from mongoose 
+    //results shown differs from mongoose
     it('ottoman - $select a field in a nested object', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
@@ -105,7 +102,7 @@ describe.only('test $select function', async () => {
         const find = await Airplane.find(
             {},
             {
-                select: 'info.numberOfFlightsSince', 
+                select: 'info.numberOfFlightsSince',
                 consistency: SearchConsistency.LOCAL
             });
         console.log(find);
@@ -114,7 +111,7 @@ describe.only('test $select function', async () => {
         const find2 = await Airplane.find(
             {},
             {
-                select: 'operational, callsign, name, info.numberOfFlightsSince', 
+                select: 'operational, callsign, name, info.numberOfFlightsSince',
                 consistency: SearchConsistency.LOCAL
             });
 

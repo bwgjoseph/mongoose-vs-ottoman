@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
 import { falcon, hawk, sparrow } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { removeDocuments } from './setup/util';
 
 describe('test $sort function', async () => {
     it('mongoose - simple $sort should be able to work', async () => {

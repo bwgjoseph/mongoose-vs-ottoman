@@ -1,8 +1,8 @@
 Operator Comparison
 
-- By comparing ottoman and mongoose, ottoman has most of the operator functions compared to mongoose. ottoman does not support $push & $pull but both should have a workaround in ottoman using update 
+- By comparing ottoman and mongoose, ottoman has most of the operator functions compared to mongoose. ottoman does not support $push & $pull but both should have a workaround in ottoman using update
 
-Things to note: 
+Things to note:
 - operator $neq and $eq works for number but not for String in Ottoman
 - Ottoman uses $not {$in} instead of $nin
 
@@ -24,11 +24,40 @@ Operators
   6. $sort
   7. $eq/neq
   8. create/delete/update/select/save
-   
+
 Model Options
-- Tested and works: 
+- Tested and works:
   1. min/max
   2. required:true
   3. default: {value}
   4. enum
   5. type: Date
+
+
+
+
+status of alpha.11
+
+working:
+  $and
+  $eq
+  $gt
+  $in
+  $limit
+  $ne
+  $nin
+  $or
+  $skip
+  $sort
+  create
+  embed-schema
+  enum-uppercase
+  findbyid
+  gh-#21
+  nested-queries
+  save
+  updateById
+
+not working:
+  $select
+  removeById

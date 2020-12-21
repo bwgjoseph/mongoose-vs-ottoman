@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "mongoose": "^5.10.14",
-    "ottoman": "2.0.0-alpha.10"
+    "ottoman": "2.0.0-alpha.11"
   },
   "devDependencies": {
     "@types/mocha": "^8.0.4",

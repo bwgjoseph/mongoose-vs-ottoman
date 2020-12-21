@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { assertAirline, removeDocuments } from './setup/util';
 import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { assertAirline, removeDocuments } from './setup/util';
 
 describe('test enum function', async () => {
     it('mongoose - should create new doc', async () => {
@@ -27,8 +27,8 @@ describe('test enum function', async () => {
 
         const find = await Airplane.find(
             {},
-            { 
-                consistency: SearchConsistency.LOCAL 
+            {
+                consistency: SearchConsistency.LOCAL
             });
         assert.strictEqual(find.rows.length, 1);
         // Test case will fail if size is set as `size: 's',` in fixture.ts -> line 67

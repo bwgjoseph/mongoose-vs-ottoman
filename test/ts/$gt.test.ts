@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
 import { eagle, falcon, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { removeDocuments } from './setup/util';
 
 describe('test $gt function', async () => {
     it('mongoose - simple $gt should be able to work', async () => {
@@ -11,7 +11,7 @@ describe('test $gt function', async () => {
         const eagleAirplane = new Airplane(eagle);
         const falconAirplane = new Airplane(falcon);
         await Airplane.create(eagleAirplane);
-        await Airplane.create(hawkAirplane); 
+        await Airplane.create(hawkAirplane);
         await Airplane.create(falconAirplane);
 
         const find = await Airplane.find({

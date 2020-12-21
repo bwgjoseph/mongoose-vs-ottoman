@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { removeDocuments } from './setup/util';
 
 describe('test $or function', async () => {
     it('mongoose - simple $or should be able to work', async () => {

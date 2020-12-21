@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { hawk, eagle } from './setup/fixtures';
+import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
@@ -41,7 +41,7 @@ describe('test $and function', async () => {
                     name: 'Emirates Airlines'
                 }
             ]
-        }, 
+        },
         {
             consistency: SearchConsistency.LOCAL
         });

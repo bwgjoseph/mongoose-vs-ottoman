@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { hawk, eagle, falcon, vulture } from './setup/fixtures';
+import { eagle, falcon, hawk, vulture } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
@@ -105,7 +105,7 @@ describe('test nested queries function', async () => {
                     }
                 }
             ]
-        }, 
+        },
         {
             consistency: SearchConsistency.LOCAL
         });
@@ -124,7 +124,7 @@ describe('test nested queries function', async () => {
                     }
                 }
             ]
-        }, 
+        },
         {
             consistency: SearchConsistency.LOCAL
         });

@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { assertAirline, removeDocuments } from './setup/util';
 import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { assertAirline, removeDocuments } from './setup/util';
 
 describe('test create function', async () => {
     it('mongoose - should create new doc', async () => {
@@ -25,8 +25,8 @@ describe('test create function', async () => {
 
         const find = await Airplane.find(
             {},
-            { 
-                consistency: SearchConsistency.LOCAL 
+            {
+                consistency: SearchConsistency.LOCAL
             });
         assert.strictEqual(find.rows.length, 1);
 

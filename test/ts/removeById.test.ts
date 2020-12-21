@@ -1,10 +1,10 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
 import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { removeDocuments } from './setup/util';
 
-describe('test delete function', async () => {
+describe('test removeById function', async () => {
     it('mongoose - should remove doc', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);
@@ -20,7 +20,7 @@ describe('test delete function', async () => {
         const hawkAirplane = new Airplane(hawk);
         const created = await Airplane.create(hawkAirplane);
 
-        await Airplane.remove(created.id);
+        await Airplane.removeById(created.id);
         const find = await Airplane.find(
             {},
             {

@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
-import { hawk, eagle } from './setup/fixtures';
+import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
+import { removeDocuments } from './setup/util';
 
 describe('test $nin function', async () => {
     it('mongoose - simple $nin should be able to work', async () => {
@@ -36,7 +36,7 @@ describe('test $nin function', async () => {
                     target_expr: ['767-300F'],
                 }
             }]
-        }, 
+        },
         {
             consistency: SearchConsistency.LOCAL
         });
