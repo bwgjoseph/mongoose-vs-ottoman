@@ -12,6 +12,7 @@ interface Location {
 interface AirplaneInfo {
     firstFlightAt: Date;
     numberOfFlightsSince: number;
+    callsign?: string;
 }
 
 interface AirplaneInterface {
@@ -32,6 +33,7 @@ interface AirplaneInterface {
 const airplaneInfoSchema = {
     firstFlightAt: Date,
     numberOfFlightsSince: Number,
+    callsign: String,
 }
 
 const locationSchema = {

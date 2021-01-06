@@ -11,7 +11,8 @@ const hawk: AirplaneInterface = {
     size: 'S',
     info: {
         firstFlightAt: new Date('12 Jan 2010 13:10'),
-        numberOfFlightsSince: 10000
+        numberOfFlightsSince: 10000,
+        callsign: 'Hawk2',
     },
 //     location: {
 //         type: 'Point',

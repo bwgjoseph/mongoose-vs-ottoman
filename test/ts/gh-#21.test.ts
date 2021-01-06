@@ -25,7 +25,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
         const DummyDate = ottoman.model('DummyDate', schema);
         const result = await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2020 00:00') });
         // this is a object instead of string
-        assert.strictEqual(typeof result.date, 'string');
+        assert.ok(result.date instanceof Date);
         const options = { consistency: SearchConsistency.LOCAL };
         const doc = await DummyDate.find({
             $or: [
@@ -34,7 +34,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
                 { date: { $btw: ['2020-12-01', '2020-12-11'] } },
             ],
         }, options);
-        assert.strictEqual(typeof doc.rows[0].date, 'string');
+        assert.ok(doc.rows[0].date instanceof Date);
 
         await removeDocuments();
     });
@@ -49,7 +49,6 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
                 $gt: '2021-12-11'
             },
         }, options);
-        // console.log(doc);
         assert.strictEqual(doc.rows.length, 0);
 
         await removeDocuments();
