@@ -105,7 +105,6 @@ describe('test $select function', async () => {
                 select: 'info.numberOfFlightsSince',
                 consistency: SearchConsistency.LOCAL
             });
-        console.log(find);
         assert.strictEqual(find.rows[0].numberOfFlightsSince, 10000);
 
         const find2 = await Airplane.find(
@@ -114,12 +113,113 @@ describe('test $select function', async () => {
                 select: 'operational, callsign, name, info.numberOfFlightsSince',
                 consistency: SearchConsistency.LOCAL
             });
-
         assert.strictEqual(find2.rows.length, 1);
         assert.strictEqual(find2.rows[0].name, 'Couchbase Airlines');
         assert.strictEqual(find2.rows[0].callsign, 'Hawk');
         assert.strictEqual(find2.rows[0].operational, true);
         assert.strictEqual(find2.rows[0].numberOfFlightsSince, 10000);
+
+        await removeDocuments();
+    });
+
+    ///
+
+    it('ottoman - $select using array of 1 string delimit with comma', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        await Airplane.create(hawkAirplane);
+
+        const find = await Airplane.find(
+            {},
+            {
+                select: 'info.numberOfFlightsSince',
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find.rows[0].numberOfFlightsSince, 10000);
+
+        const find2 = await Airplane.find(
+            {},
+            {
+                select: ['operational, callsign, name, info.numberOfFlightsSince'],
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find2.rows.length, 1);
+        assert.strictEqual(find2.rows[0].name, 'Couchbase Airlines');
+        assert.strictEqual(find2.rows[0].callsign, 'Hawk');
+        assert.strictEqual(find2.rows[0].operational, true);
+        assert.strictEqual(find2.rows[0].numberOfFlightsSince, 10000);
+
+        await removeDocuments();
+    });
+
+    it('ottoman - $select using string delimit with comma', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        await Airplane.create(hawkAirplane);
+
+        const find = await Airplane.find(
+            {},
+            {
+                select: 'info.numberOfFlightsSince',
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find.rows[0].numberOfFlightsSince, 10000);
+
+        const find2 = await Airplane.find(
+            {},
+            {
+                select: 'operational, callsign, name, info.numberOfFlightsSince',
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find2.rows.length, 1);
+        assert.strictEqual(find2.rows[0].name, 'Couchbase Airlines');
+        assert.strictEqual(find2.rows[0].callsign, 'Hawk');
+        assert.strictEqual(find2.rows[0].operational, true);
+        assert.strictEqual(find2.rows[0].numberOfFlightsSince, 10000);
+
+        await removeDocuments();
+    });
+
+    it('ottoman - $select using array of string', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        await Airplane.create(hawkAirplane);
+
+        const find = await Airplane.find(
+            {},
+            {
+                select: 'info.numberOfFlightsSince',
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find.rows[0].numberOfFlightsSince, 10000);
+
+        const find2 = await Airplane.find(
+            {},
+            {
+                select: ['operational', 'callsign', 'name', 'info.numberOfFlightsSince'],
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find2.rows.length, 1);
+        assert.strictEqual(find2.rows[0].name, 'Couchbase Airlines');
+        assert.strictEqual(find2.rows[0].callsign, 'Hawk');
+        assert.strictEqual(find2.rows[0].operational, true);
+        assert.strictEqual(find2.rows[0].numberOfFlightsSince, 10000);
+
+        await removeDocuments();
+    });
+
+    it('ottoman - $select root and nested object with same field name', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        await Airplane.create(hawkAirplane);
+
+        const find = await Airplane.find(
+            {},
+            {
+                select: 'callsign, info.callsign',
+                consistency: SearchConsistency.LOCAL
+            });
+        console.log(JSON.stringify(find));
 
         await removeDocuments();
     });
