@@ -51,7 +51,7 @@ describe('test create function', async () => {
         assert.strictEqual(find.length, 1);
     });
 
-    it.only('ottoman - should create new doc', async () => {
+    it('ottoman - should create new doc', async () => {
         const Airplane = getOttomanModel();
         const options = { consistency: SearchConsistency.LOCAL };
 
@@ -97,7 +97,6 @@ describe('test create function', async () => {
         assert.deepStrictEqual(createdObject.extension, objBird.extension);
 
         const find = await Airplane.find({}, options);
-        console.log(find);
         assert.strictEqual(find.rows.length, 7);
 
         await removeDocuments();
