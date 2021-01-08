@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import * as ottoman from 'ottoman';
+import { MixedType } from 'ottoman/lib/types/schema';
 import { initMongoose, initOttoman } from './global.setup';
 
 type Position = [lon: number, lat: number, alt?: number];
@@ -28,6 +29,7 @@ interface AirplaneInterface {
     // location: Location; // test geo-spatial query
     // additional
     // test buffer, mixed type
+    file: any;
 }
 
 const airplaneInfoSchema = {
@@ -88,6 +90,9 @@ const airplaneSchema = {
     },
     info: airplaneInfoSchema,
     // location: locationSchema,
+    file: {
+        type: MixedType,
+    },
 }
 
 type MongooseAirplaneModel = AirplaneInterface & mongoose.Document;

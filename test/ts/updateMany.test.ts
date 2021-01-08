@@ -28,14 +28,14 @@ describe('test updateMany function', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
-        const created1 = await Airplane.create(hawkAirplane);
-        const created2 = await Airplane.create(eagleAirplane); 
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane); 
 
     //changing all name with Couchbase, size to M
         const updateDoc = {
             size: 'M'
         };
-        const update = await Airplane.updateMany({ 
+        await Airplane.updateMany({ 
             name: {
                 $like: '%Couchbase%'
             }
@@ -49,7 +49,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(find.rows[1].size, 'M'); 
 
     //changing all name with Couchbase Airlines' operational: true to false
-        const update2 = await Airplane.updateMany({ 
+        await Airplane.updateMany({ 
             name: 'Couchbase Airlines'
          },
         {

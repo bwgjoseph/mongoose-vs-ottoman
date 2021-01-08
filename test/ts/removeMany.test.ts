@@ -17,15 +17,15 @@ describe('test removeMany function', async () => {
         assert.strictEqual(find.length, 0);
     });
 
-    //not working yet, look at issue #36
     it('ottoman - should remove many docs', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
-        const created = await Airplane.create(hawkAirplane);
-        const created2 = await Airplane.create(eagleAirplane); 
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane); 
 
-        const remove = await Airplane.removeMany({
+        // remove all docs with name: Couchbase
+        await Airplane.removeMany({
             name: {
                 $like: '%Couchbase%'
             }
@@ -33,9 +33,9 @@ describe('test removeMany function', async () => {
         {
             consistency: SearchConsistency.LOCAL
         });
-        // assert.strictEqual(remove.rows.length, 0);
-        console.log(remove);
+        const find = await Airplane.find();
+        assert.strictEqual(find.rows.length, 0);
 
-        //await removeDocuments();
+        await removeDocuments();
     });
 })

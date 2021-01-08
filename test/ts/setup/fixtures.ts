@@ -22,6 +22,7 @@ const hawk: AirplaneInterface = {
 //             1.11
 //         ]
 //     }
+file: 123,
 }
 
 const eagle: AirplaneInterface = {
@@ -45,6 +46,7 @@ const eagle: AirplaneInterface = {
     //         2.560
     //     ]
     // }
+    file: 'abc',
 }
 
 const falcon: AirplaneInterface = {
@@ -68,6 +70,7 @@ const falcon: AirplaneInterface = {
     //         1.99
     //     ]
     // }
+    file: '32da',
 }
 
 const sparrow: AirplaneInterface = {
@@ -91,6 +94,7 @@ const sparrow: AirplaneInterface = {
     //         1.2344
     //     ]
     // }
+    file: true,
 }
 
 const vulture: AirplaneInterface = {
@@ -99,11 +103,11 @@ const vulture: AirplaneInterface = {
     operational: false,
     destination: ['India'],
     scheduledAt: new Date('1 May 2021 14:10'),
-    capacity: 350,
+    capacity: 325,
     model: '737 NG',
     size: 'M',
     info: {
-        firstFlightAt: new Date('20 May 2007 18:15'),
+        firstFlightAt: new Date('20 May 2007 06:15'),
         numberOfFlightsSince: 15000
     },
     // location: {
@@ -114,6 +118,23 @@ const vulture: AirplaneInterface = {
     //         1.000
     //     ]
     // }
+    file: 12456,
+}
+
+const bird: AirplaneInterface = {
+    callsign: 'Bird',
+    name: 'Bird Airlines',
+    operational: true,
+    destination: ['Taiwan'],
+    scheduledAt: new Date('2 Jan 2021 00:30'),
+    capacity: 500,
+    model: '767-300F',
+    size: 'L',
+    info: {
+        firstFlightAt: new Date('02 Aug 19 12:00'),
+        numberOfFlightsSince: 1500
+    },
+    file: '32da',
 }
 
 export {
@@ -121,5 +142,6 @@ export {
     eagle,
     falcon,
     sparrow,
-    vulture
+    vulture,
+    bird,
 };
