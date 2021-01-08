@@ -16,10 +16,10 @@ const airplane: AirplaneInterface = {
         firstFlightAt: new Date(),
         numberOfFlightsSince: 10,
     },
-    // location: {
-    //     type: 'Point',
-    //     coordinates: [1.23, 4.56],
-    // }
+    location: {
+        type: 'Point',
+        coordinates: [1.23, 4.56],
+    }
 }
 
 describe('test update function', async () => {
@@ -32,7 +32,7 @@ describe('test update function', async () => {
         console.log('mongoose', JSON.stringify(find, null, 2));
     });
 
-    it('ottoman - should find doc', async () => {
+    it('ottoman - should create doc with embed nested schema', async () => {
         const Airplane = getOttomanModel();
         const cbAirlines = new Airplane(airplane);
         await Airplane.create(cbAirlines);
@@ -40,37 +40,40 @@ describe('test update function', async () => {
 
         const find = await Airplane.find({}, options);
         console.log('ottoman', JSON.stringify(find.rows, null, 2));
+        // assert.strictEqual(find.rows.length, 1);
+        // assert.strictEqual(find.rows[0].location.type, 'Point');
+        // assert.deepStrictEqual(find.rows[0].location.coordinates, [1.22, 2.33, 1.11]);
 
         await removeDocuments();
     });
 
-    it('a', async () => {
+    it('ottoman - should create doc with embed nested schema 2', async () => {
         const childSchema = new ottoman.Schema({
             name: {
                 type: String,
             }
         });
-        // const nestedChildSchema = new ottoman.Schema({
-        //     type: {
-        //         type: String,
-        //         required: true,
-        //         enum: ['Point'],
-        //     },
-        //     coordinates: {
-        //         type: [Number],
-        //         required: true,
-        //     }
-        // })
+        const nestedChildSchema = new ottoman.Schema({
+            type: {
+                type: String,
+                required: true,
+                enum: ['Point'],
+            },
+            coordinates: {
+                type: [Number],
+                required: true,
+            }
+        });
         const parentSchema = new ottoman.Schema({
-        // Array of subdocuments
-        children: [childSchema],
-        // Single nested subdocument.
-        // child: childSchema,
-        // nestedChild: nestedChildSchema,
+            // Array of subdocuments
+            children: [childSchema],
+            // Single nested subdocument.
+            child: childSchema,
+            location: nestedChildSchema,
         });
 
         const model = ottoman.model('Airplane', parentSchema);
-        model.create({
+        const data = {
             children: [
                 {
                     name: 'a',
@@ -82,48 +85,17 @@ describe('test update function', async () => {
             child: {
                 name: 'c'
             },
-            // nestedChild: {
-            //     type: 'Point',
-            //     coordinates: [1, 2, 3]
-            // }
-        })
-
-        const options = { consistency: SearchConsistency.LOCAL }
-
-        const find = await model.find({}, options);
-        console.log('ottoman', JSON.stringify(find.rows, null, 2));
-
-        await removeDocuments();
-    });
-
-    it('b', async () => {
-        const childSchema = new ottoman.Schema({
-            name: {
-                type: String,
+            location: {
+                type: 'Point',
+                coordinates: [1.23, 2.45, 3.56]
             }
-        });
-        const parentSchema = new ottoman.Schema({
-            children: [childSchema],
-        });
-
-        const model = ottoman.model('Airplane', parentSchema);
-        model.create({
-            children: [
-                {
-                    name: 'a',
-                },
-                {
-                    name: 'b'
-                }
-            ],
-            // child: {
-            //     name: 'c'
-            // },
-        })
+        };
+        await model.create(data);
 
         const options = { consistency: SearchConsistency.LOCAL }
 
         const find = await model.find({}, options);
+        console.log(find);
         console.log('ottoman', JSON.stringify(find.rows, null, 2));
 
         await removeDocuments();

@@ -14,14 +14,14 @@ const hawk: AirplaneInterface = {
         numberOfFlightsSince: 10000,
         callsign: 'Hawk2',
     },
-//     location: {
-//         type: 'Point',
-//         coordinates: [
-//             1.22,
-//             2.33,
-//             1.11
-//         ]
-//     }
+    location: {
+        type: 'Point',
+        coordinates: [
+            1.22,
+            2.33,
+            1.11
+        ]
+    }
 file: 123,
 }
 
@@ -38,14 +38,14 @@ const eagle: AirplaneInterface = {
         firstFlightAt: new Date('02 Dec 16 12:00'),
         numberOfFlightsSince: 4500
     },
-    // location: {
-    //     type: 'Point',
-    //     coordinates: [
-    //         1.346,
-    //         2.847,
-    //         2.560
-    //     ]
-    // }
+    location: {
+        type: 'Point',
+        coordinates: [
+            1.346,
+            2.847,
+            2.560
+        ]
+    }
     file: 'abc',
 }
 
@@ -62,14 +62,14 @@ const falcon: AirplaneInterface = {
         firstFlightAt: new Date('20 Feb 2019 10:00'),
         numberOfFlightsSince: 2000
     },
-    // location: {
-    //     type: 'Point',
-    //     coordinates: [
-    //         1.00,
-    //         2.77,
-    //         1.99
-    //     ]
-    // }
+    location: {
+        type: 'Point',
+        coordinates: [
+            1.00,
+            2.77,
+            1.99
+        ]
+    }
     file: '32da',
 }
 
@@ -86,14 +86,14 @@ const sparrow: AirplaneInterface = {
         firstFlightAt: new Date('20 May 2017 10:00'),
         numberOfFlightsSince: 3750
     },
-    // location: {
-    //     type: 'Point',
-    //     coordinates: [
-    //         1.3456,
-    //         2.7889,
-    //         1.2344
-    //     ]
-    // }
+    location: {
+        type: 'Point',
+        coordinates: [
+            1.3456,
+            2.7889,
+            1.2344
+        ]
+    }
     file: true,
 }
 
@@ -110,14 +110,14 @@ const vulture: AirplaneInterface = {
         firstFlightAt: new Date('20 May 2007 06:15'),
         numberOfFlightsSince: 15000
     },
-    // location: {
-    //     type: 'Point',
-    //     coordinates: [
-    //         1.000,
-    //         2.000,
-    //         1.000
-    //     ]
-    // }
+    location: {
+        type: 'Point',
+        coordinates: [
+            1.000,
+            2.000,
+            1.000
+        ]
+    }
     file: 12456,
 }
 

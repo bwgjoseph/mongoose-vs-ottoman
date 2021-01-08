@@ -20,7 +20,7 @@ describe('test enum function', async () => {
 
     it('ottoman - should create new doc', async () => {
         const Airplane = getOttomanModel();
-        const hawkAirplane = new Airplane(hawk);
+        const hawkAirplane = new Airplane({ ...hawk, size: 's' });
 
         const created = await Airplane.create(hawkAirplane);
         assertAirline(created, hawkAirplane);

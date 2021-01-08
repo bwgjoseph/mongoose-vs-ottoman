@@ -26,7 +26,7 @@ interface AirplaneInterface {
     model: 'A380' | '737 NG' | '767-300F'; // test enum
     size: string; // test enum [s, m, l], test uppercase
     info: AirplaneInfo; // test nested object query
-    // location: Location; // test geo-spatial query
+    location: Location; // test geo-spatial query
     // additional
     // test buffer, mixed type
     file: any;
@@ -48,7 +48,7 @@ const locationSchema = {
         type: [Number],
         required: true,
     }
-}
+};
 
 const airplaneSchema = {
     callsign: {
@@ -89,7 +89,7 @@ const airplaneSchema = {
         uppercase: true,
     },
     info: airplaneInfoSchema,
-    // location: locationSchema,
+    location: locationSchema,
     file: {
         type: MixedType,
     },
