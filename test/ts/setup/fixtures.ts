@@ -21,8 +21,8 @@ const hawk: AirplaneInterface = {
             2.33,
             1.11
         ]
-    }
-file: 123,
+    },
+    extension: 'abc',
 }
 
 const eagle: AirplaneInterface = {
@@ -45,8 +45,8 @@ const eagle: AirplaneInterface = {
             2.847,
             2.560
         ]
-    }
-    file: 'abc',
+    },
+    extension: 123,
 }
 
 const falcon: AirplaneInterface = {
@@ -69,8 +69,8 @@ const falcon: AirplaneInterface = {
             2.77,
             1.99
         ]
-    }
-    file: '32da',
+    },
+    extension: true,
 }
 
 const sparrow: AirplaneInterface = {
@@ -93,8 +93,8 @@ const sparrow: AirplaneInterface = {
             2.7889,
             1.2344
         ]
-    }
-    file: true,
+    },
+    extension: new Date(),
 }
 
 const vulture: AirplaneInterface = {
@@ -117,8 +117,8 @@ const vulture: AirplaneInterface = {
             2.000,
             1.000
         ]
-    }
-    file: 12456,
+    },
+    extension: ['32da'],
 }
 
 const bird: AirplaneInterface = {
@@ -134,7 +134,20 @@ const bird: AirplaneInterface = {
         firstFlightAt: new Date('02 Aug 19 12:00'),
         numberOfFlightsSince: 1500
     },
-    file: '32da',
+    location: {
+        type: 'Point',
+        coordinates: [
+            1.88,
+            2.22,
+            1.22,
+        ]
+    },
+    extension: [
+        {
+            external: 'field',
+            isNumber: true,
+        },
+    ],
 }
 
 export {

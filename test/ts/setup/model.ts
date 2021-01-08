@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import * as ottoman from 'ottoman';
-import { MixedType } from 'ottoman/lib/types/schema';
 import { initMongoose, initOttoman } from './global.setup';
 
 type Position = [lon: number, lat: number, alt?: number];
@@ -27,9 +26,7 @@ interface AirplaneInterface {
     size: string; // test enum [s, m, l], test uppercase
     info: AirplaneInfo; // test nested object query
     location: Location; // test geo-spatial query
-    // additional
-    // test buffer, mixed type
-    file: any;
+    extension: unknown; // test MixedType
 }
 
 const airplaneInfoSchema = {
@@ -90,15 +87,12 @@ const airplaneSchema = {
     },
     info: airplaneInfoSchema,
     location: locationSchema,
-    file: {
-        type: MixedType,
-    },
 }
 
 type MongooseAirplaneModel = AirplaneInterface & mongoose.Document;
 
-const mongooseAirplaneSchema = new mongoose.Schema(airplaneSchema);
-const ottomanAirplaneSchema = new ottoman.Schema(airplaneSchema);
+const mongooseAirplaneSchema = new mongoose.Schema({ ...airplaneSchema, extension: mongoose.SchemaTypes.Mixed });
+const ottomanAirplaneSchema = new ottoman.Schema({ ...airplaneSchema, extension: ottoman.Schema.Types.Mixed });
 
 const getMongooseModel = () => mongoose.models.Airplane || mongoose.model<MongooseAirplaneModel>('Airplane', mongooseAirplaneSchema);
 const getOttomanModel = () => ottoman.model('Airplane', ottomanAirplaneSchema);

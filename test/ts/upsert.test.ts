@@ -26,7 +26,7 @@ describe('test upsert function', async () => {
     });
 
     //not working yet, look at issue #36
-    it.only('ottoman - upsert function', async () => {
+    it('ottoman - upsert function', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         await Airplane.create(hawkAirplane);

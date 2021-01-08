@@ -19,6 +19,9 @@ const airplane: AirplaneInterface = {
     location: {
         type: 'Point',
         coordinates: [1.23, 4.56],
+    },
+    extension: {
+        external: 'field'
     }
 }
 
