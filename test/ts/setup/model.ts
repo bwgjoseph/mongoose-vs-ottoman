@@ -92,7 +92,7 @@ const airplaneSchema = {
 type MongooseAirplaneModel = AirplaneInterface & mongoose.Document;
 
 const mongooseAirplaneSchema = new mongoose.Schema({ ...airplaneSchema, extension: mongoose.SchemaTypes.Mixed });
-const mongooseAirplaneNonStrictSchema = new mongoose.Schema({ ...airplaneSchema, extension: mongoose.SchemaTypes.Mixed }, {strict: false});
+const mongooseAirplaneNonStrictSchema = new mongoose.Schema({ ...airplaneSchema, extension: mongoose.SchemaTypes.Mixed }, { strict: false });
 const ottomanAirplaneSchema = new ottoman.Schema({ ...airplaneSchema, extension: ottoman.Schema.Types.Mixed });
 const ottomanAirplaneNonStrictSchema = new ottoman.Schema({ ...airplaneSchema, extension: ottoman.Schema.Types.Mixed }, { strict: false });
 
