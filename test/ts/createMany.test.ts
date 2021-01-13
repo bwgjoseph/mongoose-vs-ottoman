@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { hawk, eagle, falcon, vulture, bird } from './setup/fixtures';
+import { hawk, eagle, bird } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
@@ -38,7 +38,6 @@ describe('test createMany function', async () => {
         ]);
         
         const find = await Airplane.find().exec();
-        console.log(find);
         assert.strictEqual(find.length, 3);
     });
 
@@ -99,7 +98,7 @@ describe('test createMany function', async () => {
     });
 
     // partial doc is placed in the middle of the array; Behavior other docs would still be created
-    it.only('ottoman - should create 3 new doc, without creating the partial doc', async () => {
+    it('ottoman - should create 3 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
         const created = await Airplane.createMany([
         bird,    
@@ -109,7 +108,6 @@ describe('test createMany function', async () => {
         hawk,
         eagle
         ]);
-        console.log(created);
         const find = await Airplane.find(
             {},
             {

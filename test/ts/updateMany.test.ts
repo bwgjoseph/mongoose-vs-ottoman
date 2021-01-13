@@ -12,6 +12,7 @@ describe('test updateMany function', async () => {
         const created1 = await Airplane.create(hawkAirplane);
         const created2 = await Airplane.create(eagleAirplane); 
 
+        // changing all docs with name: "Couchbase Airlines" operational to false
         const update = await Airplane.updateMany({
             name: "Couchbase Airlines"
         },
@@ -24,14 +25,15 @@ describe('test updateMany function', async () => {
         assert.strictEqual(find[1].operational, false);
     });
 
-    it('ottoman - should update many docs', async () => {
+    it('ottoman - changing all docs with "Couchbase" in the name field, size to M', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
-        await Airplane.create(hawkAirplane);
-        await Airplane.create(eagleAirplane); 
+        const hawkCreated = await Airplane.create(hawkAirplane);
+        const eagleCreated = await Airplane.create(eagleAirplane); 
+        assert.strictEqual(hawkCreated.size, 'S');
+        assert.strictEqual(eagleCreated.size, 'L');
 
-    //changing all name with Couchbase, size to M
         const updateDoc = {
             size: 'M'
         };
@@ -48,7 +50,18 @@ describe('test updateMany function', async () => {
         assert.strictEqual(find.rows[0].size, 'M'); 
         assert.strictEqual(find.rows[1].size, 'M'); 
 
-    //changing all name with Couchbase Airlines' operational: true to false
+        await removeDocuments();
+    });
+
+    it('ottoman - changing all docs with name: "Couchbase Airlines", operational: true to false', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        const hawkCreated = await Airplane.create(hawkAirplane);
+        const eagleCreated = await Airplane.create(eagleAirplane); 
+        assert.strictEqual(hawkCreated.operational, true);
+        assert.strictEqual(eagleCreated.operational, true);
+
         await Airplane.updateMany({ 
             name: 'Couchbase Airlines'
          },
@@ -61,6 +74,31 @@ describe('test updateMany function', async () => {
         const find2 = await Airplane.find();
         assert.strictEqual(find2.rows[0].operational, false);
         assert.strictEqual(find2.rows[1].operational, false);        
+
+        await removeDocuments();
+    });
+
+    it('ottoman - should not update any docs as there is no matching', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        const hawkCreated = await Airplane.create(hawkAirplane);
+        const eagleCreated = await Airplane.create(eagleAirplane); 
+        assert.strictEqual(hawkCreated.operational, true);
+        assert.strictEqual(eagleCreated.operational, true);
+
+        await Airplane.updateMany({ 
+            name: 'abc'
+         },
+        {
+            operational: false,
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
+        const find2 = await Airplane.find();
+        assert.strictEqual(find2.rows[0].operational, true);
+        assert.strictEqual(find2.rows[1].operational, true);        
 
         await removeDocuments();
     });
