@@ -68,24 +68,26 @@ describe('test keyGenerator function', async () => {
 
     it('gh-#29 p3', async () => {
         const g = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const g1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        console.log(g1);
 
         const keyGenerator = ({ metadata, id }: {
             metadata: ModelMetadata;
             id: any;
-        }) => `gen::${metadata.scopeName}--${g()}--${metadata.collectionName}::`;
+        }) => `gen::${metadata.scopeName}--${g1}--${metadata.collectionName}::`;
         const schema = new ottoman.Schema({
-            id: { type: String, default: () => g() },
+            id: { type: String },
             name: { type: String },
         });
         const generator = ottoman.model('DummyDate', schema, { keyGenerator });
         await generator.create(new generator({ id: '1', name: 'a' }));
-        await generator.create(new generator({ id: '2', name: 'b' }));
-        await generator.create(new generator({ id: '3', name: 'c' }));
+        // await generator.create(new generator({ id: '2', name: 'b' }));
+        // await generator.create(new generator({ name: 'c' }));
         const options = { select: ['meta().id', '*'], consistency: SearchConsistency.LOCAL }
         const doc = await generator.find({}, options);
         console.log(JSON.stringify(doc, null, 2));
-        console.log(await generator.findById('2'));
+        console.log(await generator.findById('hello'));
 
-        // await removeDocuments();
+       await removeDocuments();
     });
 })

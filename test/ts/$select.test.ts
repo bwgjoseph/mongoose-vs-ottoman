@@ -216,10 +216,14 @@ describe('test $select function', async () => {
         const find = await Airplane.find(
             {},
             {
-                select: 'callsign, info.callsign',
+                select: ['callsign', '{ info.callsign, info.numberOfFlightsSince } as info'],
+                // select: 'callsign, { info.callsign, info.numberOfFlightsSince } as info',
                 consistency: SearchConsistency.LOCAL
             });
-        console.log(JSON.stringify(find));
+        assert.strictEqual(find.rows.length, 1);
+        assert.strictEqual(find.rows[0].callsign, 'Hawk');
+        assert.strictEqual(find.rows[0].info.callsign, 'Hawk2');
+        assert.strictEqual(find.rows[0].info.numberOfFlightsSince, 10000);
 
         await removeDocuments();
     });
