@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
+import { GenericManyQueryResponse } from 'ottoman/lib/types/handler';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -31,14 +32,64 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        await Airplane.removeMany({
+        const response: GenericManyQueryResponse = await Airplane.removeMany({
             name: 'Couchbase Airlines'
         },
         {
             consistency: SearchConsistency.LOCAL
         });
+
+        const expected: GenericManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                modified: 2,
+                match_number: 2,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
         const find = await Airplane.find();
         assert.strictEqual(find.rows.length, 0);
+
+        await removeDocuments();
+    });
+
+    it('ottoman - should remove one matching doc', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane);
+        const findbefore = await Airplane.find({}, {
+            consistency: SearchConsistency.LOCAL
+        });
+        assert.strictEqual(findbefore.rows.length, 2);
+
+        // remove all docs with name: Couchbase
+        const response: GenericManyQueryResponse = await Airplane.removeMany({
+            capacity: 250
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
+
+        const expected: GenericManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                modified: 1,
+                match_number: 1,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
+        const find = await Airplane.find();
+        assert.strictEqual(find.rows.length, 1);
 
         await removeDocuments();
     });
@@ -55,7 +106,7 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        await Airplane.removeMany({
+        const response: GenericManyQueryResponse = await Airplane.removeMany({
             name: {
                 $like: '%Couchbase%'
             }
@@ -63,6 +114,19 @@ describe('test removeMany function', async () => {
         {
             consistency: SearchConsistency.LOCAL
         });
+
+        const expected: GenericManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                modified: 2,
+                match_number: 2,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
         const find = await Airplane.find();
         assert.strictEqual(find.rows.length, 0);
 
@@ -81,12 +145,24 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        await Airplane.removeMany({
+        const response: GenericManyQueryResponse = await Airplane.removeMany({
             name: 'should not find any'
         },
         {
             consistency: SearchConsistency.LOCAL
         });
+
+        const expected: GenericManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                modified: 0,
+                match_number: 0,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
         const find = await Airplane.find();
         assert.strictEqual(find.rows.length, 0);
 

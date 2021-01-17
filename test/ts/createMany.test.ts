@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { hawk, eagle, bird } from './setup/fixtures';
+import { GenericManyQueryResponse } from 'ottoman/lib/types/handler';
+import { bird, eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
@@ -33,10 +34,10 @@ describe('test createMany function', async () => {
                         1.11
                     ]
                 },
-            }, 
+            },
             eagle
         ]);
-        
+
         const find = await Airplane.find().exec();
         assert.strictEqual(find.length, 3);
     });
@@ -49,7 +50,7 @@ describe('test createMany function', async () => {
     //   }
     it('ottoman - should create 1 new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
-        await Airplane.createMany([{
+        const response: GenericManyQueryResponse = await Airplane.createMany([{
                 callsign: 'Hawk',
             },
             {
@@ -66,7 +67,19 @@ describe('test createMany function', async () => {
                 },
             }
         ]);
-        
+
+        const expected: GenericManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                modified: 1,
+                match_number: 2,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
         const find = await Airplane.find(
             {},
             {
@@ -80,13 +93,25 @@ describe('test createMany function', async () => {
     // partial doc is placed first in the array; the rest of the docs are still being created
     it('ottoman - should create 2 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
-        await Airplane.createMany([{
+        const response: GenericManyQueryResponse = await Airplane.createMany([{
             callsign: 'Hawk',
             },
         hawk,
         eagle
         ]);
-        
+
+        const expected: GenericManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                modified: 2,
+                match_number: 3,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
         const find = await Airplane.find(
             {},
             {
@@ -100,14 +125,27 @@ describe('test createMany function', async () => {
     // partial doc is placed in the middle of the array; Behavior other docs would still be created
     it('ottoman - should create 3 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
-        const created = await Airplane.createMany([
-        bird,    
+        const response: GenericManyQueryResponse = await Airplane.createMany([
+        bird,
             {
             callsign: 'Hawk',
             },
         hawk,
         eagle
         ]);
+
+        const expected: GenericManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                modified: 3,
+                match_number: 4,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
         const find = await Airplane.find(
             {},
             {
@@ -119,16 +157,28 @@ describe('test createMany function', async () => {
     });
 
      // not all required fields are given
-     it('ottoman - should not create new doc when using incomeplete partial doc', async () => {
+     it('ottoman - should not create new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
-        await Airplane.createMany([{
+        const response: GenericManyQueryResponse = await Airplane.createMany([{
                 callsign: 'Hawk',
             },
             {
                 name: 'Couchbase Airline',
             }
         ]);
-        
+
+        const expected: GenericManyQueryResponse = {
+            status: 'FAILED',
+            message: {
+                modified: 0,
+                match_number: 2,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
         const find = await Airplane.find(
             {},
             {
