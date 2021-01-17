@@ -11,14 +11,14 @@
   "author": "bwgjoseph",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.10.14",
+    "mongoose": "^5.11.12",
     "ottoman": "2.0.0-alpha.12"
   },
   "devDependencies": {
-    "@types/mocha": "^8.0.4",
-    "@types/mongoose": "^5.10.2",
+    "@types/mocha": "^8.2.0",
+    "@types/mongoose": "^5.10.3",
     "mocha": "^8.2.1",
-    "ts-node": "^9.1.0",
-    "typescript": "^4.1.2"
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
   }
 }
