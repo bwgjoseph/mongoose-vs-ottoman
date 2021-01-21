@@ -105,6 +105,44 @@ describe('test updateMany function', async () => {
         await removeDocuments();
     });
 
+    it('ottoman - doc should not be updated when schema does not match', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane(eagle);
+        const hawkCreated = await Airplane.create(hawkAirplane);
+        const eagleCreated = await Airplane.create(eagleAirplane);
+        assert.strictEqual(hawkCreated.operational, true);
+        assert.strictEqual(eagleCreated.operational, true);
+
+        const response: GenericManyQueryResponse = await Airplane.updateMany({
+            name: 'Couchbase Airlines'
+        },
+        {
+            operational: 'notmatch',
+        },
+        {
+            consistency: SearchConsistency.LOCAL
+        });
+
+        const expected: GenericManyQueryResponse = {
+            status: 'FAILED',
+            message: {
+                modified: 0,
+                match_number: 2,
+                errors: []
+            }
+        };
+
+        assert.strictEqual(response.status, expected.status);
+        assert.deepStrictEqual(response.message, expected.message);
+
+        const find2 = await Airplane.find();
+        assert.strictEqual(find2.rows[0].operational, false);
+        assert.strictEqual(find2.rows[1].operational, false);
+
+        await removeDocuments();
+    });
+
     it('ottoman - should update one matching doc', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
