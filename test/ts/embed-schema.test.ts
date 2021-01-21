@@ -2,6 +2,7 @@ import * as ottoman from 'ottoman';
 import { SearchConsistency } from 'ottoman';
 import { AirplaneInterface, getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
+import assert from 'assert';
 
 const airplane: AirplaneInterface = {
     callsign: 'call',
@@ -18,7 +19,7 @@ const airplane: AirplaneInterface = {
     },
     location: {
         type: 'Point',
-        coordinates: [1.23, 4.56],
+        coordinates: [1.22, 2.33, 1.11],
     },
     extension: {
         external: 'field'
@@ -32,7 +33,11 @@ describe('test update function', async () => {
         await Airplane.create(cbAirlines);
 
         const find = await Airplane.find().exec();
-        console.log('mongoose', JSON.stringify(find, null, 2));
+        assert.strictEqual(find.length, 1);
+        assert.strictEqual(find[0].location.type, 'Point');
+        assert.deepStrictEqual(find[0].location.coordinates[0], 1.22);
+        assert.deepStrictEqual(find[0].location.coordinates[1], 2.33);
+        assert.deepStrictEqual(find[0].location.coordinates[2], 1.11);
     });
 
     it('ottoman - should create doc with embed nested schema', async () => {
@@ -42,10 +47,9 @@ describe('test update function', async () => {
         const options = { consistency: SearchConsistency.LOCAL }
 
         const find = await Airplane.find({}, options);
-        console.log('ottoman', JSON.stringify(find.rows, null, 2));
-        // assert.strictEqual(find.rows.length, 1);
-        // assert.strictEqual(find.rows[0].location.type, 'Point');
-        // assert.deepStrictEqual(find.rows[0].location.coordinates, [1.22, 2.33, 1.11]);
+        assert.strictEqual(find.rows.length, 1);
+        assert.strictEqual(find.rows[0].location.type, 'Point');
+        assert.deepStrictEqual(find.rows[0].location.coordinates, [1.22, 2.33, 1.11]);
 
         await removeDocuments();
     });
@@ -98,8 +102,8 @@ describe('test update function', async () => {
         const options = { consistency: SearchConsistency.LOCAL }
 
         const find = await model.find({}, options);
-        console.log(find);
-        console.log('ottoman', JSON.stringify(find.rows, null, 2));
+        assert.ok(find.rows.length === 1);
+        assert.ok(find.rows[0].location);
 
         await removeDocuments();
     });

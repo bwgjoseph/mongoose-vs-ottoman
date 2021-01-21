@@ -46,7 +46,7 @@ describe('test createMany function', async () => {
     // sample output
     // GenericManyQueryResponse {
     //     status: 'SUCCESS',
-    //     message: { modified: 1, match_number: 2, errors: [ undefined ] }
+    //     message: { success: 1, match_number: 2, errors: [ undefined ] }
     //   }
     it('ottoman - should create 1 new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
@@ -71,7 +71,7 @@ describe('test createMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 1,
+                success: 1,
                 match_number: 2,
                 errors: []
             }
@@ -103,7 +103,7 @@ describe('test createMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 2,
+                success: 2,
                 match_number: 3,
                 errors: []
             }
@@ -137,7 +137,7 @@ describe('test createMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 3,
+                success: 3,
                 match_number: 4,
                 errors: []
             }
@@ -170,7 +170,7 @@ describe('test createMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'FAILED',
             message: {
-                modified: 0,
+                success: 0,
                 match_number: 2,
                 errors: []
             }

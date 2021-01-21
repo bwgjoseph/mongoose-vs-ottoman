@@ -25,7 +25,7 @@ describe('test create function', async () => {
         assert.strictEqual(find[0].notInSchema, true);
     });
 
-    it('ottoman - should notsave new field when strict: true', async () => {
+    it('ottoman - should not save new field when strict: true', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane({...hawk, notInSchema: true});
         const created = await Airplane.create(hawkAirplane);

@@ -11,8 +11,9 @@
   "author": "bwgjoseph",
   "license": "ISC",
   "dependencies": {
+    "couchbase": "3.1.0",
     "mongoose": "^5.11.12",
-    "ottoman": "2.0.0-alpha.12"
+    "ottoman": "2.0.0-alpha.13"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.0",

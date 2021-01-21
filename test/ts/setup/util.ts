@@ -11,7 +11,12 @@ const removeDocuments = async () => {
     const query = `
     DELETE FROM \`testBucket\`
     `
-    await getDefaultInstance().query(query);
+    try {
+        await getDefaultInstance().query(query);
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 }
 
 export { assertAirline, removeDocuments };

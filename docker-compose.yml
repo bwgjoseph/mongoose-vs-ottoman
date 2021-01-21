@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
 
   couchbase:
-    image: couchbase:enterprise-6.6.0
+    image: couchbase:enterprise-7.0.0-beta
     container_name: mo-couchbase
     ports:
       - 8091:8091

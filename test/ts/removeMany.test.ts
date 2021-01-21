@@ -42,7 +42,7 @@ describe('test removeMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 2,
+                success: 2,
                 match_number: 2,
                 errors: []
             }
@@ -79,7 +79,7 @@ describe('test removeMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 1,
+                success: 1,
                 match_number: 1,
                 errors: []
             }
@@ -108,7 +108,7 @@ describe('test removeMany function', async () => {
         // remove all docs with name: Couchbase
         const response: GenericManyQueryResponse = await Airplane.removeMany({
             name: {
-                $like: '%Couchbase%'
+                $like: '%Couchbase%',
             }
         },
         {
@@ -118,7 +118,7 @@ describe('test removeMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 2,
+                success: 2,
                 match_number: 2,
                 errors: []
             }
@@ -155,7 +155,7 @@ describe('test removeMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 0,
+                success: 0,
                 match_number: 0,
                 errors: []
             }
@@ -164,7 +164,7 @@ describe('test removeMany function', async () => {
         assert.strictEqual(response.status, expected.status);
         assert.deepStrictEqual(response.message, expected.message);
         const find = await Airplane.find();
-        assert.strictEqual(find.rows.length, 0);
+        assert.strictEqual(find.rows.length, 2);
 
         await removeDocuments();
     });

@@ -51,7 +51,7 @@ describe('test updateMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 2,
+                success: 2,
                 match_number: 2,
                 errors: []
             }
@@ -89,7 +89,7 @@ describe('test updateMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 2,
+                success: 2,
                 match_number: 2,
                 errors: []
             }
@@ -127,7 +127,7 @@ describe('test updateMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 1,
+                success: 1,
                 match_number: 1,
                 errors: []
             }
@@ -165,7 +165,7 @@ describe('test updateMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'SUCCESS',
             message: {
-                modified: 0,
+                success: 0,
                 match_number: 0,
                 errors: []
             }
