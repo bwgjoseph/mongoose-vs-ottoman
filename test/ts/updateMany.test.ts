@@ -127,7 +127,7 @@ describe('test updateMany function', async () => {
         const expected: GenericManyQueryResponse = {
             status: 'FAILED',
             message: {
-                modified: 0,
+                success: 0,
                 match_number: 2,
                 errors: []
             }
