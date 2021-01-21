@@ -19,6 +19,8 @@ describe('test $in function', async () => {
         }).exec();
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].model, '767-300F');
+
+        await Airplane.remove({});
     });
 
     it('ottoman - simple $in should be able to work', async () => {

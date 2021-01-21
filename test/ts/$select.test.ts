@@ -24,11 +24,12 @@ describe('test $select function', async () => {
         const find2 = await Airplane.find()
             .select(['name', 'callsign', 'destination'])
             .exec();
-        console.log(find2);
         assert.strictEqual(find2.length, 1);
         assert.strictEqual(find2[0].callsign, 'Hawk');
         assert.strictEqual(find2[0].name, 'Couchbase Airlines');
         assert.strictEqual(find2[0].destination.length, 1);
+
+        await Airplane.remove({});
     });
 
     it('mongoose - $select field in nested object', async () => {
@@ -40,9 +41,10 @@ describe('test $select function', async () => {
             .select('info.numberOfFlightsSince')
             .exec();
 
-        console.log(find);
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].info.numberOfFlightsSince, 10000);
+
+        await Airplane.remove({});
     });
 
     // select only 'callsign' but 'operational', 'capacity' and 'scheduledAt' is shown too
@@ -88,7 +90,11 @@ describe('test $select function', async () => {
                 select: 'info',
                 consistency: SearchConsistency.LOCAL
             });
-        console.log(JSON.stringify(find));
+        assert.strictEqual(find.rows.length, 1);
+        assert.ok(find.rows[0].info);
+        assert.ok(find.rows[0].info.firstFlightAt);
+        assert.ok(find.rows[0].info.numberOfFlightsSince);
+        assert.ok(find.rows[0].info.callsign);
 
         await removeDocuments();
     });

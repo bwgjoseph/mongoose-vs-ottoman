@@ -27,6 +27,8 @@ describe('test $gt function', async () => {
             }
         }).exec();
         assert.strictEqual(find2.length, 2);
+
+        await Airplane.remove({});
     });
 
     it('ottoman - simple $gt should be able to work', async () => {
@@ -48,8 +50,6 @@ describe('test $gt function', async () => {
         });
         assert.strictEqual(find.rows.length, 3);
 
-
-        // can't query for date
         const find2 =  await Airplane.find({
             scheduledAt: {
                 $gt: new Date('1 Dec 2020 00:00')
@@ -59,8 +59,7 @@ describe('test $gt function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        console.log("$gt time", find2);
-        // assert.strictEqual(find.rows.length, 2);
+        assert.strictEqual(find2.rows.length, 2);
 
         await removeDocuments();
     });

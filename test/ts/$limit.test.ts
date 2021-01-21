@@ -19,6 +19,8 @@ describe('test $limit function', async () => {
              operational: true
         }).limit(2).exec();
         assert.ok(limitResult.length === 2);
+
+        await Airplane.remove({});
     });
 
     it('ottoman - simple limit should be able to work', async () => {

@@ -1,8 +1,8 @@
+import assert from 'assert';
 import * as ottoman from 'ottoman';
 import { SearchConsistency } from 'ottoman';
 import { AirplaneInterface, getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
-import assert from 'assert';
 
 const airplane: AirplaneInterface = {
     callsign: 'call',
@@ -79,7 +79,7 @@ describe('test update function', async () => {
             location: nestedChildSchema,
         });
 
-        const model = ottoman.model('Airplane', parentSchema);
+        const model = ottoman.model('Airplane2', parentSchema);
         const data = {
             children: [
                 {

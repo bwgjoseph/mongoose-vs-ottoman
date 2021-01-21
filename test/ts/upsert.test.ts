@@ -25,6 +25,7 @@ describe('test upsert function', async () => {
         ).exec();
         const find = await Airplane.find().exec();
         assert.strictEqual(find[0].callsign, 'HawkUpsert');
+        await Airplane.remove({});
     });
 
     it('mongoose - upsert - doc is created', async () => {
@@ -46,6 +47,7 @@ describe('test upsert function', async () => {
         ).exec();
         const find2 = await Airplane.find().exec();
         assert.strictEqual(find2[0].callsign, 'HawkCreated');
+        await Airplane.remove({});
     });
 
     it('ottoman - upsert - new option: true', async () => {
@@ -113,6 +115,8 @@ describe('test upsert function', async () => {
 
         const find3 = await Airplane.find({}, { consistency: SearchConsistency.LOCAL });
         assert.strictEqual(find3.rows[0].callsign, 'HawkCreated');
+
+        await removeDocuments();
     });
 
     it('ottoman - upsert - no doc, doc is not created (upsert: false)', async () => {
@@ -137,6 +141,8 @@ describe('test upsert function', async () => {
 
         const find2 = await Airplane.find({}, { consistency: SearchConsistency.LOCAL });
         assert.ok(find2.rows.length === 0);
+
+        await removeDocuments();
     });
 
     it('ottoman - upsert - new: false, upsert; true', async () => {

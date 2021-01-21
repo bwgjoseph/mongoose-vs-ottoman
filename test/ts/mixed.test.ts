@@ -26,7 +26,7 @@ describe('test create function', async () => {
         const dateAirplane = new Airplane(sparrow);
         const createdDate = await Airplane.create(dateAirplane);
         assertAirline(createdDate, dateAirplane);
-        assert.ok(typeof createdString.extension === 'object');
+        assert.ok(typeof createdDate.extension === 'object');
 
         const arrayAirplane = new Airplane(vulture);
         const createdArray = await Airplane.create(arrayAirplane);
@@ -48,7 +48,9 @@ describe('test create function', async () => {
         assert.deepStrictEqual(createdObject.extension, objBird.extension);
 
         const find = await Airplane.find().exec();
-        assert.strictEqual(find.length, 1);
+        assert.strictEqual(find.length, 7);
+
+        await Airplane.remove({});
     });
 
     it('ottoman - should create new doc', async () => {
@@ -73,9 +75,9 @@ describe('test create function', async () => {
         const dateAirplane = new Airplane(sparrow);
         const createdDate = await Airplane.create(dateAirplane);
         assertAirline(createdDate, dateAirplane);
-        // assert.ok(typeof createdString.scheduledAt === 'object');
-        // assert.ok(typeof createdString.extension === 'object');
-        // assert.ok(createdString.extension instanceof Date);
+        // because it's a MixedType, and couchbase stores date as string by default
+        // so the return type will be string instead of Date
+        assert.ok(typeof createdString.extension === 'string');
 
         const arrayAirplane = new Airplane(vulture);
         const createdArray = await Airplane.create(arrayAirplane);

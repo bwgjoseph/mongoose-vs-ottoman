@@ -23,6 +23,8 @@ describe('test $and function', async () => {
             ]
         }).exec();
         assert.strictEqual(find.length, 0);
+
+        await Airplane.remove({});
     });
 
     it('ottoman - simple $and should be able to work', async () => {
@@ -76,6 +78,5 @@ describe('test $and function', async () => {
         assert.strictEqual(find3.rows[0].name, "Couchbase Airlines");
 
         await removeDocuments();
-
     });
 });

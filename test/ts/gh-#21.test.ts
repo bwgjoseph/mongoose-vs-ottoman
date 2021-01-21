@@ -6,7 +6,7 @@ import { removeDocuments } from './setup/util';
 describe('test $lt, $gt, $btw operator for gh-#21', async () => {
     it('verify gh-#21 p1 - date parsing', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
-        const DummyDate = ottoman.model('DummyDate', schema);
+        const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);
         await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2020 00:00') });
         const options = { consistency: SearchConsistency.LOCAL };
         await DummyDate.find({
@@ -22,7 +22,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
 
     it('verify gh-#21 p2 - return type', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
-        const DummyDate = ottoman.model('DummyDate', schema);
+        const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);
         const result = await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2020 00:00') });
         // this is a object instead of string
         assert.ok(result.date instanceof Date);
@@ -41,7 +41,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
 
     it('verify gh-#21 p3 - $gt', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
-        const DummyDate = ottoman.model('DummyDate', schema);
+        const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);
         await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2020 00:00') });
         const options = { consistency: SearchConsistency.LOCAL };
         const doc = await DummyDate.find({
@@ -56,7 +56,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
 
     it('verify gh-#21 p3 - $lt', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
-        const DummyDate = ottoman.model('DummyDate', schema);
+        const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);
         await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2020 00:00') });
         const options = { consistency: SearchConsistency.LOCAL };
         const doc = await DummyDate.find({
@@ -71,7 +71,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
 
     it('verify gh-#21 p4 - $gt isostring', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
-        const DummyDate = ottoman.model('DummyDate', schema);
+        const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);
         await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2021 00:00') });
         const options = { consistency: SearchConsistency.LOCAL };
         const doc = await DummyDate.find({
@@ -100,7 +100,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
 
     it('verify gh-#21 p4 - $lt isostring', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
-        const DummyDate = ottoman.model('DummyDate', schema);
+        const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);
         await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2021 00:00') });
         const options = { consistency: SearchConsistency.LOCAL };
         const doc = await DummyDate.find({
@@ -129,7 +129,7 @@ describe('test $lt, $gt, $btw operator for gh-#21', async () => {
 
     it('verify gh-#21 p5 - $btw', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
-        const DummyDate = ottoman.model('DummyDate', schema);
+        const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);
         await DummyDate.create({ name: 'Dummy', date: new Date('10 Dec 2020 00:00') });
         const options = { consistency: SearchConsistency.LOCAL };
         const doc = await DummyDate.find({

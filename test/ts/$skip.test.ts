@@ -18,6 +18,8 @@ describe('test $skip function', async () => {
             operational: true
         }).skip(1).exec();
         assert.ok(result.length === 1);
+
+        await Airplane.remove({});
     });
 
     it('ottoman - simple skip should be able to work', async () => {

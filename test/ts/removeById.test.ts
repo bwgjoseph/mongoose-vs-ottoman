@@ -13,6 +13,8 @@ describe('test removeById function', async () => {
         await hawkAirplane.remove();
         const find = await Airplane.find().exec();
         assert.strictEqual(find.length, 0);
+
+        await Airplane.remove({});
     });
 
     it('ottoman - should remove doc', async () => {

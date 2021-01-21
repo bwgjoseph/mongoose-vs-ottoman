@@ -19,6 +19,8 @@ describe('test $eq function', async () => {
         }).exec();
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].name, 'Couchbase Airlines');
+
+        await Airplane.remove({});
     });
 
     // @fixed: 2.0.0-alpha.10
