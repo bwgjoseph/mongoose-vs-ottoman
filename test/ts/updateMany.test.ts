@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { GenericManyQueryResponse } from 'ottoman/lib/types/handler';
+import { ManyQueryResponse } from 'ottoman/lib/types/handler';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -38,7 +38,7 @@ describe('test updateMany function', async () => {
         const updateDoc = {
             size: 'M'
         };
-        const response: GenericManyQueryResponse = await Airplane.updateMany({
+        const response: ManyQueryResponse = await Airplane.updateMany({
             name: {
                 $like: '%Couchbase%'
             }
@@ -48,7 +48,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 2,
@@ -76,7 +76,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: GenericManyQueryResponse = await Airplane.updateMany({
+        const response: ManyQueryResponse = await Airplane.updateMany({
             name: 'Couchbase Airlines'
         },
         {
@@ -86,7 +86,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 2,
@@ -114,7 +114,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: GenericManyQueryResponse = await Airplane.updateMany({
+        const response: ManyQueryResponse = await Airplane.updateMany({
             name: 'Couchbase Airlines'
         },
         {
@@ -124,7 +124,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'FAILED',
             message: {
                 success: 0,
@@ -152,7 +152,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: GenericManyQueryResponse = await Airplane.updateMany({
+        const response: ManyQueryResponse = await Airplane.updateMany({
             capacity: 250
         },
         {
@@ -162,7 +162,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 1,
@@ -190,7 +190,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: GenericManyQueryResponse = await Airplane.updateMany({
+        const response: ManyQueryResponse = await Airplane.updateMany({
             name: 'abc'
         },
         {
@@ -200,7 +200,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 0,

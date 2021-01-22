@@ -16,20 +16,21 @@ describe('test replaceById function', async () => {
         assert.strictEqual(findbefore.rows.length, 1);
         assert.strictEqual(findbefore.rows[0].callsign, 'Hawk');
 
-        const change = await Airplane.replace({
-            callsign: 'abc',
-            name: 'ABC Airlines',
-            model: 'A380',
-            location: {
-                type: 'Point',
-                coordinates: [
-                    1.22,
-                    2.33,
-                    1.11
-                ]
+        const change = await Airplane.replaceById(created.id, 
+            {
+                callsign: 'abc',
+                name: 'ABC Airlines',
+                model: 'A380',
+                location: {
+                    type: 'Point',
+                    coordinates: [
+                        1.22,
+                        2.33,
+                        1.11
+                    ]
+                },
             },
-            },
-            created.id);
+        );
         assert.strictEqual(change.callsign, 'abc');
         assert.strictEqual(change.name, 'ABC Airlines');
         const find = await Airplane.find(
@@ -55,10 +56,11 @@ describe('test replaceById function', async () => {
         assert.strictEqual(findbefore.rows[0].callsign, 'Hawk');
 
         try {
-            await Airplane.replace({
-                callsign: 'abc',
+            await Airplane.replaceById(created.id, 
+                {
+                    callsign: 'abc',
                 },
-                created.id);
+            );
         } catch (error) {
             assert.strictEqual(error.message, 'Property name is required, Property model is required');
         }
@@ -77,22 +79,26 @@ describe('test replaceById function', async () => {
         assert.strictEqual(findbefore.rows.length, 1);
         assert.strictEqual(findbefore.rows[0].callsign, 'Hawk');
 
-        const change = await Airplane.replace({
-            callsign: 'abc',
-            name: 'ABC Airlines',
-            model: 'A380',
-            location: {
-                type: 'Point',
-                coordinates: [
-                    1.22,
-                    2.33,
-                    1.11
-                ]
-            },
-            },
-            'nosuchid');
-        console.log(change);
+        try {
+            await Airplane.replaceById('nosuchid',
+                {
+                    callsign: 'abc',
+                    name: 'ABC Airlines',
+                    model: 'A380',
+                    location: {
+                        type: 'Point',
+                        coordinates: [
+                            1.22,
+                            2.33,
+                            1.11
+                        ]
+                    },
+                    }
+            );
+        } catch (error) {
+            assert.strictEqual(error.message, 'document not found');
+        }
 
-        // await removeDocuments();
+        await removeDocuments();
     });
 })

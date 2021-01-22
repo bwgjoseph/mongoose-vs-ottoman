@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { SearchConsistency } from 'ottoman';
-import { GenericManyQueryResponse } from 'ottoman/lib/types/handler';
+import { ManyQueryResponse } from 'ottoman/lib/types/handler';
 import { bird, eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -47,13 +47,13 @@ describe('test createMany function', async () => {
 
     // all required fields are given
     // sample output
-    // GenericManyQueryResponse {
+    // ManyQueryResponse {
     //     status: 'SUCCESS',
     //     message: { success: 1, match_number: 2, errors: [ undefined ] }
     //   }
     it('ottoman - should create 1 new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: GenericManyQueryResponse = await Airplane.createMany([{
+        const response: ManyQueryResponse = await Airplane.createMany([{
                 callsign: 'Hawk',
             },
             {
@@ -71,7 +71,7 @@ describe('test createMany function', async () => {
             }
         ]);
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 1,
@@ -96,14 +96,14 @@ describe('test createMany function', async () => {
     // partial doc is placed first in the array; the rest of the docs are still being created
     it('ottoman - should create 2 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: GenericManyQueryResponse = await Airplane.createMany([{
+        const response: ManyQueryResponse = await Airplane.createMany([{
             callsign: 'Hawk',
             },
         hawk,
         eagle
         ]);
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 2,
@@ -128,7 +128,7 @@ describe('test createMany function', async () => {
     // partial doc is placed in the middle of the array; Behavior other docs would still be created
     it('ottoman - should create 3 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: GenericManyQueryResponse = await Airplane.createMany([
+        const response: ManyQueryResponse = await Airplane.createMany([
         bird,
             {
             callsign: 'Hawk',
@@ -137,7 +137,7 @@ describe('test createMany function', async () => {
         eagle
         ]);
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 3,
@@ -162,7 +162,8 @@ describe('test createMany function', async () => {
      // not all required fields are given
      it('ottoman - should not create new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: GenericManyQueryResponse = await Airplane.createMany([{
+        const response: ManyQueryResponse = await Airplane.createMany([
+            {
                 callsign: 'Hawk',
             },
             {
@@ -170,12 +171,29 @@ describe('test createMany function', async () => {
             }
         ]);
 
-        const expected: GenericManyQueryResponse = {
+        const expected: ManyQueryResponse = {
             status: 'FAILED',
             message: {
                 success: 0,
                 match_number: 2,
-                errors: []
+                errors: [
+                    {
+                        exception: 'ValidationError',
+                        message: 'Property name is required, Property model is required',
+                        payload: {
+                            callsign: 'Hawk'
+                        },
+                        status: 'FAILED'
+                    },
+                    {
+                        exception: 'ValidationError',
+                        message: 'Property callsign is required, Property model is required',
+                        payload: {
+                            name: 'Couchbase Airline'
+                        },
+                        status: 'FAILED'
+                    }
+                ]
             }
         };
 
