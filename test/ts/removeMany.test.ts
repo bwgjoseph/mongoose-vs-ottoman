@@ -18,6 +18,8 @@ describe('test removeMany function', async () => {
         }).exec();
         const find = await Airplane.find().exec();
         assert.strictEqual(find.length, 0);
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should remove many docs', async () => {

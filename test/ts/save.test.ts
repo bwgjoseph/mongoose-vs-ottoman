@@ -14,7 +14,8 @@ describe('test save function', async () => {
         await created.save();
         const find = await Airplane.find(hawkAirplane).exec();
         assert.strictEqual(find[0].callsign, created.callsign);
-        await Airplane.remove({});
+
+        await Airplane.remove({}).exec();
     })
 
     it('ottoman - should save doc', async () => {

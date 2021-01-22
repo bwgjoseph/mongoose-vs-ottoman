@@ -79,7 +79,8 @@ describe('test nested queries function', async () => {
             ]
         }).exec();
         assert.strictEqual(find4.length, 2);
-        await Airplane.remove({});
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - simple nested queries should be able to work', async () => {

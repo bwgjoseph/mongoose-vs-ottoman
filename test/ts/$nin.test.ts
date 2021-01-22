@@ -20,7 +20,7 @@ describe('test $nin function', async () => {
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].model, 'A380');
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - simple $nin should be able to work', async () => {

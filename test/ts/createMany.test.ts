@@ -16,7 +16,7 @@ describe('test createMany function', async () => {
         const find = await Airplane.find().exec();
         assert.strictEqual(find.length, 2);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     // 3 documents are saved with 1 in partial doc form
@@ -42,7 +42,8 @@ describe('test createMany function', async () => {
 
         const find = await Airplane.find().exec();
         assert.strictEqual(find.length, 3);
-        await Airplane.remove({});
+
+        await Airplane.remove({}).exec();
     });
 
     // all required fields are given

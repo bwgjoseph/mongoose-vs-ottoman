@@ -12,6 +12,8 @@ describe('test findById function', async () => {
         await Airplane.create(eagleAirplane);
         await Airplane.findById(created.id).exec();
         assert.strictEqual(created._id, hawkAirplane._id);
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should be able to findById', async () => {

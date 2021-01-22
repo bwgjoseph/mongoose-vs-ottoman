@@ -14,7 +14,7 @@ describe('test create function', async () => {
         const find = await Airplane.find().exec();
         assert.ok(!find[0].notInSchema);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('mongoose - should save the additional field when strict: false', async () => {
@@ -27,7 +27,8 @@ describe('test create function', async () => {
         const find = await Airplane.find().exec();
         // mongoose bug? print and show notInSchema, but cannot assert
         assert.strictEqual(find[0].notInSchema, true);
-        await Airplane.remove({});
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should not save new field when strict: true', async () => {

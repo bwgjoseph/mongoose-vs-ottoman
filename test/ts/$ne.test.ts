@@ -20,7 +20,7 @@ describe('test $ne function', async () => {
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].name, 'Mongo Airlines');
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     // @fixed: 2.0.0-alpha.10

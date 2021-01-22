@@ -25,7 +25,7 @@ describe('test $sort function', async () => {
         assert.strictEqual(find[1].callsign, "Hawk");
         assert.strictEqual(find[2].callsign, "Sparrow");
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - simple sort should be able to work', async () => {

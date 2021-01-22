@@ -28,7 +28,7 @@ describe('test $gt function', async () => {
         }).exec();
         assert.strictEqual(find2.length, 2);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - simple $gt should be able to work', async () => {

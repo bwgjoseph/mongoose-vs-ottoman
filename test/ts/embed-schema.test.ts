@@ -38,6 +38,8 @@ describe('test update function', async () => {
         assert.deepStrictEqual(find[0].location.coordinates[0], 1.22);
         assert.deepStrictEqual(find[0].location.coordinates[1], 2.33);
         assert.deepStrictEqual(find[0].location.coordinates[2], 1.11);
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should create doc with embed nested schema', async () => {

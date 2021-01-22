@@ -24,7 +24,7 @@ describe('test $and function', async () => {
         }).exec();
         assert.strictEqual(find.length, 0);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - simple $and should be able to work', async () => {

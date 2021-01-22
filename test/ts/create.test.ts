@@ -14,6 +14,8 @@ describe('test create function', async () => {
 
         const find = await Airplane.find().exec();
         assert.strictEqual(find.length, 1);
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should create new doc', async () => {

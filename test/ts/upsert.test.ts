@@ -25,7 +25,8 @@ describe('test upsert function', async () => {
         ).exec();
         const find = await Airplane.find().exec();
         assert.strictEqual(find[0].callsign, 'HawkUpsert');
-        await Airplane.remove({});
+
+        await Airplane.remove({}).exec();
     });
 
     it('mongoose - upsert - doc is created', async () => {
@@ -47,7 +48,8 @@ describe('test upsert function', async () => {
         ).exec();
         const find2 = await Airplane.find().exec();
         assert.strictEqual(find2[0].callsign, 'HawkCreated');
-        await Airplane.remove({});
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - upsert - new option: true', async () => {

@@ -24,6 +24,8 @@ describe('test updateMany function', async () => {
         const find = await Airplane.find().exec();
         assert.strictEqual(find[0].operational, false);
         assert.strictEqual(find[1].operational, false);
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - changing all docs with "Couchbase" in the name field, size to M', async () => {

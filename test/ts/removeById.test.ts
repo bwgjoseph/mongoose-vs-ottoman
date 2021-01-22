@@ -14,7 +14,7 @@ describe('test removeById function', async () => {
         const find = await Airplane.find().exec();
         assert.strictEqual(find.length, 0);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should remove doc', async () => {

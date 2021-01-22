@@ -13,7 +13,8 @@ describe('test updateById function', async () => {
         hawkAirplane.callsign = 'aab';
         await Airplane.updateOne({ _id: hawkAirplane._id }, hawkAirplane).exec();
         assert.strictEqual(created.callsign, hawkAirplane.callsign);
-        await Airplane.remove({});
+
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should update doc', async () => {

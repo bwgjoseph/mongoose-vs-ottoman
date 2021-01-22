@@ -13,7 +13,7 @@ describe('test keyGenerator function', async () => {
         const idKey = 'customGKey';
         const schema = new ottoman.Schema({
             id: { type: String, default: () => 'mycustom::id' }});
-        const generator = ottoman.model('DummyDate', schema, { keyGenerator, idKey });
+        const generator = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema, { keyGenerator, idKey });
         await generator.create(new generator({}));
         const options = { select: ['meta().id', 'customGKey'], consistency: SearchConsistency.LOCAL }
         const doc = await generator.find({}, options);
@@ -34,7 +34,7 @@ describe('test keyGenerator function', async () => {
         }) => `gen::${metadata.scopeName}--${metadata.collectionName}::${random()}`;
         const schema = new ottoman.Schema({
             id: { type: String, default: () => generated }});
-        const generator = ottoman.model('DummyDate', schema, { keyGenerator });
+        const generator = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema, { keyGenerator });
         await generator.create(new generator({}));
         const options = { select: ['meta().id', '*'], consistency: SearchConsistency.LOCAL }
         const doc = await generator.find({}, options);
@@ -55,7 +55,7 @@ describe('test keyGenerator function', async () => {
         }) => `gen::${metadata.scopeName}--${generated}--${metadata.collectionName}::`;
         const schema = new ottoman.Schema({
             id: { type: String, default: () => generated }});
-        const generator = ottoman.model('DummyDate', schema, { keyGenerator });
+        const generator = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema, { keyGenerator });
         await generator.create(new generator({}));
         const options = { select: ['meta().id', '*'], consistency: SearchConsistency.LOCAL }
         const doc = await generator.find({}, options);
@@ -79,7 +79,7 @@ describe('test keyGenerator function', async () => {
             id: { type: String },
             name: { type: String },
         });
-        const generator = ottoman.model('DummyDate', schema, { keyGenerator });
+        const generator = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema, { keyGenerator });
         await generator.create(new generator({ id: '1', name: 'a' }));
         // await generator.create(new generator({ id: '2', name: 'b' }));
         // await generator.create(new generator({ name: 'c' }));

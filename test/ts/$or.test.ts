@@ -38,7 +38,7 @@ describe('test $or function', async () => {
         }).exec();
         assert.strictEqual(find2.length, 0);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - simple $or should be able to work', async () => {

@@ -16,6 +16,7 @@ describe('test enum function', async () => {
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].size, 'S');
 
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - should create new doc', async () => {

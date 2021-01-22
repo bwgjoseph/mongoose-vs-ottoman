@@ -29,7 +29,7 @@ describe('test $select function', async () => {
         assert.strictEqual(find2[0].name, 'Couchbase Airlines');
         assert.strictEqual(find2[0].destination.length, 1);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     it('mongoose - $select field in nested object', async () => {
@@ -44,7 +44,7 @@ describe('test $select function', async () => {
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].info.numberOfFlightsSince, 10000);
 
-        await Airplane.remove({});
+        await Airplane.remove({}).exec();
     });
 
     // select only 'callsign' but 'operational', 'capacity' and 'scheduledAt' is shown too
