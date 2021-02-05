@@ -38,4 +38,24 @@ describe('test enum function', async () => {
 
         await removeDocuments();
     });
+
+    it('ottoman - should not create new doc when size is not part of enum', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane({ ...hawk, size: 'a' });
+
+        try {
+           await Airplane.create(hawkAirplane);
+        } catch (err) {
+            assert.strictEqual(err.message, 'Property size value must be S,M,L');
+        }
+
+        const find = await Airplane.find(
+            {},
+            {
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find.rows.length, 0);
+
+        await removeDocuments();
+    });
 })
