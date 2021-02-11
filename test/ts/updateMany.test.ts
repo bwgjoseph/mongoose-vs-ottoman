@@ -1,6 +1,6 @@
 import assert from 'assert';
-import { SearchConsistency } from 'ottoman';
-import { ManyQueryResponse } from 'ottoman/lib/types/handler';
+import { expect } from 'chai';
+import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -40,7 +40,7 @@ describe('test updateMany function', async () => {
         const updateDoc = {
             size: 'M'
         };
-        const response: ManyQueryResponse = await Airplane.updateMany({
+        const response: IManyQueryResponse = await Airplane.updateMany({
             name: {
                 $like: '%Couchbase%'
             }
@@ -50,7 +50,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 2,
@@ -78,7 +78,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: ManyQueryResponse = await Airplane.updateMany({
+        const response: IManyQueryResponse = await Airplane.updateMany({
             name: 'Couchbase Airlines'
         },
         {
@@ -88,7 +88,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 2,
@@ -107,7 +107,7 @@ describe('test updateMany function', async () => {
         await removeDocuments();
     });
 
-    it('ottoman - doc should not be updated when schema does not match', async () => {
+    it.only('ottoman - doc should not be updated when schema does not match', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
@@ -116,7 +116,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: ManyQueryResponse = await Airplane.updateMany({
+        const response: IManyQueryResponse = await Airplane.updateMany({
             name: 'Couchbase Airlines'
         },
         {
@@ -126,21 +126,36 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
-            status: 'FAILED',
+        const expected: IManyQueryResponse = {
+            status: 'FAILURE',
             message: {
                 success: 0,
                 match_number: 2,
-                errors: []
+                errors: [
+                    {
+                        payload: hawkCreated.id,
+                        status: 'FAILURE',
+                        exception: 'ValidationError',
+                        message: 'Property operational must be of type Boolean'
+                    },
+                    {
+                        payload: eagleCreated.id,
+                        status: 'FAILURE',
+                        exception: 'ValidationError',
+                        message: 'Property operational must be of type Boolean'
+                    }
+                ]
             }
         };
 
         assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        assert.deepStrictEqual(response.message.success, expected.message.success);
+        assert.deepStrictEqual(response.message.match_number, expected.message.match_number);
+        expect(response.message.errors).to.have.deep.members(expected.message.errors);
 
         const find2 = await Airplane.find();
-        assert.strictEqual(find2.rows[0].operational, false);
-        assert.strictEqual(find2.rows[1].operational, false);
+        assert.strictEqual(find2.rows[0].operational, true);
+        assert.strictEqual(find2.rows[1].operational, true);
 
         await removeDocuments();
     });
@@ -154,7 +169,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: ManyQueryResponse = await Airplane.updateMany({
+        const response: IManyQueryResponse = await Airplane.updateMany({
             capacity: 250
         },
         {
@@ -164,7 +179,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 1,
@@ -192,7 +207,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: ManyQueryResponse = await Airplane.updateMany({
+        const response: IManyQueryResponse = await Airplane.updateMany({
             name: 'abc'
         },
         {
@@ -202,7 +217,7 @@ describe('test updateMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 0,
