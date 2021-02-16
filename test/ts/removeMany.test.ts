@@ -1,6 +1,5 @@
 import assert from 'assert';
-import { SearchConsistency } from 'ottoman';
-import { ManyQueryResponse } from 'ottoman/lib/types/handler';
+import { SearchConsistency, IManyQueryResponse } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -34,14 +33,14 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        const response: ManyQueryResponse = await Airplane.removeMany({
+        const response: IManyQueryResponse = await Airplane.removeMany({
             name: 'Couchbase Airlines'
         },
         {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 2,
@@ -71,14 +70,14 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        const response: ManyQueryResponse = await Airplane.removeMany({
+        const response: IManyQueryResponse = await Airplane.removeMany({
             capacity: 250
         },
         {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 1,
@@ -108,7 +107,7 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        const response: ManyQueryResponse = await Airplane.removeMany({
+        const response: IManyQueryResponse = await Airplane.removeMany({
             name: {
                 $like: '%Couchbase%',
             }
@@ -117,7 +116,7 @@ describe('test removeMany function', async () => {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 2,
@@ -147,14 +146,14 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        const response: ManyQueryResponse = await Airplane.removeMany({
+        const response: IManyQueryResponse = await Airplane.removeMany({
             name: 'should not find any'
         },
         {
             consistency: SearchConsistency.LOCAL
         });
 
-        const expected: ManyQueryResponse = {
+        const expected: IManyQueryResponse = {
             status: 'SUCCESS',
             message: {
                 success: 0,
