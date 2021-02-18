@@ -5,6 +5,10 @@ import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test removeById function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should remove doc', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);

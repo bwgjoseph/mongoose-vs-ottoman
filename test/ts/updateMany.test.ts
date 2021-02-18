@@ -1,20 +1,27 @@
 import assert from 'assert';
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
+chai.use(deepEqualInAnyOrder);
+
 describe('test updateMany function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should update many docs', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
-        const created1 = await Airplane.create(hawkAirplane);
-        const created2 = await Airplane.create(eagleAirplane);
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane);
 
         // changing all docs with name: "Couchbase Airlines" operational to false
-        const update = await Airplane.updateMany({
+        await Airplane.updateMany({
             name: "Couchbase Airlines"
         },
         {
@@ -59,8 +66,7 @@ describe('test updateMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find();
         assert.strictEqual(find.rows[0].size, 'M');
@@ -97,8 +103,7 @@ describe('test updateMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find2 = await Airplane.find();
         assert.strictEqual(find2.rows[0].operational, false);
@@ -107,7 +112,7 @@ describe('test updateMany function', async () => {
         await removeDocuments();
     });
 
-    it.only('ottoman - doc should not be updated when schema does not match', async () => {
+    it('ottoman - doc should not be updated when schema does not match', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
@@ -148,10 +153,7 @@ describe('test updateMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message.success, expected.message.success);
-        assert.deepStrictEqual(response.message.match_number, expected.message.match_number);
-        expect(response.message.errors).to.have.deep.members(expected.message.errors);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find2 = await Airplane.find();
         assert.strictEqual(find2.rows[0].operational, true);
@@ -188,12 +190,13 @@ describe('test updateMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find2 = await Airplane.find();
-        assert.strictEqual(find2.rows[0].operational, false);
-        assert.strictEqual(find2.rows[1].operational, true);
+        const opFalse = find2.rows.find((data: any) => data.capacity === 250);
+        assert.strictEqual(opFalse.operational, false);
+        const opTrue = find2.rows.find((data: any) => data.capacity !== 250);
+        assert.strictEqual(opTrue.operational, true);
 
         await removeDocuments();
     });
@@ -226,8 +229,7 @@ describe('test updateMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find2 = await Airplane.find();
         assert.strictEqual(find2.rows[0].operational, true);

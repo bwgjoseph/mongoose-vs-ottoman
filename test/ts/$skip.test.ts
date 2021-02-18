@@ -5,6 +5,10 @@ import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test $skip function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - simple skip should be able to work', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);

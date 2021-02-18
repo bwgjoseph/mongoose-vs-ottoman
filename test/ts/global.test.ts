@@ -39,6 +39,10 @@ const opt = {
 };
 
 describe('test global options', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('ottoman - should find doc [global is NONE, local is NONE]', async () => {
         await initOttoman();
         assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.NONE);

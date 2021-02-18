@@ -5,6 +5,10 @@ import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test $eq function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - simple $eq should be able to work', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);

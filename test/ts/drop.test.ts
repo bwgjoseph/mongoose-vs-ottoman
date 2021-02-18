@@ -15,7 +15,7 @@ const initOttoman = async (searchConsistency: SearchConsistency = SearchConsiste
     await ottoman.start();
 }
 
-describe('test drop bucket, scope and collection', async () => {
+describe.skip('test drop bucket, scope and collection', async () => {
     before(async () => {
         await initOttoman();
     });

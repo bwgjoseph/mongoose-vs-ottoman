@@ -6,6 +6,10 @@ import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test $select function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     beforeEach(async () => {
         await mongoose.connection.dropDatabase();
     }) ;

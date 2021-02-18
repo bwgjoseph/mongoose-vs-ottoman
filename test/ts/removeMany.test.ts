@@ -1,10 +1,18 @@
 import assert from 'assert';
-import { SearchConsistency, IManyQueryResponse } from 'ottoman';
+import chai, { expect } from 'chai';
+import deepEqualInAnyOrder from 'deep-equal-in-any-order';
+import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
+chai.use(deepEqualInAnyOrder);
+
 describe('test removeMany function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should remove doc', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);
@@ -32,7 +40,6 @@ describe('test removeMany function', async () => {
         });
         assert.strictEqual(findbefore.rows.length, 2);
 
-        // remove all docs with name: Couchbase
         const response: IManyQueryResponse = await Airplane.removeMany({
             name: 'Couchbase Airlines'
         },
@@ -69,7 +76,6 @@ describe('test removeMany function', async () => {
         });
         assert.strictEqual(findbefore.rows.length, 2);
 
-        // remove all docs with name: Couchbase
         const response: IManyQueryResponse = await Airplane.removeMany({
             capacity: 250
         },
@@ -86,8 +92,7 @@ describe('test removeMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find();
         assert.strictEqual(find.rows.length, 1);
@@ -125,8 +130,7 @@ describe('test removeMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find();
         assert.strictEqual(find.rows.length, 0);
@@ -145,7 +149,6 @@ describe('test removeMany function', async () => {
         });
         assert.strictEqual(findbefore.rows.length, 2);
 
-        // remove all docs with name: Couchbase
         const response: IManyQueryResponse = await Airplane.removeMany({
             name: 'should not find any'
         },
@@ -162,8 +165,8 @@ describe('test removeMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
+
         const find = await Airplane.find();
         assert.strictEqual(find.rows.length, 2);
 

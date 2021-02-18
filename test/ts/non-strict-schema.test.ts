@@ -5,6 +5,10 @@ import { getMongooseModel, getMongooseNonStrictModel, getOttomanModel, getOttoma
 import { removeDocuments } from './setup/util';
 
 describe('test create function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should not save the additional field when strict: true', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);
@@ -17,7 +21,7 @@ describe('test create function', async () => {
         await Airplane.remove({}).exec();
     });
 
-    it('mongoose - should save the additional field when strict: false', async () => {
+    it.skip('mongoose - should save the additional field when strict: false', async () => {
         const Airplane = getMongooseNonStrictModel();
         const hawkAirplane = new Airplane({...hawk, notInSchema: true});
         const created = await Airplane.create(hawkAirplane);

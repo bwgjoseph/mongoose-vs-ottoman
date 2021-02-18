@@ -27,6 +27,10 @@ const airplane: AirplaneInterface = {
 }
 
 describe('test update function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should find doc', async () => {
         const Airplane = getMongooseModel();
         const cbAirlines = new Airplane(airplane);

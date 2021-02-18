@@ -4,7 +4,11 @@ import { SearchConsistency } from 'ottoman';
 import { ModelMetadata } from 'ottoman/lib/types/model/interfaces/model-metadata.interface';
 import { removeDocuments } from './setup/util';
 
-describe('test keyGenerator function', async () => {
+describe.skip('test keyGenerator function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('should generator custom key', async () => {
         const keyGenerator = ({ metadata, id }: {
             metadata: ModelMetadata;

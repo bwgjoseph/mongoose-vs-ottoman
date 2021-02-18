@@ -5,6 +5,10 @@ import { getMongooseModel, getOttomanModel } from './setup/model';
 import { assertAirline, removeDocuments } from './setup/util';
 
 describe('test create function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should create new doc', async () => {
         const Airplane = getMongooseModel();
 

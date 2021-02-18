@@ -5,6 +5,10 @@ import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test replaceById function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('ottoman - should replace doc', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
@@ -16,7 +20,7 @@ describe('test replaceById function', async () => {
         assert.strictEqual(findbefore.rows.length, 1);
         assert.strictEqual(findbefore.rows[0].callsign, 'Hawk');
 
-        const change = await Airplane.replaceById(created.id, 
+        const change = await Airplane.replaceById(created.id,
             {
                 callsign: 'abc',
                 name: 'ABC Airlines',
@@ -56,7 +60,7 @@ describe('test replaceById function', async () => {
         assert.strictEqual(findbefore.rows[0].callsign, 'Hawk');
 
         try {
-            await Airplane.replaceById(created.id, 
+            await Airplane.replaceById(created.id,
                 {
                     callsign: 'abc',
                 },

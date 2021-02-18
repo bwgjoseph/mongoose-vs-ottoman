@@ -1,10 +1,18 @@
 import assert from 'assert';
-import { SearchConsistency, IManyQueryResponse } from 'ottoman';
+import chai, { expect } from 'chai';
+import deepEqualInAnyOrder from 'deep-equal-in-any-order';
+import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { bird, eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
+chai.use(deepEqualInAnyOrder);
+
 describe('test createMany function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should create 2 new doc', async () => {
         const Airplane = getMongooseModel();
         await Airplane.insertMany([
@@ -72,16 +80,24 @@ describe('test createMany function', async () => {
         ]);
 
         const expected: IManyQueryResponse = {
-            status: 'SUCCESS',
+            status: 'FAILURE',
             message: {
                 success: 1,
                 match_number: 2,
-                errors: []
+                errors: [
+                    {
+                        payload: {
+                            callsign: 'Hawk',
+                        },
+                        status: 'FAILURE',
+                        exception: 'ValidationError',
+                        message: 'Property name is required, Property model is required'
+                    }
+                ]
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find(
             {},
@@ -104,16 +120,24 @@ describe('test createMany function', async () => {
         ]);
 
         const expected: IManyQueryResponse = {
-            status: 'SUCCESS',
+            status: 'FAILURE',
             message: {
                 success: 2,
                 match_number: 3,
-                errors: []
+                errors: [
+                    {
+                        payload: {
+                            callsign: 'Hawk',
+                        },
+                        status: 'FAILURE',
+                        exception: 'ValidationError',
+                        message: 'Property name is required, Property model is required'
+                    }
+                ]
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find(
             {},
@@ -138,16 +162,24 @@ describe('test createMany function', async () => {
         ]);
 
         const expected: IManyQueryResponse = {
-            status: 'SUCCESS',
+            status: 'FAILURE',
             message: {
                 success: 3,
                 match_number: 4,
-                errors: []
+                errors: [
+                    {
+                        payload: {
+                            callsign: 'Hawk',
+                        },
+                        status: 'FAILURE',
+                        exception: 'ValidationError',
+                        message: 'Property name is required, Property model is required'
+                    }
+                ]
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find(
             {},
@@ -197,8 +229,7 @@ describe('test createMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find(
             {},

@@ -4,6 +4,10 @@ import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test findById function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - should be able to findById', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);

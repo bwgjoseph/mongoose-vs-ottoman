@@ -4,6 +4,10 @@ import { SearchConsistency } from 'ottoman';
 import { removeDocuments } from './setup/util';
 
 describe('test $lt, $gt, $btw operator for gh-#21', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('verify gh-#21 p1 - date parsing', async () => {
         const schema = new ottoman.Schema({ name: String, date: { type: Date } });
         const DummyDate = ottoman.getModel('DummyDate') || ottoman.model('DummyDate', schema);

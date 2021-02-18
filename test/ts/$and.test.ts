@@ -5,6 +5,10 @@ import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 describe('test $and function', async () => {
+    before(async () => {
+        await removeDocuments();
+    });
+
     it('mongoose - simple $and should be able to work. There should be no findings as no data has callsign Hawk & name Emirates Airline', async () => {
         const Airplane = getMongooseModel();
         const hawkAirplane = new Airplane(hawk);
