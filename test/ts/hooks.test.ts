@@ -1,54 +1,73 @@
-import assert from 'assert';
-import { SearchConsistency } from 'ottoman';
-import { hawk } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel, mongooseAirplaneSchema, ottomanAirplaneSchema } from './setup/model';
-import { assertAirline, removeDocuments } from './setup/util';
 
-describe.only('test hooks function', async () => {
+import { getOttomanModel, mongooseAirplaneSchema, ottomanAirplaneSchema } from './setup/model';
+import { removeDocuments } from './setup/util';
+import assert from 'assert';
+import { hawk } from './setup/fixtures';
+
+describe('test hooks function', async () => {
     before(async () => {
         await removeDocuments();
     });
 
     it('mongoose - should show log before & after saving doc (pre & post hook)', async () => {
-        mongooseAirplaneSchema.pre("save", function() {
+        const preHook = mongooseAirplaneSchema.pre("save", function() {
             console.log('from pre hook');
          });
-         mongooseAirplaneSchema.post("save", function() {
+         const postHook = mongooseAirplaneSchema.post("save", function() {
             console.log('from post hook');
          });
-        const Airplane = getMongooseModel();
-        const hawkAirplane = new Airplane(hawk);
 
-        const created = await Airplane.create(hawkAirplane);
-        assertAirline(created, hawkAirplane);
-
-
-        const find = await Airplane.find().exec();
-        assert.strictEqual(find.length, 1);
-
-        await Airplane.remove({}).exec();
+         const Airplane = getOttomanModel();
+         const hawkAirplane = new Airplane(hawk);
+ 
+         await Airplane.create(hawkAirplane);
+         assert.ok(preHook);
+         assert.ok(postHook);
     });
 
     it('ottoman - should show log before & after saving doc ( pre & post hook)', async () => {
-        ottomanAirplaneSchema.pre('save', function() {
+        const preHook = ottomanAirplaneSchema.pre('save', function() {
             console.log('from pre hook');
         });
-        ottomanAirplaneSchema.post('save', function() {
+        const postHook = ottomanAirplaneSchema.post('save', function() {
             console.log('from post hook');
         });
+
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
+        await Airplane.create(hawkAirplane);
+        assert.ok(preHook);
+        assert.ok(postHook);
+    });
 
-        const created = await Airplane.create(hawkAirplane);
-        assertAirline(created, hawkAirplane);
-        const find = await Airplane.find(
-            {},
-            {
-                consistency: SearchConsistency.LOCAL
-            });
-        assert.strictEqual(find.rows.length, 1);
+    it('ottoman - should implement lowercase', async () => {
+        // ottomanAirplaneSchema.pre('save', function uppercase(this: AirplaneInterface) {
+        //    this.size = this.size.toUpperCase();
+        // });
 
-        await removeDocuments();
+        const lowercase = ottomanAirplaneSchema.pre('save', async (document) => {
+            document.size = document.size.toLowerCase();
+            console.log(document.size);
+         });
+
+         const Airplane = getOttomanModel();
+         const hawkAirplane = new Airplane(hawk);
+ 
+         const created = await Airplane.create(hawkAirplane);
+         assert.ok(lowercase);
+    });
+
+    it('ottoman - should implement uppercase', async () => {
+        const uppercase = ottomanAirplaneSchema.pre('save', async (document) => {
+            document.size = document.size.toUpperCase();
+            console.log(document.size);
+         });
+
+         const Airplane = getOttomanModel();
+         const hawkAirplane = new Airplane(hawk);
+ 
+         const created = await Airplane.create(hawkAirplane);
+         assert.ok(uppercase);
     });
 })
