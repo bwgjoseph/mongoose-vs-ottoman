@@ -11,8 +11,8 @@
   "author": "bwgjoseph",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.11.17",
-    "ottoman": "2.0.0-alpha.17"
+    "mongoose": "^5.11.18",
+    "ottoman": "2.0.0-alpha.18"
   },
   "devDependencies": {
     "@types/chai": "^4.2.15",
@@ -22,6 +22,6 @@
     "deep-equal-in-any-order": "^1.0.28",
     "mocha": "^8.3.0",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
+    "typescript": "4.1.5"
   }
 }
