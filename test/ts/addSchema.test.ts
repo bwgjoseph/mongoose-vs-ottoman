@@ -47,7 +47,7 @@ const opt = {
     operational: true,
 };
 
-describe.only('test schema add options', async () => {
+describe('test schema add options', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });

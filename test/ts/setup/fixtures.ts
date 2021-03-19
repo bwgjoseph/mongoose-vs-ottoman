@@ -7,7 +7,7 @@ const hawk: AirplaneInterface = {
     destination: ['Japan'],
     scheduledAt: new Date('20 Nov 2020 11:30'),
     capacity: 250,
-    model: 'A380',
+    model: 'a380',
     size: 'S',
     info: {
         firstFlightAt: new Date('12 Jan 2010 13:10'),
