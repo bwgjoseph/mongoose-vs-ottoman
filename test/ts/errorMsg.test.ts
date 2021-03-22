@@ -21,4 +21,20 @@ describe('test error message', async () => {
 
         await removeDocuments();
     });
+
+    it('ottoman - validation error msg test', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const created = await Airplane.create(hawkAirplane);
+        try {
+            await Airplane.updateById(created.id, { capacity: 560 });
+        } catch (error) {
+            console.log('error msg',error);
+            assert.strictEqual(error.header, 'ValidationError');  
+        }     
+        // const find = await Airplane.findById(created.capacity);
+        // console.log('ottoman2', find.capacity);
+        // assert.strictEqual(find.capacity, created.capacity);
+        await removeDocuments();
+    });
 });

@@ -22,10 +22,12 @@ interface AirplaneInterface {
     destination: [string]; // test $in, $nin
     scheduledAt: Date; // test $gt, $lt, $btw
     capacity: number; // test $gt, $lt, $btw
-    model: string; // test enum
-    size: string; // test enum [s, m, l], test uppercase
+    model: 'A380' | '737 NG' | '767-300F'; // test enum
+    size: 'S' | 'M' |'L'; // test enum [s, m, l], test uppercase
     info: AirplaneInfo; // test nested object query
     location: Location; // test geo-spatial query
+    type: 'Economy' | 'First class' | 'Private';
+    email: string;
     extension: unknown; // test MixedType
 }
 
@@ -64,8 +66,8 @@ const airplaneSchema = {
     scheduledAt: Date,
     capacity: {
         type: Number,
-        minLength: 0,
-        maxLength: 200,
+        min: 0,
+        max: 550,
         default: 0,
     },
     model: {
@@ -81,11 +83,25 @@ const airplaneSchema = {
     size: {
         type: String,
         enum: [
-            's',
-            'm',
-            'l',
+            'S',
+            'M',
+            'L',
         ],
+    },
+    type: {
+        type: String,
+        enum: [
+            'ECONOMY',
+            'FIRST CLASS',
+            'PRIVATE',
+        ],
+        uppercase: true,
+    },
+    email: {
+        type: String,
         lowercase: true,
+        minLength: 10,
+        maxLength: 20,
     },
     info: airplaneInfoSchema
 }

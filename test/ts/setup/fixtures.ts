@@ -7,7 +7,7 @@ const hawk: AirplaneInterface = {
     destination: ['Japan'],
     scheduledAt: new Date('20 Nov 2020 11:30'),
     capacity: 250,
-    model: 'a380',
+    model: 'A380',
     size: 'S',
     info: {
         firstFlightAt: new Date('12 Jan 2010 13:10'),
@@ -22,7 +22,9 @@ const hawk: AirplaneInterface = {
             1.11
         ]
     },
+    type: 'Economy',
     extension: 'abc',
+    email: 'Hawk@gmail.com',
 }
 
 const eagle: AirplaneInterface = {
@@ -46,7 +48,9 @@ const eagle: AirplaneInterface = {
             2.560
         ]
     },
+    type: 'First class',
     extension: 123,
+    email: 'Eagle@gmail.com',
 }
 
 const falcon: AirplaneInterface = {
@@ -70,7 +74,9 @@ const falcon: AirplaneInterface = {
             1.99
         ]
     },
+    type: 'First class',
     extension: true,
+    email: 'Falcon@gmail.com',
 }
 
 const sparrow: AirplaneInterface = {
@@ -94,7 +100,9 @@ const sparrow: AirplaneInterface = {
             1.2344
         ]
     },
+    type: 'Economy',
     extension: new Date(),
+    email: 'Sparrow@gmail.com',
 }
 
 const vulture: AirplaneInterface = {
@@ -118,7 +126,9 @@ const vulture: AirplaneInterface = {
             1.000
         ]
     },
+    type: 'Private',
     extension: ['32da'],
+    email: 'Vulture@gmail.com',
 }
 
 const bird: AirplaneInterface = {
@@ -142,12 +152,14 @@ const bird: AirplaneInterface = {
             1.22,
         ]
     },
+    type: 'First class',
     extension: [
         {
             external: 'field',
             isNumber: true,
         },
     ],
+    email: 'Bird@gmail.com',
 }
 
 export {

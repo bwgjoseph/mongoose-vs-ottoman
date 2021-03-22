@@ -39,14 +39,12 @@ describe('test updateById function', async () => {
     it('ottoman - should NOT update doc when id does not match', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
-        const create = await Airplane.create(hawkAirplane);
+        await Airplane.create(hawkAirplane);
         try {
             await Airplane.updateById('nosuchid', { callsign: 'abc' });
         } catch (error) {
             assert.strictEqual(error.message, 'document not found');
         }
-
-        console.log(create);
         await removeDocuments();
     });
 })

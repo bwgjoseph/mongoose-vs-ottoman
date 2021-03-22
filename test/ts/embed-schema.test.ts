@@ -23,7 +23,9 @@ const airplane: AirplaneInterface = {
     },
     extension: {
         external: 'field'
-    }
+    },
+    type: 'Economy',
+    email: 'abc@gmail.com',
 }
 
 describe('test update function', async () => {
