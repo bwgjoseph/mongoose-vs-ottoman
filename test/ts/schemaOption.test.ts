@@ -30,15 +30,26 @@ describe('test schema options', async () => {
 
         const created = await Airplane.create(hawkAirplane);
         assert.strictEqual(created.type, 'ECONOMY');
-        await removeDocuments();
+        await Airplane.remove({}).exec();
+    });
+
+    it('mongoose - lowercase test', async () => {
+        const Airplane = getMongooseModel();
+        const hawkAirplane = new Airplane(hawk);
+        assert.strictEqual(hawk.email, 'Hawk@gmail.com');
+
+        const created = await Airplane.create(hawkAirplane);
+        assert.strictEqual(created.email, 'hawk@gmail.com');
+        await Airplane.remove({}).exec();
     });
 
     it('ottoman - lowercase test', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
+        assert.strictEqual(hawk.email, 'Hawk@gmail.com');
+
         const created = await Airplane.create(hawkAirplane);
-        const find = await Airplane.findById(created.email);
-        assert.strictEqual(find.email, 'hawk@gmail.com');
+        assert.strictEqual(created.email, 'hawk@gmail.com');
         await removeDocuments();
     });
 
@@ -64,13 +75,30 @@ describe('test schema options', async () => {
         await removeDocuments();
     });
 
-    it.only('ottoman - min/maxLength test', async () => {
+    it('ottoman - min/maxLength test', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const created = await Airplane.create(hawkAirplane);
+        
+        //string is within min/max length
         await Airplane.updateById(created.id, { email: 'HAWK1111@gmail.com' }); 
         const find = await Airplane.findById(created.id);
-        console.log(find.email);
+        // console.log(find.email);
+        assert.strictEqual(find.email, 'hawk1111@gmail.com');
+
+        //if string exceed max length
+        try {
+            await Airplane.updateById(created.id, { email: 'HAWK111111111@gmail.com' }); 
+        } catch (error) {
+            assert.strictEqual(error.name, 'ValidationError');
+        }
+
+        // //if string is lesser than min length
+        try {
+            await Airplane.updateById(created.id, { email: ' ' }); 
+        } catch (error) {
+            assert.strictEqual(error.name, 'ValidationError');
+        }
         await removeDocuments();
     });
 })
