@@ -18,16 +18,16 @@ interface AirplaneInfo {
 interface AirplaneInterface {
     callsign: string;
     name: string; // test $eq, $neq
-    operational: boolean;
-    destination: [string]; // test $in, $nin
-    scheduledAt: Date; // test $gt, $lt, $btw
-    capacity: number; // test $gt, $lt, $btw
+    operational?: boolean;
+    destination?: [string]; // test $in, $nin
+    scheduledAt?: Date; // test $gt, $lt, $btw
+    capacity?: number; // test $gt, $lt, $btw
     model: 'A380' | '737 NG' | '767-300F'; // test enum
-    size: 'S' | 'M' |'L'; // test enum [s, m, l], test uppercase
-    info: AirplaneInfo; // test nested object query
+    size?: 'S' | 'M' |'L'; // test enum [s, m, l], test uppercase
+    info?: AirplaneInfo; // test nested object query
     location: Location; // test geo-spatial query
-    type: 'Economy' | 'First class' | 'Private';
-    email: string;
+    type?: ' Economy ' | ' First class ' | ' Private ';
+    email?: string;
     extension: unknown; // test MixedType
 }
 
@@ -96,6 +96,7 @@ const airplaneSchema = {
             'PRIVATE',
         ],
         uppercase: true,
+        trim: true,
     },
     email: {
         type: String,

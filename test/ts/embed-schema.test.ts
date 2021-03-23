@@ -24,7 +24,7 @@ const airplane: AirplaneInterface = {
     extension: {
         external: 'field'
     },
-    type: 'Economy',
+    type: ' Economy ',
     email: 'abc@gmail.com',
 }
 
