@@ -22,7 +22,7 @@ const hawk: AirplaneInterface = {
             1.11
         ]
     },
-    type: ' Economy ',
+    type: 'Economy',
     extension: 'abc',
     email: 'Hawk@gmail.com',
 }
@@ -48,7 +48,7 @@ const eagle: AirplaneInterface = {
             2.560
         ]
     },
-    type: ' First class ',
+    type: 'First class',
     extension: 123,
     email: 'Eagle@gmail.com',
 }
@@ -74,7 +74,7 @@ const falcon: AirplaneInterface = {
             1.99
         ]
     },
-    type: ' First class ',
+    type: 'First class',
     extension: true,
     email: 'Falcon@gmail.com',
 }
@@ -100,7 +100,7 @@ const sparrow: AirplaneInterface = {
             1.2344
         ]
     },
-    type: ' Economy ',
+    type: 'Economy',
     extension: new Date(),
     email: 'Sparrow@gmail.com',
 }
@@ -126,7 +126,7 @@ const vulture: AirplaneInterface = {
             1.000
         ]
     },
-    type: ' Private ',
+    type: 'Private',
     extension: ['32da'],
     email: 'Vulture@gmail.com',
 }
@@ -152,7 +152,7 @@ const bird: AirplaneInterface = {
             1.22,
         ]
     },
-    type: ' First class ',
+    type: 'First class',
     extension: [
         {
             external: 'field',
