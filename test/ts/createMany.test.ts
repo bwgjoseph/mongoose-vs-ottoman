@@ -53,6 +53,34 @@ describe('test createMany function', async () => {
         await Airplane.remove({}).exec();
     });
 
+    it('ottoman - should create multi doc successfully', async () => {
+        const Airplane = getOttomanModel();
+        const response: IManyQueryResponse = await Airplane.createMany([
+            hawk,
+            eagle,
+        ]);
+
+        const expected: IManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                success: 2,
+                match_number: 2,
+                errors: [],
+            }
+        };
+
+        expect(response).to.deep.equalInAnyOrder(expected);
+
+        const find = await Airplane.find(
+            {},
+            {
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find.rows.length, 2);
+
+        await removeDocuments();
+    });
+
     // all required fields are given
     // sample output
     // IManyQueryResponse {

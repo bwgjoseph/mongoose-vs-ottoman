@@ -1,7 +1,6 @@
 import assert from 'assert';
 import mongoose from 'mongoose';
-import { Ottoman, SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { Ottoman } from 'ottoman';
 
 let ottoman: Ottoman;
 
@@ -109,7 +108,6 @@ describe('test schema immutable options', async () => {
         assert.ok(created.createdBy);
         assert.ok(created.updatedAt);
         assert.ok(created.updatedBy);
-        console.log(created);
 
         const find = await SModel.find().exec();
         assert.strictEqual(find.length, 1);
@@ -119,14 +117,12 @@ describe('test schema immutable options', async () => {
         assert.strictEqual(find[0].updatedBy, 'Joseph');
 
         const changeDate = new Date();
-        console.log(changeDate);
         const updated = await SModel.findByIdAndUpdate(created._id, {
             createdAt: changeDate,
             createdBy: 'Edwin',
             updatedAt: changeDate,
             updatedBy: 'Edwin',
         }, { new: true }).exec();
-        console.log(updated);
         if (updated) {
             assert.strictEqual(+updated.createdAt, +defaultDate);
             assert.strictEqual(updated.createdBy, 'Joseph');
@@ -135,26 +131,5 @@ describe('test schema immutable options', async () => {
         }
 
         await SModel.findByIdAndRemove(created._id).exec();
-    });
-
-    it('ottoman - ensure immutable fields does not get change using updateById2', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
-
-        const Immutable2Model = ottoman.model('immutable2', schema, { idKey: '_id' });
-        const schemaData = new Immutable2Model({
-            name: 'hello',
-            operational: true,
-        });
-
-        const created = await Immutable2Model.create(schemaData);
-        const changeDate = new Date();
-        await Immutable2Model.updateById(created._id, {
-            createdAt: changeDate,
-            createdBy: 'Edwin',
-            updatedAt: changeDate,
-            updatedBy: 'Edwin',
-        });
-
-        await removeDocuments();
     });
 })

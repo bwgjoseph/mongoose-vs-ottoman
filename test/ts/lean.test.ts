@@ -1,6 +1,5 @@
-import assert from 'assert';
 import sizeof from 'object-sizeof';
-import { eagle, hawk } from './setup/fixtures';
+import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
