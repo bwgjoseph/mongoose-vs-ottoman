@@ -4,12 +4,19 @@ import { removeDocuments } from './setup/util';
 
 const pluginLog = (schema: any) => {
     schema.pre('save', function (doc: any) {
+        console.log('[plugin] doc 1', doc);
         doc.plugin = 'registered from plugin!'
-        console.log('[plugin] doc', doc);
     });
 };
 
-registerGlobalPlugin(pluginLog);
+const pluginLog2 = (schema: any) => {
+    schema.pre('save', function (doc: any) {
+        console.log('[plugin] doc 2', doc);
+        doc.plugin = 'registered from plugin!'
+    });
+};
+
+registerGlobalPlugin(...[pluginLog, pluginLog2]);
 
 let ottoman: Ottoman;
 
