@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { expect } from 'chai';
 import { IManyQueryResponse, SearchConsistency } from 'ottoman';
-import { bird, eagle, falcon, hawk } from './setup/fixtures';
+import { eagle, hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
@@ -19,7 +19,7 @@ describe('test error message', async () => {
             await Airplane.create({ ...hawkAirplane, capacity: 1000 });
         } catch (error) {
             assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `1000 is more than 550`);
+            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value 550`);
         }
 
         await removeDocuments();
@@ -54,33 +54,31 @@ describe('test error message', async () => {
                 ]
             }
         };
-    
+
         expect(response).to.deep.equalInAnyOrder(expected);
-    
+
         const find = await Airplane.find(
             {},
             {
                 consistency: SearchConsistency.LOCAL
             });
         assert.strictEqual(find.rows.length, 0);
-        
+
         await removeDocuments();
     });
 
+    // See Github #55
     it('ottoman - test findOneAndUpdate error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
-        
+
         try {
             const created = await Airplane.create(hawkAirplane);
-            await Airplane.find({});
             assert.strictEqual(created.callsign, hawkAirplane.callsign);
 
             await Airplane.findOneAndUpdate({ callsign: 'Eagle' }, { callsign: 'BabyHawk' });
-
         } catch (error) {
-            console.log(error);
-    // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
             assert.strictEqual(error.name, 'DocumentNotFoundError');
             assert.strictEqual(error.message, 'document not found');
         }
@@ -88,17 +86,17 @@ describe('test error message', async () => {
         await removeDocuments();
     });
 
+    // See Github #55
     it('ottoman - test removeById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
-        const created = await Airplane.create(hawkAirplane);
-        
+
         try {
+            await Airplane.create(hawkAirplane);
             await Airplane.removeById('nonExistenceID');
-
         } catch (error) {
-
-    // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+            console.log(error);
+            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
             assert.strictEqual(error.name, 'DocumentNotFoundError');
             assert.strictEqual(error.message, `document not found`);
         }
@@ -107,31 +105,31 @@ describe('test error message', async () => {
     });
 
     // removeMany has no error message as the status will be SUCCESS even when no docs are removed
+    // this should be valid since it does not match the filters
     it('ottoman - test removeMany error', async () => {
         const Airplane = getOttomanModel();
 
-        const created = await Airplane.createMany([ hawk, eagle ]);
-
         try {
-           const remove = await Airplane.removeMany({callsign: 'plane'});
-           console.log(remove);
+            await Airplane.createMany([ hawk, eagle ]);
+            const a = await Airplane.removeMany({ callsign: 'plane' });
+            console.log(a);
         } catch(error) {
             console.log(error);
-    }
-        
+        }
+
         await removeDocuments();
     });
 
+    // See Github #55
     it('ottoman - test replaceById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
-        const created = await Airplane.create(hawkAirplane);
+
         try {
+            await Airplane.create(hawkAirplane);
             await Airplane.replaceById('nosuchid', { callsign: 'hello' });
         } catch(error){
-            console.log(error);
-
-        // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
             assert.strictEqual(error.name, 'DocumentNotFoundError');
             assert.strictEqual(error.message, `document not found`);
         }
@@ -139,17 +137,32 @@ describe('test error message', async () => {
         await removeDocuments();
     });
 
-    it.only('ottoman - test updateById error', async () => {
+    // See Github #55
+    it('ottoman - test updateById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
-        await Airplane.create(hawkAirplane);
 
         try {
+            await Airplane.create(hawkAirplane);
             await Airplane.updateById('nosuchid', { callsign: 'abc' });
         } catch (error) {
-            console.log(error);
-            assert.strictEqual(error.name, 'ValidationError');
+            assert.strictEqual(error.name, 'DocumentNotFoundError');
             assert.strictEqual(error.message, 'document not found');
+        }
+
+        await removeDocuments();
+    });
+
+    it('ottoman - test updateById error 2', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+
+        try {
+            const created = await Airplane.create(hawkAirplane);
+            await Airplane.updateById(created.id, { capacity: 1000 });
+        } catch (error) {
+            assert.strictEqual(error.name, 'ValidationError');
+            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value 550`);
         }
 
         await removeDocuments();
