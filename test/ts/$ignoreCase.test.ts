@@ -64,12 +64,17 @@ describe('test $ignoreCase function', async () => {
         await Airplane.create(hawkAirplane);
         await Airplane.create(eagleAirplane);
 
-        const result = await Airplane.findOne(
-            { name: { $eq: 'couchbase airlines' }},
-            { consistency: SearchConsistency.LOCAL },
-        );
+        try {
+            await Airplane.findOne(
+                { name: { $eq: 'couchbase airlines' }},
+                { consistency: SearchConsistency.LOCAL },
+            );
+        } catch (error) {
+            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+            assert.strictEqual(error.name, 'DocumentNotFoundError');
+            assert.strictEqual(error.message, `document not found`);
+        }
 
-        assert.ok(result == null);
         await removeDocuments();
     });
 
