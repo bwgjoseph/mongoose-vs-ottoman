@@ -154,4 +154,50 @@ describe('test $ignoreCase function', async () => {
         assert.ok(docs.rows[1].capacity === 500);
         await removeDocuments();
     });
+
+    it('ottoman - should apply ignoreCase in FindOptions', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane(hawk);
+        const eagleAirplane = new Airplane({ ...eagle, name: 'mongoose airlinE' });
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane);
+
+        const data = await Airplane.find({}, { consistency: SearchConsistency.LOCAL });
+        assert.ok(data.rows.length === 2);
+
+        const result = await Airplane.find(
+            { name: 'couchbase airlines' },
+            { consistency: SearchConsistency.LOCAL, ignoreCase: true },
+        );
+
+        assert.ok(result.rows.length === 1);
+        await removeDocuments();
+    });
+
+    it('ottoman - should apply ignoreCase in FindOptions [multi-data]', async () => {
+        const Airplane = getOttomanModel();
+        const hawkAirplane = new Airplane({ ...hawk, name: 'MONGOOSE airlinE' });
+        const eagleAirplane = new Airplane({ ...eagle, name: 'mongoose airlinE' });
+        await Airplane.create(hawkAirplane);
+        await Airplane.create(eagleAirplane);
+
+        const data = await Airplane.find({}, { consistency: SearchConsistency.LOCAL });
+        assert.ok(data.rows.length === 2);
+
+        const result = await Airplane.find(
+            { name: 'mongoose airline' },
+            { consistency: SearchConsistency.LOCAL, ignoreCase: true },
+        );
+
+        assert.ok(result.rows.length === 2);
+
+        const result2 = await Airplane.find(
+            { name: { $eq: 'mongoose airline' } },
+            { consistency: SearchConsistency.LOCAL, ignoreCase: true },
+        );
+
+        assert.ok(result2.rows.length === 2);
+
+        await removeDocuments();
+    });
 })
