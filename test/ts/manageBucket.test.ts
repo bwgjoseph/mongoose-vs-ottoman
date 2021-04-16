@@ -1,9 +1,9 @@
-import { Ottoman, SearchConsistency } from 'ottoman';
+import { model, Ottoman, Schema, SearchConsistency } from 'ottoman';
 
 let ottoman: Ottoman;
 
 const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ collectionName: '_default', searchConsistency });
+    ottoman = new Ottoman({ scopeName: 'testScope123', collectionName: 'testCollection', searchConsistency });
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',
@@ -12,6 +12,8 @@ const initOttoman = async (searchConsistency: SearchConsistency = SearchConsiste
         password: 'password'
     });
 
+    const testSchema = new Schema({ name: String });
+    model('testModel', testSchema);
     await ottoman.start();
 }
 
