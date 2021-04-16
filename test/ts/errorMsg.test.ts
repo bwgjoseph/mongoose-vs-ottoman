@@ -19,7 +19,7 @@ describe('test error message', async () => {
             await Airplane.create({ ...hawkAirplane, capacity: 1000 });
         } catch (error) {
             assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value 550`);
+            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
         }
 
         await removeDocuments();
@@ -95,7 +95,6 @@ describe('test error message', async () => {
             await Airplane.create(hawkAirplane);
             await Airplane.removeById('nonExistenceID');
         } catch (error) {
-            console.log(error);
             // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
             assert.strictEqual(error.name, 'DocumentNotFoundError');
             assert.strictEqual(error.message, `document not found`);
@@ -159,10 +158,10 @@ describe('test error message', async () => {
 
         try {
             const created = await Airplane.create(hawkAirplane);
-            await Airplane.updateById(created.id, { capacity: 1000 });
+            await Airplane.updateById(created.id, { capacity: -1 });
         } catch (error) {
             assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value 550`);
+            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
         }
 
         await removeDocuments();
