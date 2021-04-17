@@ -13,3 +13,5 @@
 # /opt/couchbase/bin/couchbase-cli collection-manage --cluster http://localhost:8091 --username admin --password password --bucket testBucket --create-scope testScope
 
 # /opt/couchbase/bin/couchbase-cli collection-manage --cluster http://localhost:8091 --username admin --password password --bucket testBucket --create-collection testScope.testCollection
+
+ /opt/couchbase/bin/cbq -e localhost:8091 --user admin --password password -script="CREATE PRIMARY INDEX ON \`testBucket\`";

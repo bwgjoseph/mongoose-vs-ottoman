@@ -8,7 +8,7 @@ const removeDocuments = async () => {
     DELETE FROM \`testBucket\`
     `;
   try {
-    await getDefaultInstance().query(query);
+    await getDefaultInstance().bucket.query(query, { scanConsistency: 'request_plus' });
   } catch (err) {
     console.log(err);
     throw err;

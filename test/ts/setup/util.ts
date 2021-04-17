@@ -8,11 +8,14 @@ const assertAirline = (actual: any, expected: any) => {
 }
 
 const removeDocuments = async () => {
+    // console.log(getDefaultInstance().models);
+    // console.log(getOttomanIntances());
+
     const query = `
     DELETE FROM \`testBucket\`
     `
     try {
-        await getDefaultInstance().query(query);
+        await getDefaultInstance().cluster.query(query, { scanConsistency: 'request_plus' });
     } catch (err) {
         console.log(err);
         throw err;
