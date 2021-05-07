@@ -2,21 +2,20 @@ import { assert } from 'chai';
 import { Ottoman, registerGlobalPlugin, Schema, SearchConsistency } from 'ottoman';
 import { removeDocuments } from './setup/util';
 
-const pluginLog = (schema: any) => {
-    schema.pre('save', function (doc: any) {
-        console.log('[plugin] doc 1', doc);
-        doc.plugin = 'registered from plugin!'
+const pluginLog = (pSchema: any) => {
+    pSchema.pre('save', function (doc: any) {
+        doc.operational = false;
     });
 };
 
-const pluginLog2 = (schema: any) => {
-    schema.pre('save', function (doc: any) {
-        console.log('[plugin] doc 2', doc);
-        doc.plugin = 'registered from plugin!'
+const pluginLog2 = (pSchema: any) => {
+    pSchema.pre('save', function (doc: any) {
+        doc.plugin = 'registered from plugin 2!'
     });
 };
 
-registerGlobalPlugin(...[pluginLog, pluginLog2]);
+registerGlobalPlugin(pluginLog);
+registerGlobalPlugin(pluginLog2);
 
 let ottoman: Ottoman;
 
@@ -60,6 +59,6 @@ describe('test manage bucket, scope and collection', async () => {
         });
 
         const doc = await MySchema.create(schemaData);
-        assert.strictEqual(doc.plugin, 'registered from plugin!');
+        assert.strictEqual(doc.plugin, 'registered from plugin 2!');
     });
 });
