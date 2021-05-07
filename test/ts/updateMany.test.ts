@@ -141,13 +141,13 @@ describe('test updateMany function', async () => {
                         payload: hawkCreated.id,
                         status: 'FAILURE',
                         exception: 'ValidationError',
-                        message: 'Property operational must be of type Boolean'
+                        message: `Property 'operational' must be of type 'Boolean'`
                     },
                     {
                         payload: eagleCreated.id,
                         status: 'FAILURE',
                         exception: 'ValidationError',
-                        message: 'Property operational must be of type Boolean'
+                        message: `Property 'operational' must be of type 'Boolean'`
                     }
                 ]
             }

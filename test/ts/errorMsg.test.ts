@@ -1,9 +1,12 @@
 import assert from 'assert';
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
 import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
+import deepEqualInAnyOrder from 'deep-equal-in-any-order';
+
+chai.use(deepEqualInAnyOrder);
 
 // this test should test for all API thrown error
 describe('test error message', async () => {
@@ -25,10 +28,48 @@ describe('test error message', async () => {
         await removeDocuments();
     });
 
-    it('ottoman - test createMany error', async () => {
+    it('ottoman - test createMany (single) error', async () => {
         const Airplane = getOttomanModel();
 
-        const response = await Airplane.createMany({callsign: 'Hawk', capacity: 1000 });
+        const response = await Airplane.createMany({ callsign: 'Hawk', capacity: 1000 });
+        const expected: IManyQueryResponse = {
+            status: 'FAILURE',
+            message: {
+                success: 0,
+                match_number: 1,
+                errors: [
+                    {
+                        exception: 'ValidationError',
+                        message: `Property name is required, Property 'capacity' is more than the maximum allowed value of '550', Property model is required`,
+                        payload: {
+                            callsign: 'Hawk',
+                            capacity: 1000
+                        },
+                        status: 'FAILURE'
+                    },
+                ]
+            }
+        };
+
+        expect(response).to.deep.equalInAnyOrder(expected);
+
+        const find = await Airplane.find(
+            {},
+            {
+                consistency: SearchConsistency.LOCAL
+            });
+        assert.strictEqual(find.rows.length, 0);
+
+        await removeDocuments();
+    });
+
+    it('ottoman - test createMany (multiple) error', async () => {
+        const Airplane = getOttomanModel();
+
+        const response = await Airplane.createMany([
+            { callsign: 'Hawk', capacity: 1000 },
+            { name: 'Couchbase Airline' },
+        ]);
         const expected: IManyQueryResponse = {
             status: 'FAILURE',
             message: {
@@ -37,9 +78,10 @@ describe('test error message', async () => {
                 errors: [
                     {
                         exception: 'ValidationError',
-                        message: 'Property name is required, Property model is required',
+                        message: `Property name is required, Property 'capacity' is more than the maximum allowed value of '550', Property model is required`,
                         payload: {
-                            callsign: 'Hawk'
+                            callsign: 'Hawk',
+                            capacity: 1000
                         },
                         status: 'FAILURE'
                     },
@@ -47,7 +89,7 @@ describe('test error message', async () => {
                         exception: 'ValidationError',
                         message: 'Property callsign is required, Property model is required',
                         payload: {
-                            name: 'Couchbase Airline'
+                            name: 'Couchbase Airline',
                         },
                         status: 'FAILURE'
                     }
@@ -108,13 +150,19 @@ describe('test error message', async () => {
     it('ottoman - test removeMany error', async () => {
         const Airplane = getOttomanModel();
 
-        try {
-            await Airplane.createMany([ hawk, eagle ]);
-            const a = await Airplane.removeMany({ callsign: 'plane' });
-            console.log(a);
-        } catch(error) {
-            console.log(error);
-        }
+        await Airplane.createMany([ hawk, eagle ]);
+        const response = await Airplane.removeMany({ callsign: 'plane' });
+
+        const expected: IManyQueryResponse = {
+            status: 'SUCCESS',
+            message: {
+                success: 0,
+                match_number: 0,
+                errors: [],
+            }
+        };
+
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         await removeDocuments();
     });

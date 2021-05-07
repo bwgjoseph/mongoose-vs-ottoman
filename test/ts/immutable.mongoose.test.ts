@@ -68,7 +68,7 @@ describe('test schema immutable options', async () => {
     });
 
     it('mongoose - ensure immutable fields does not get change using save', async () => {
-        const SModel = mongoose.model<SchemaModel>('Airplane', schema);
+        const SModel = mongoose.models.MongooseImmutable || mongoose.model<SchemaModel>('MongooseImmutable', schema);
         const schemaData = new SModel(opt);
 
         const created = await SModel.create(schemaData);
@@ -100,7 +100,7 @@ describe('test schema immutable options', async () => {
     });
 
     it('mongoose - ensure immutable fields does not get change using updateById', async () => {
-        const SModel = mongoose.model<SchemaModel>('Airplane', schema);
+        const SModel = mongoose.models.MongooseImmutable || mongoose.model<SchemaModel>('MongooseImmutable', schema);
         const schemaData = new SModel(opt);
 
         const created = await SModel.create(schemaData);

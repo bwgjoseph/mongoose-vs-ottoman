@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Ottoman } from 'ottoman';
+import { getDefaultInstance, Ottoman } from 'ottoman';
 import { removeDocuments } from './util';
 
 const initMongoose = async () => {
@@ -15,7 +15,11 @@ const initMongoose = async () => {
 }
 
 const initOttoman = async () => {
-    const ottoman = new Ottoman({ collectionName: '_default' });
+    let ottoman = getDefaultInstance();
+
+    if (!ottoman) {
+        ottoman = new Ottoman({ collectionName: '_default' });
+    }
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',

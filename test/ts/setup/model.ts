@@ -102,7 +102,7 @@ const airplaneSchema = {
         type: String,
         lowercase: true,
         minLength: 5,
-        maxLength: 15,
+        maxLength: 20,
     },
     info: airplaneInfoSchema
 }
@@ -110,13 +110,17 @@ const airplaneSchema = {
 type MongooseAirplaneModel = AirplaneInterface & mongoose.Document;
 
 const mongooseAirplaneSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed });
+const mongooseAirplaneHookSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed });
 const mongooseAirplaneNonStrictSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed }, { strict: false });
 const ottomanAirplaneSchema = new ottoman.Schema({ ...airplaneSchema, location: new ottoman.Schema(locationSchema), extension: ottoman.Schema.Types.Mixed });
+const ottomanAirplaneHookSchema = new ottoman.Schema({ ...airplaneSchema, location: new ottoman.Schema(locationSchema), extension: ottoman.Schema.Types.Mixed });
 const ottomanAirplaneNonStrictSchema = new ottoman.Schema({ ...airplaneSchema, location: new ottoman.Schema(locationSchema), extension: ottoman.Schema.Types.Mixed }, { strict: false });
 
 const getMongooseModel = () => mongoose.models.Airplane || mongoose.model<MongooseAirplaneModel>('Airplane', mongooseAirplaneSchema);
+const getMongooseHookModel = () => mongoose.models.AirplaneHook || mongoose.model<MongooseAirplaneModel>('AirplaneHook', mongooseAirplaneHookSchema);
 const getMongooseNonStrictModel = () => mongoose.models.AirplaneNonStrict || mongoose.model<MongooseAirplaneModel>('AirplaneNonStrict', mongooseAirplaneNonStrictSchema);
 const getOttomanModel = () => ottoman.getModel('Airplane') || ottoman.model('Airplane', ottomanAirplaneSchema);
+const getOttomanHookModel = () => ottoman.getModel('AirplaneHook') || ottoman.model('AirplaneHook', ottomanAirplaneHookSchema);
 const getOttomanNonStrictModel = () => ottoman.getModel('AirplaneNonStrict') || ottoman.model('AirplaneNonStrict', ottomanAirplaneNonStrictSchema);
 
 before(async () => {
@@ -127,11 +131,15 @@ before(async () => {
 export {
     AirplaneInterface,
     mongooseAirplaneSchema,
+    mongooseAirplaneHookSchema,
     mongooseAirplaneNonStrictSchema,
     ottomanAirplaneSchema,
+    ottomanAirplaneHookSchema,
     ottomanAirplaneNonStrictSchema,
     getMongooseModel,
+    getMongooseHookModel,
     getMongooseNonStrictModel,
     getOttomanModel,
+    getOttomanHookModel,
     getOttomanNonStrictModel,
 };

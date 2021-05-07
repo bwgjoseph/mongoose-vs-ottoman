@@ -67,7 +67,7 @@ describe('test schema immutable options', async () => {
     it('ottoman - ensure immutable fields does not get change using save', async () => {
         assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
 
-        const ImmutableModel = ottoman.model('immutable', schema, { idKey: '_id' });
+        const ImmutableModel = ottoman.getModel('immutable') || ottoman.model('immutable', schema, { idKey: '_id' });
         const schemaData = new ImmutableModel(opt);
 
         const created = await ImmutableModel.create(schemaData);
@@ -101,7 +101,7 @@ describe('test schema immutable options', async () => {
     it('ottoman - ensure immutable fields does not get change using updateById', async () => {
         assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
 
-        const Immutable2Model = ottoman.model('immutable2', schema, { idKey: '_id' });
+        const Immutable2Model = ottoman.getModel('immutable2') ||  ottoman.model('immutable2', schema, { idKey: '_id' });
         const schemaData = new Immutable2Model(opt);
 
         const created = await Immutable2Model.create(schemaData);
@@ -135,17 +135,20 @@ describe('test schema immutable options', async () => {
     it('ottoman - ensure immutable fields does not get change using findOneAndUpdate', async () => {
         assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
 
-        const Immutable3Model = ottoman.model('immutable3', schema, { idKey: '_id' });
+        const Immutable3Model = ottoman.getModel('immutable3') || ottoman.model('immutable3', schema, { idKey: '_id' });
         const schemaData = new Immutable3Model(opt);
 
         const created = await Immutable3Model.create(schemaData);
+        console.log(JSON.stringify(created, null, 2));
         const changeDate = new Date();
         const findOneAndUpdate = await Immutable3Model.findOneAndUpdate({ _id: created._id }, {
+            name: 'test',
             createdAt: changeDate,
             createdBy: 'Edwin',
             updatedAt: changeDate,
             updatedBy: 'Edwin',
         });
+        console.log(JSON.stringify(findOneAndUpdate, null, 2));
 
         assert.strictEqual(+findOneAndUpdate.createdAt, +defaultDate);
         assert.strictEqual(findOneAndUpdate.createdBy, 'Joseph');
@@ -158,7 +161,7 @@ describe('test schema immutable options', async () => {
     it('ottoman - ensure immutable fields does not get change using replaceById', async () => {
         assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
 
-        const Immutable3Model = ottoman.model('immutable3', schema, { idKey: '_id' });
+        const Immutable3Model = ottoman.getModel('immutable3') ||  ottoman.model('immutable3', schema, { idKey: '_id' });
         const schemaData = new Immutable3Model(opt);
 
         const created = await Immutable3Model.create(schemaData);
@@ -182,7 +185,7 @@ describe('test schema immutable options', async () => {
     it('ottoman - ensure immutable fields does not get change using updateMany', async () => {
         assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
 
-        const Immutable3Model = ottoman.model('immutable3', schema, { idKey: '_id' });
+        const Immutable3Model = ottoman.getModel('immutable3') || ottoman.model('immutable3', schema, { idKey: '_id' });
         const schemaData = new Immutable3Model(opt);
         const schemaData2 = new Immutable3Model(opt);
 

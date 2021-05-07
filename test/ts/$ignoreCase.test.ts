@@ -71,6 +71,7 @@ describe('test $ignoreCase function', async () => {
             );
         } catch (error) {
             // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+            // Wait for #55 to be resolved to switch
             assert.strictEqual(error.name, 'DocumentNotFoundError');
             assert.strictEqual(error.message, `document not found`);
         }

@@ -118,7 +118,7 @@ describe('test schema options', async () => {
             await Airplane.create({ ...hawkAirplane, capacity: -1 });
         } catch (error) {
             assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value 0`);
+            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
         }
 
         try {
@@ -126,14 +126,14 @@ describe('test schema options', async () => {
             await Airplane.updateById(created.id, { capacity: -1 })
         } catch (error) {
             assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value 0`);
+            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
         }
 
         try {
             await Airplane.create({ ...hawkAirplane, capacity: 551 });
         } catch (error) {
             assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value 550`);
+            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
         }
 
         try {
@@ -141,7 +141,7 @@ describe('test schema options', async () => {
             await Airplane.updateById(created.id, { capacity: 551 })
         } catch (error) {
             assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value 550`);
+            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
         }
 
         await removeDocuments();
