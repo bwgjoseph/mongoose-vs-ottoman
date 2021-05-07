@@ -1,5 +1,5 @@
 
-import { getOttomanModel, mongooseAirplaneSchema, ottomanAirplaneSchema } from './setup/model';
+import { getMongooseHookModel, getOttomanHookModel, mongooseAirplaneHookSchema, ottomanAirplaneHookSchema } from './setup/model';
 import { removeDocuments } from './setup/util';
 import assert from 'assert';
 import { hawk } from './setup/fixtures';
@@ -9,65 +9,46 @@ describe('test hooks function', async () => {
         await removeDocuments();
     });
 
-    it('mongoose - should show log before & after saving doc (pre & post hook)', async () => {
-        const preHook = mongooseAirplaneSchema.pre("save", function() {
-            console.log('from pre hook');
-         });
-         const postHook = mongooseAirplaneSchema.post("save", function() {
-            console.log('from post hook');
-         });
-
-         const Airplane = getOttomanModel();
-         const hawkAirplane = new Airplane(hawk);
- 
-         await Airplane.create(hawkAirplane);
-         assert.ok(preHook);
-         assert.ok(postHook);
-    });
-
-    it('ottoman - should show log before & after saving doc ( pre & post hook)', async () => {
-        const preHook = ottomanAirplaneSchema.pre('save', function() {
-            console.log('from pre hook');
+    it('mongoose - should test pre and post save hook', async () => {
+        mongooseAirplaneHookSchema.pre('save', function() {
+            assert.strictEqual((this as any).callsign, 'Hawk');
         });
-        const postHook = ottomanAirplaneSchema.post('save', function() {
-            console.log('from post hook');
+        mongooseAirplaneHookSchema.post('save', function() {
+            (this as any).callsign = 'postHawk';
         });
 
-        const Airplane = getOttomanModel();
+        const Airplane = getMongooseHookModel();
         const hawkAirplane = new Airplane(hawk);
 
-        await Airplane.create(hawkAirplane);
-        assert.ok(preHook);
-        assert.ok(postHook);
+        const result = await Airplane.create(hawkAirplane);
+        assert.strictEqual(result.callsign, 'postHawk');
     });
 
-    it('ottoman - should implement lowercase', async () => {
-        // ottomanAirplaneSchema.pre('save', function uppercase(this: AirplaneInterface) {
-        //    this.size = this.size.toUpperCase();
-        // });
+    it('ottoman - should test pre and post save hook', async () => {
+        ottomanAirplaneHookSchema.pre('save', function(doc) {
+            assert.strictEqual(doc.callsign, 'Hawk');
+        });
+        ottomanAirplaneHookSchema.post('save', function(doc) {
+            doc.callsign = 'postHawk';
+        });
 
-        const lowercase = ottomanAirplaneSchema.pre('save', async (document) => {
-            document.size = document.size.toLowerCase();
-            console.log(document.size);
-         });
+        const Airplane = getOttomanHookModel();
+        const hawkAirplane = new Airplane(hawk);
 
-         const Airplane = getOttomanModel();
-         const hawkAirplane = new Airplane(hawk);
- 
-         const created = await Airplane.create(hawkAirplane);
-         assert.ok(lowercase);
+        const created = await Airplane.create(hawkAirplane);
+        assert.strictEqual(created.callsign, 'postHawk');
     });
 
-    it('ottoman - should implement uppercase', async () => {
-        const uppercase = ottomanAirplaneSchema.pre('save', async (document) => {
-            document.size = document.size.toUpperCase();
-            console.log(document.size);
-         });
+    it('ottoman - should convert doc name to lowercase in pre save hook', async () => {
+        ottomanAirplaneHookSchema.pre('save', async (doc) => {
+            assert.strictEqual(doc.name, 'Couchbase Airlines');
+            doc.name = doc.name.toLowerCase();
+        });
 
-         const Airplane = getOttomanModel();
-         const hawkAirplane = new Airplane(hawk);
- 
-         const created = await Airplane.create(hawkAirplane);
-         assert.ok(uppercase);
+        const Airplane = getOttomanHookModel();
+        const hawkAirplane = new Airplane(hawk);
+
+        const created = await Airplane.create(hawkAirplane);
+        assert.strictEqual(created.name, 'couchbase airlines');
     });
 })
