@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { SearchConsistency } from 'ottoman';
+import { model, Schema, SearchConsistency } from 'ottoman';
 import { hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -104,5 +104,21 @@ describe('test replaceById function', async () => {
         }
 
         await removeDocuments();
+    });
+
+    it.only('ottoman - should replace the entire doc', async () => {
+        const replaceSchema = new Schema({ name: String, age: Number });
+        const replaceModel = model('myReplace', replaceSchema);
+        const replaceData = new replaceModel({ name: 'ivan', age: 32 });
+        const created = await replaceModel.create(replaceData);
+        console.log(created);
+
+        assert.strictEqual(created.name, 'ivan');
+        assert.strictEqual(created.age, 32);
+
+        const replaced = await replaceModel.replaceById(created.id, { id: created.id, name: 'joseph' });
+        console.log(replaced);
+        assert.strictEqual(replaced.name, 'joseph');
+        assert.ok(!replaced.age);
     });
 })
