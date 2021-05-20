@@ -66,7 +66,7 @@ describe('test replaceById function', async () => {
                 },
             );
         } catch (error) {
-            assert.strictEqual(error.message, 'Property name is required, Property model is required');
+            assert.strictEqual(error.message, `Property 'name' is required, Property 'model' is required`);
         }
 
         await removeDocuments();
@@ -106,18 +106,16 @@ describe('test replaceById function', async () => {
         await removeDocuments();
     });
 
-    it.only('ottoman - should replace the entire doc', async () => {
+    it('ottoman - should replace the entire doc', async () => {
         const replaceSchema = new Schema({ name: String, age: Number });
         const replaceModel = model('myReplace', replaceSchema);
         const replaceData = new replaceModel({ name: 'ivan', age: 32 });
         const created = await replaceModel.create(replaceData);
-        console.log(created);
 
         assert.strictEqual(created.name, 'ivan');
         assert.strictEqual(created.age, 32);
 
         const replaced = await replaceModel.replaceById(created.id, { id: created.id, name: 'joseph' });
-        console.log(replaced);
         assert.strictEqual(replaced.name, 'joseph');
         assert.ok(!replaced.age);
     });

@@ -65,6 +65,10 @@ describe('test createMany function', async () => {
             message: {
                 success: 2,
                 match_number: 2,
+                data: [
+                    response.message.data![0],
+                    response.message.data![1]
+                ],
                 errors: [],
             }
         };
@@ -89,7 +93,9 @@ describe('test createMany function', async () => {
     //   }
     it('ottoman - should create 1 new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: IManyQueryResponse = await Airplane.createMany([{
+
+        const response: IManyQueryResponse = await Airplane.createMany([
+            {
                 callsign: 'Hawk',
             },
             {
@@ -112,6 +118,9 @@ describe('test createMany function', async () => {
             message: {
                 success: 1,
                 match_number: 2,
+                data: [
+                    response.message.data![0],
+                ],
                 errors: [
                     {
                         payload: {
@@ -119,7 +128,7 @@ describe('test createMany function', async () => {
                         },
                         status: 'FAILURE',
                         exception: 'ValidationError',
-                        message: 'Property name is required, Property model is required'
+                        message: `Property 'name' is required, Property 'model' is required`
                     }
                 ]
             }
@@ -140,11 +149,12 @@ describe('test createMany function', async () => {
     // partial doc is placed first in the array; the rest of the docs are still being created
     it('ottoman - should create 2 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: IManyQueryResponse = await Airplane.createMany([{
-            callsign: 'Hawk',
+        const response: IManyQueryResponse = await Airplane.createMany([
+            {
+                callsign: 'Hawk',
             },
-        hawk,
-        eagle
+            hawk,
+            eagle
         ]);
 
         const expected: IManyQueryResponse = {
@@ -152,6 +162,10 @@ describe('test createMany function', async () => {
             message: {
                 success: 2,
                 match_number: 3,
+                data: [
+                    response.message.data![0],
+                    response.message.data![1],
+                ],
                 errors: [
                     {
                         payload: {
@@ -159,7 +173,7 @@ describe('test createMany function', async () => {
                         },
                         status: 'FAILURE',
                         exception: 'ValidationError',
-                        message: 'Property name is required, Property model is required'
+                        message: `Property 'name' is required, Property 'model' is required`
                     }
                 ]
             }
@@ -181,12 +195,12 @@ describe('test createMany function', async () => {
     it('ottoman - should create 3 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
         const response: IManyQueryResponse = await Airplane.createMany([
-        bird,
+            bird,
             {
-            callsign: 'Hawk',
+                callsign: 'Hawk',
             },
-        hawk,
-        eagle
+            hawk,
+            eagle
         ]);
 
         const expected: IManyQueryResponse = {
@@ -194,6 +208,11 @@ describe('test createMany function', async () => {
             message: {
                 success: 3,
                 match_number: 4,
+                data: [
+                    response.message.data![0],
+                    response.message.data![1],
+                    response.message.data![2],
+                ],
                 errors: [
                     {
                         payload: {
@@ -201,7 +220,7 @@ describe('test createMany function', async () => {
                         },
                         status: 'FAILURE',
                         exception: 'ValidationError',
-                        message: 'Property name is required, Property model is required'
+                        message: `Property 'name' is required, Property 'model' is required`
                     }
                 ]
             }
@@ -236,10 +255,11 @@ describe('test createMany function', async () => {
             message: {
                 success: 0,
                 match_number: 2,
+                data: [],
                 errors: [
                     {
                         exception: 'ValidationError',
-                        message: 'Property name is required, Property model is required',
+                        message: `Property 'name' is required, Property 'model' is required`,
                         payload: {
                             callsign: 'Hawk'
                         },
@@ -247,7 +267,7 @@ describe('test createMany function', async () => {
                     },
                     {
                         exception: 'ValidationError',
-                        message: 'Property callsign is required, Property model is required',
+                        message: `Property 'callsign' is required, Property 'model' is required`,
                         payload: {
                             name: 'Couchbase Airline'
                         },

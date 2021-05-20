@@ -33,8 +33,8 @@ describe('test removeMany function', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
-        await Airplane.create(hawkAirplane);
-        await Airplane.create(eagleAirplane);
+        const createdHawk = await Airplane.create(hawkAirplane);
+        const createdEagle = await Airplane.create(eagleAirplane);
         const findbefore = await Airplane.find({}, {
             consistency: SearchConsistency.LOCAL
         });
@@ -52,6 +52,10 @@ describe('test removeMany function', async () => {
             message: {
                 success: 2,
                 match_number: 2,
+                data: [
+                    createdHawk.id,
+                    createdEagle.id,
+                ],
                 errors: []
             }
         };
@@ -69,7 +73,7 @@ describe('test removeMany function', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
-        await Airplane.create(hawkAirplane);
+        const createdHawk = await Airplane.create(hawkAirplane);
         await Airplane.create(eagleAirplane);
         const findbefore = await Airplane.find({}, {
             consistency: SearchConsistency.LOCAL
@@ -88,6 +92,9 @@ describe('test removeMany function', async () => {
             message: {
                 success: 1,
                 match_number: 1,
+                data: [
+                    createdHawk.id,
+                ],
                 errors: []
             }
         };
@@ -104,8 +111,8 @@ describe('test removeMany function', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane(eagle);
-        await Airplane.create(hawkAirplane);
-        await Airplane.create(eagleAirplane);
+        const createdHawk = await Airplane.create(hawkAirplane);
+        const createdEagle = await Airplane.create(eagleAirplane);
         const findbefore = await Airplane.find({}, {
             consistency: SearchConsistency.LOCAL
         });
@@ -126,6 +133,10 @@ describe('test removeMany function', async () => {
             message: {
                 success: 2,
                 match_number: 2,
+                data: [
+                    createdHawk.id,
+                    createdEagle.id
+                ],
                 errors: []
             }
         };
@@ -161,6 +172,7 @@ describe('test removeMany function', async () => {
             message: {
                 success: 0,
                 match_number: 0,
+                data: [],
                 errors: []
             }
         };

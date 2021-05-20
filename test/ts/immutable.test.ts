@@ -4,9 +4,9 @@ import { removeDocuments } from './setup/util';
 
 let ottoman: Ottoman;
 
-const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ collectionName: '_default', searchConsistency });
-    assert.strictEqual(ottoman.config.searchConsistency, searchConsistency);
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
+    ottoman = new Ottoman({ collectionName: '_default', consistency });
+    assert.strictEqual(ottoman.config.consistency, consistency);
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',
@@ -65,7 +65,7 @@ describe('test schema immutable options', async () => {
     });
 
     it('ottoman - ensure immutable fields does not get change using save', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const ImmutableModel = ottoman.getModel('immutable') || ottoman.model('immutable', schema, { idKey: '_id' });
         const schemaData = new ImmutableModel(opt);
@@ -99,7 +99,7 @@ describe('test schema immutable options', async () => {
     });
 
     it('ottoman - ensure immutable fields does not get change using updateById', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const Immutable2Model = ottoman.getModel('immutable2') ||  ottoman.model('immutable2', schema, { idKey: '_id' });
         const schemaData = new Immutable2Model(opt);
@@ -133,7 +133,7 @@ describe('test schema immutable options', async () => {
     });
 
     it('ottoman - ensure immutable fields does not get change using findOneAndUpdate', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const Immutable3Model = ottoman.getModel('immutable3') || ottoman.model('immutable3', schema, { idKey: '_id' });
         const schemaData = new Immutable3Model(opt);
@@ -159,7 +159,7 @@ describe('test schema immutable options', async () => {
     });
 
     it('ottoman - ensure immutable fields does not get change using replaceById', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const Immutable3Model = ottoman.getModel('immutable3') ||  ottoman.model('immutable3', schema, { idKey: '_id' });
         const schemaData = new Immutable3Model(opt);
@@ -183,7 +183,7 @@ describe('test schema immutable options', async () => {
     });
 
     it('ottoman - ensure immutable fields does not get change using updateMany', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const Immutable3Model = ottoman.getModel('immutable3') || ottoman.model('immutable3', schema, { idKey: '_id' });
         const schemaData = new Immutable3Model(opt);

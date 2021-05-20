@@ -62,6 +62,10 @@ describe('test updateMany function', async () => {
             message: {
                 success: 2,
                 match_number: 2,
+                data: [
+                    response.message.data![0],
+                    response.message.data![1]
+                ],
                 errors: []
             }
         };
@@ -99,6 +103,10 @@ describe('test updateMany function', async () => {
             message: {
                 success: 2,
                 match_number: 2,
+                data: [
+                    response.message.data![0],
+                    response.message.data![1]
+                ],
                 errors: []
             }
         };
@@ -136,6 +144,7 @@ describe('test updateMany function', async () => {
             message: {
                 success: 0,
                 match_number: 2,
+                data: [],
                 errors: [
                     {
                         payload: hawkCreated.id,
@@ -186,6 +195,9 @@ describe('test updateMany function', async () => {
             message: {
                 success: 1,
                 match_number: 1,
+                data: [
+                    response.message.data![0],
+                ],
                 errors: []
             }
         };
@@ -225,6 +237,7 @@ describe('test updateMany function', async () => {
             message: {
                 success: 0,
                 match_number: 0,
+                data: [],
                 errors: []
             }
         };

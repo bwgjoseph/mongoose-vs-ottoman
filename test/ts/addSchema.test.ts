@@ -4,9 +4,9 @@ import { removeDocuments } from './setup/util';
 
 let ottoman: Ottoman;
 
-const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ collectionName: '_default', searchConsistency });
-    assert.strictEqual(ottoman.config.searchConsistency, searchConsistency);
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
+    ottoman = new Ottoman({ collectionName: '_default', consistency });
+    assert.strictEqual(ottoman.config.consistency, consistency);
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',
@@ -53,7 +53,7 @@ describe('test schema add options', async () => {
     });
 
     it('ottoman - add base schema', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const MySchema = ottoman.model('myschema', schema, { idKey: '_id' });
         const schemaData = new MySchema(opt);

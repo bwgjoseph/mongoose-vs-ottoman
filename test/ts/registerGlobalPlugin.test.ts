@@ -19,8 +19,8 @@ registerGlobalPlugin(pluginLog2);
 
 let ottoman: Ottoman;
 
-const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ scopeName: 'testScope123', collectionName: 'testCollection', searchConsistency });
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
+    ottoman = new Ottoman({ scopeName: 'testScope123', collectionName: 'testCollection', consistency });
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',

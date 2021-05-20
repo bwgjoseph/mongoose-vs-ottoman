@@ -4,9 +4,9 @@ import { removeDocuments } from './setup/util';
 
 let ottoman: Ottoman;
 
-const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ collectionName: '_default', searchConsistency });
-    assert.strictEqual(ottoman.config.searchConsistency, searchConsistency);
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
+    ottoman = new Ottoman({ collectionName: '_default', consistency });
+    assert.strictEqual(ottoman.config.consistency, consistency);
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',
@@ -45,7 +45,7 @@ describe('test global options', async () => {
 
     it('ottoman - should find doc [global is NONE, local is NONE]', async () => {
         await initOttoman();
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.NONE);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.NONE);
 
         const Options = ottoman.model('opts', schema);
         const OptData = new Options(opt);
@@ -60,7 +60,7 @@ describe('test global options', async () => {
 
     it('ottoman - should find doc [global is NONE, local is local]', async () => {
         await initOttoman();
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.NONE);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.NONE);
 
         const Options = ottoman.model('opts', schema);
         const OptData = new Options(opt);
@@ -79,7 +79,7 @@ describe('test global options', async () => {
 
     it('ottoman - should find doc [global is NONE, local is GLOBAL]', async () => {
         await initOttoman();
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.NONE);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.NONE);
 
         const Options = ottoman.model('opts', schema);
         const OptData = new Options(opt);
@@ -98,7 +98,7 @@ describe('test global options', async () => {
 
     it('ottoman - should find doc [global is LOCAL, local is not defined]', async () => {
         await initOttoman(SearchConsistency.LOCAL);
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const Options = ottoman.model('opts', schema);
         const OptData = new Options(opt);
@@ -113,7 +113,7 @@ describe('test global options', async () => {
 
     it('ottoman - should find doc [global is GLOBAL, local is not defined]', async () => {
         await initOttoman(SearchConsistency.GLOBAL);
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.GLOBAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.GLOBAL);
 
         const Options = ottoman.model('opts', schema);
         const OptData = new Options(opt);

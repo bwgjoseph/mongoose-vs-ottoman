@@ -2,8 +2,8 @@ import { Ottoman, SearchConsistency } from 'ottoman';
 
 let ottoman: Ottoman;
 
-const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ scopeName: 'testDropScope', collectionName: 'testDropCollection', searchConsistency });
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
+    ottoman = new Ottoman({ scopeName: 'testDropScope', collectionName: 'testDropCollection', consistency });
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',

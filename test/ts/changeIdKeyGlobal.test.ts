@@ -4,9 +4,9 @@ import { removeDocuments } from './setup/util';
 
 let ottoman: Ottoman;
 
-const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ collectionName: '_default', idKey: '_id', searchConsistency });
-    assert.strictEqual(ottoman.config.searchConsistency, searchConsistency);
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
+    ottoman = new Ottoman({ collectionName: '_default', idKey: '_id', consistency });
+    assert.strictEqual(ottoman.config.consistency, consistency);
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',
@@ -42,7 +42,7 @@ describe('test model options', async () => {
     });
 
     it('ottoman - change global idKey', async () => {
-        assert.strictEqual(ottoman.config.searchConsistency, SearchConsistency.LOCAL);
+        assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
         const Options = ottoman.model('opts', schema );
         const OptData = new Options(opt);

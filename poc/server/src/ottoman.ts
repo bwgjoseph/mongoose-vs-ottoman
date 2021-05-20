@@ -20,8 +20,8 @@ const schema = new Schema({
   data: String,
 });
 
-const initOttoman = async (searchConsistency: SearchConsistency = SearchConsistency.GLOBAL) => {
-  ottoman = new Ottoman({ collectionName: '_default', searchConsistency });
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.GLOBAL) => {
+  ottoman = new Ottoman({ collectionName: '_default', consistency });
 
   ottoman.connect({
     connectionString: 'couchbase://localhost',

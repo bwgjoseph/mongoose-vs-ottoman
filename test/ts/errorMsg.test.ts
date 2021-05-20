@@ -37,10 +37,11 @@ describe('test error message', async () => {
             message: {
                 success: 0,
                 match_number: 1,
+                data: [],
                 errors: [
                     {
                         exception: 'ValidationError',
-                        message: `Property name is required, Property 'capacity' is more than the maximum allowed value of '550', Property model is required`,
+                        message: `Property 'name' is required, Property 'capacity' is more than the maximum allowed value of '550', Property 'model' is required`,
                         payload: {
                             callsign: 'Hawk',
                             capacity: 1000
@@ -75,10 +76,11 @@ describe('test error message', async () => {
             message: {
                 success: 0,
                 match_number: 2,
+                data: [],
                 errors: [
                     {
                         exception: 'ValidationError',
-                        message: `Property name is required, Property 'capacity' is more than the maximum allowed value of '550', Property model is required`,
+                        message: `Property 'name' is required, Property 'capacity' is more than the maximum allowed value of '550', Property 'model' is required`,
                         payload: {
                             callsign: 'Hawk',
                             capacity: 1000
@@ -87,7 +89,7 @@ describe('test error message', async () => {
                     },
                     {
                         exception: 'ValidationError',
-                        message: 'Property callsign is required, Property model is required',
+                        message: `Property 'callsign' is required, Property 'model' is required`,
                         payload: {
                             name: 'Couchbase Airline',
                         },
@@ -158,6 +160,7 @@ describe('test error message', async () => {
             message: {
                 success: 0,
                 match_number: 0,
+                data: [],
                 errors: [],
             }
         };
@@ -213,9 +216,5 @@ describe('test error message', async () => {
         }
 
         await removeDocuments();
-    });
-
-    it('ottoman - test updateMany error', async () => {
-
     });
 });
