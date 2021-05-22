@@ -139,7 +139,6 @@ describe('test schema immutable options', async () => {
         const schemaData = new Immutable3Model(opt);
 
         const created = await Immutable3Model.create(schemaData);
-        console.log(JSON.stringify(created, null, 2));
         const changeDate = new Date();
         const findOneAndUpdate = await Immutable3Model.findOneAndUpdate({ _id: created._id }, {
             name: 'test',
@@ -147,8 +146,7 @@ describe('test schema immutable options', async () => {
             createdBy: 'Edwin',
             updatedAt: changeDate,
             updatedBy: 'Edwin',
-        });
-        console.log(JSON.stringify(findOneAndUpdate, null, 2));
+        }, { new: true });
 
         assert.strictEqual(+findOneAndUpdate.createdAt, +defaultDate);
         assert.strictEqual(findOneAndUpdate.createdBy, 'Joseph');
