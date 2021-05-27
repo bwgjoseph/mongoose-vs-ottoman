@@ -60,8 +60,7 @@ describe('test removeMany function', async () => {
             }
         };
 
-        assert.strictEqual(response.status, expected.status);
-        assert.deepStrictEqual(response.message, expected.message);
+        expect(response).to.deep.equalInAnyOrder(expected);
 
         const find = await Airplane.find();
         assert.strictEqual(find.rows.length, 0);
