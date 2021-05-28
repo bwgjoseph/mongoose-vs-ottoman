@@ -24,11 +24,12 @@ interface AirplaneInterface {
     capacity: number; // test $gt, $lt, $btw
     model: 'A380' | '737 NG' | '767-300F'; // test enum
     size: 'S' | 'M' |'L'; // test enum [s, m, l], test uppercase
-    info: AirplaneInfo; // test nested object query
+    info?: AirplaneInfo; // test nested object query
     location: Location; // test geo-spatial query
     type: 'Economy' | 'First class' | 'Private';
     email: string;
-    extension: unknown; // test MixedType
+    extension: unknown;
+    createdAt?: Date; // test ttl
 }
 
 const airplaneInfoSchema = {
@@ -104,7 +105,12 @@ const airplaneSchema = {
         minLength: 5,
         maxLength: 20,
     },
-    info: airplaneInfoSchema
+    info: airplaneInfoSchema,
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        expires: 5,
+    }
 }
 
 type MongooseAirplaneModel = AirplaneInterface & mongoose.Document;
