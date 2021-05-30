@@ -24,12 +24,12 @@ interface AirplaneInterface {
     capacity: number; // test $gt, $lt, $btw
     model: 'A380' | '737 NG' | '767-300F'; // test enum
     size: 'S' | 'M' |'L'; // test enum [s, m, l], test uppercase
-    info?: AirplaneInfo; // test nested object query
+    info: AirplaneInfo; // test nested object query
     location: Location; // test geo-spatial query
     type: 'Economy' | 'First class' | 'Private';
     email: string;
     extension: unknown;
-    createdAt?: Date; // test ttl
+    expiresAt?: Date; // test ttl
 }
 
 const airplaneInfoSchema = {
@@ -106,18 +106,20 @@ const airplaneSchema = {
         maxLength: 20,
     },
     info: airplaneInfoSchema,
-    createdAt: {
+    expiresAt: {
         type: Date,
-        default: Date.now,
-        expires: 5,
+        // See https://docs.mongodb.com/manual/core/index-ttl/
+        // See https://docs.mongodb.com/manual/tutorial/expire-data/#expire-documents-at-a-specific-clock-time
+        // index will automatically be created by mongoose
+        expires: 0,
     }
 }
 
 type MongooseAirplaneModel = AirplaneInterface & mongoose.Document;
 
-const mongooseAirplaneSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed });
-const mongooseAirplaneHookSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed });
-const mongooseAirplaneNonStrictSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed }, { strict: false });
+const mongooseAirplaneSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed }, { timestamps: true });
+const mongooseAirplaneHookSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed }, { timestamps: true });
+const mongooseAirplaneNonStrictSchema = new mongoose.Schema({ ...airplaneSchema, location: new mongoose.Schema(locationSchema), extension: mongoose.SchemaTypes.Mixed }, { timestamps: true, strict: false });
 const ottomanAirplaneSchema = new ottoman.Schema({ ...airplaneSchema, location: new ottoman.Schema(locationSchema), extension: ottoman.Schema.Types.Mixed });
 const ottomanAirplaneHookSchema = new ottoman.Schema({ ...airplaneSchema, location: new ottoman.Schema(locationSchema), extension: ottoman.Schema.Types.Mixed });
 const ottomanAirplaneNonStrictSchema = new ottoman.Schema({ ...airplaneSchema, location: new ottoman.Schema(locationSchema), extension: ottoman.Schema.Types.Mixed }, { strict: false });
