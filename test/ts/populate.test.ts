@@ -1,9 +1,12 @@
 import assert from 'assert';
-import { model, Schema, SearchConsistency, Ottoman } from 'ottoman';
+import { model, Schema, SearchConsistency, Ottoman, set } from 'ottoman';
 import { removeDocuments } from './setup/util';
 
 const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
-    const ottoman = new Ottoman({ scopeName: '_default', collectionName: '_default', consistency });
+    set('DEBUG', true);
+
+    // const ottoman = new Ottoman({ scopeName: '_default', collectionName: '_default', consistency });
+    const ottoman = new Ottoman({ collectionName: '_default', consistency });
 
     ottoman.connect({
         connectionString: 'couchbase://localhost',
@@ -25,7 +28,7 @@ describe('test populate function', async () => {
     });
 
     it('ottoman - populate', async () => {
-        const postSchema = new Schema({ title: String });
+        const postSchema = new Schema({ title: String, createdAt: { type: Date, default: () => new Date() } });
         const commentSchema = new Schema({ text: String, post: { type: String, ref: 'post' }});
 
         const postModel = model('post', postSchema);
@@ -39,5 +42,9 @@ describe('test populate function', async () => {
 
         const { rows: populateB } = await commentModel.find({}, { populate: 'post' });
         assert.deepStrictEqual(populateB[0].post, post);
+
+        const { rows: populateC } = await commentModel.find({}, { populate: { post: { select: ['id', 'title'] }} });
+        assert.deepStrictEqual(populateC[0].post.id, post.id);
+        assert.deepStrictEqual(populateC[0].post.title, post.title);
     });
 });
