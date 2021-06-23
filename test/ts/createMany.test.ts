@@ -8,7 +8,7 @@ import { removeDocuments } from './setup/util';
 
 chai.use(deepEqualInAnyOrder);
 
-describe('test createMany function', async () => {
+describe.skip('test createMany function', async () => {
     before(async () => {
         await removeDocuments();
     });

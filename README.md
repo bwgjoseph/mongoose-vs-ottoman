@@ -32,6 +32,13 @@ You can now write test cases to verify the behavior of mongoose and ottoman
 1. Write all test cases in `/test` directory
 2. Create one file per feature test case (e.g. $in.test.js, save.test.js)
 
+# Test Cases
+
+Test cases that are indicated with `.skip` are either
+
+1. Has issue that has been filed and waiting for fixes
+2. Needs to run as a standalone test instead of as a suite
+
 # Resource
 
 - [couchbase-cli](https://docs.couchbase.com/server/current/cli/cbcli/couchbase-cli.html)

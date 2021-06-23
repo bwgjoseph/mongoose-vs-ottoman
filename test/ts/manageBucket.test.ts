@@ -17,7 +17,10 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
     await ottoman.start();
 }
 
-describe('test manage bucket, scope and collection', async () => {
+/**
+ * To run standalone
+ */
+describe.skip('test manage bucket, scope and collection', async () => {
     before(async () => {
         await initOttoman();
     });

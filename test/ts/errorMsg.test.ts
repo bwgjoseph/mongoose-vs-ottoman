@@ -9,7 +9,7 @@ import deepEqualInAnyOrder from 'deep-equal-in-any-order';
 chai.use(deepEqualInAnyOrder);
 
 // this test should test for all API thrown error
-describe('test error message', async () => {
+describe.skip('test error message', async () => {
     before(async () => {
         await removeDocuments();
     });

@@ -46,7 +46,10 @@ const schema = new Schema({
     plugin: String,
 })
 
-describe('test manage bucket, scope and collection', async () => {
+/**
+ * To run standalone
+ */
+describe.skip('test manage bucket, scope and collection', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });

@@ -15,6 +15,9 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
     await ottoman.start();
 }
 
+/**
+ * To run standalone
+ */
 describe.skip('test drop bucket, scope and collection', async () => {
     before(async () => {
         await initOttoman();

@@ -4,7 +4,11 @@ import { getMongooseModel } from './setup/model';
 import { assertAirline, removeDocuments } from './setup/util';
 import sinon from 'sinon';
 
-describe('test ttl function for mongoose', async () => {
+/**
+ * There is no way to test TTL feature
+ * See https://github.com/Automattic/mongoose/issues/10307
+ */
+describe.skip('test ttl function for mongoose', async () => {
     before(async () => {
         await removeDocuments();
     });

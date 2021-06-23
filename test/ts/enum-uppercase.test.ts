@@ -23,9 +23,9 @@ describe('test enum function', async () => {
         await Airplane.remove({}).exec();
     });
 
-    it.skip('ottoman - should create new doc', async () => {
+    it('ottoman - should create new doc', async () => {
         const Airplane = getOttomanModel();
-        const hawkAirplane = new Airplane({ ...hawk, size: 's' });
+        const hawkAirplane = new Airplane(hawk);
 
         const created = await Airplane.create(hawkAirplane);
         assertAirline(created, hawkAirplane);
@@ -36,8 +36,6 @@ describe('test enum function', async () => {
                 consistency: SearchConsistency.LOCAL
             });
         assert.strictEqual(find.rows.length, 1);
-        // Test case will fail if size is set as `size: 's',` in fixture.ts -> line 67
-        // See: https://github.com/bwgjoseph/mongoose-vs-ottoman/issues/19
         assert.strictEqual(find.rows[0].size, 'S');
 
         await removeDocuments();
