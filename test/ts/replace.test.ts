@@ -4,7 +4,7 @@ import { hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
-describe.skip('test replaceById function', async () => {
+describe('test replaceById function', async () => {
     before(async () => {
         await removeDocuments();
     });

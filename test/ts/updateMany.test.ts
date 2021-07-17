@@ -3,7 +3,7 @@ import chai, { expect } from 'chai';
 import deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/model';
+import { AirplaneInterface, getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 chai.use(deepEqualInAnyOrder);
@@ -47,7 +47,7 @@ describe('test updateMany function', async () => {
         const updateDoc = {
             size: 'M'
         };
-        const response: IManyQueryResponse = await Airplane.updateMany({
+        const response = await Airplane.updateMany<AirplaneInterface, AirplaneInterface>({
             name: {
                 $like: '%Couchbase%'
             }
@@ -63,8 +63,8 @@ describe('test updateMany function', async () => {
                 success: 2,
                 match_number: 2,
                 data: [
-                    response.message.data![0],
-                    response.message.data![1]
+                    response.message.data[0],
+                    response.message.data[1]
                 ],
                 errors: []
             }
@@ -88,7 +88,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: IManyQueryResponse = await Airplane.updateMany({
+        const response = await Airplane.updateMany<AirplaneInterface, AirplaneInterface>({
             name: 'Couchbase Airlines'
         },
         {
@@ -104,8 +104,8 @@ describe('test updateMany function', async () => {
                 success: 2,
                 match_number: 2,
                 data: [
-                    response.message.data![0],
-                    response.message.data![1]
+                    response.message.data[0],
+                    response.message.data[1]
                 ],
                 errors: []
             }
@@ -129,7 +129,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: IManyQueryResponse = await Airplane.updateMany({
+        const response = await Airplane.updateMany<AirplaneInterface, AirplaneInterface>({
             name: 'Couchbase Airlines'
         },
         {
@@ -180,7 +180,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: IManyQueryResponse = await Airplane.updateMany({
+        const response = await Airplane.updateMany<AirplaneInterface, AirplaneInterface>({
             capacity: 250
         },
         {
@@ -196,7 +196,7 @@ describe('test updateMany function', async () => {
                 success: 1,
                 match_number: 1,
                 data: [
-                    response.message.data![0],
+                    response.message.data[0],
                 ],
                 errors: []
             }
@@ -222,7 +222,7 @@ describe('test updateMany function', async () => {
         assert.strictEqual(hawkCreated.operational, true);
         assert.strictEqual(eagleCreated.operational, true);
 
-        const response: IManyQueryResponse = await Airplane.updateMany({
+        const response = await Airplane.updateMany<AirplaneInterface, AirplaneInterface>({
             name: 'abc'
         },
         {

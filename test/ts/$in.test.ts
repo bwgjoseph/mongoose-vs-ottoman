@@ -17,9 +17,9 @@ describe('test $in function', async () => {
         await Airplane.create(eagleAirplane);
 
         const find = await Airplane.find({
-            model : {
-                 $in : '767-300F'
-                 }
+            model: {
+                $in : ['767-300F']
+            }
         }).exec();
         assert.strictEqual(find.length, 1);
         assert.strictEqual(find[0].model, '767-300F');
@@ -35,14 +35,14 @@ describe('test $in function', async () => {
         await Airplane.create(hawkAirplane);
 
         const find = await Airplane.find({
-            $in: {
-                search_expr: 'model',
-                target_expr: ['767-300F']
-                }
+            model: {
+                $in : ['767-300F']
+            }
         },
         {
             consistency: SearchConsistency.LOCAL
         });
+
         assert.strictEqual(find.rows.length, 1);
         assert.strictEqual(find.rows[0].model, '767-300F');
 

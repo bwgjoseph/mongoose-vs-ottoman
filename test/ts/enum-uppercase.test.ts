@@ -48,7 +48,7 @@ describe('test enum function', async () => {
         try {
            await Airplane.create(hawkAirplane);
         } catch (err) {
-            assert.strictEqual(err.message, 'Property size value must be S,M,L');
+            assert.strictEqual(err.message, `Property 'size' value must be S,M,L`);
         }
 
         const find = await Airplane.find(

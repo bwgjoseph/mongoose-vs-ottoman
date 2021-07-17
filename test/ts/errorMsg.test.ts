@@ -9,7 +9,7 @@ import deepEqualInAnyOrder from 'deep-equal-in-any-order';
 chai.use(deepEqualInAnyOrder);
 
 // this test should test for all API thrown error
-describe.skip('test error message', async () => {
+describe('test error message', async () => {
     before(async () => {
         await removeDocuments();
     });
@@ -112,7 +112,7 @@ describe.skip('test error message', async () => {
     });
 
     // See Github #55
-    it('ottoman - test findOneAndUpdate error', async () => {
+    it.skip('ottoman - test findOneAndUpdate error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
@@ -131,7 +131,7 @@ describe.skip('test error message', async () => {
     });
 
     // See Github #55
-    it('ottoman - test removeById error', async () => {
+    it.skip('ottoman - test removeById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
@@ -171,7 +171,7 @@ describe.skip('test error message', async () => {
     });
 
     // See Github #55
-    it('ottoman - test replaceById error', async () => {
+    it.skip('ottoman - test replaceById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
@@ -188,7 +188,7 @@ describe.skip('test error message', async () => {
     });
 
     // See Github #55
-    it('ottoman - test updateById error', async () => {
+    it.skip('ottoman - test updateById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 

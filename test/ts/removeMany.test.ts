@@ -3,7 +3,7 @@ import chai, { expect } from 'chai';
 import deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/model';
+import { AirplaneInterface, getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 chai.use(deepEqualInAnyOrder);
@@ -40,7 +40,7 @@ describe('test removeMany function', async () => {
         });
         assert.strictEqual(findbefore.rows.length, 2);
 
-        const response: IManyQueryResponse = await Airplane.removeMany({
+        const response = await Airplane.removeMany<AirplaneInterface>({
             name: 'Couchbase Airlines'
         },
         {
@@ -79,7 +79,7 @@ describe('test removeMany function', async () => {
         });
         assert.strictEqual(findbefore.rows.length, 2);
 
-        const response: IManyQueryResponse = await Airplane.removeMany({
+        const response = await Airplane.removeMany<AirplaneInterface>({
             capacity: 250
         },
         {
@@ -118,7 +118,7 @@ describe('test removeMany function', async () => {
         assert.strictEqual(findbefore.rows.length, 2);
 
         // remove all docs with name: Couchbase
-        const response: IManyQueryResponse = await Airplane.removeMany({
+        const response = await Airplane.removeMany<AirplaneInterface>({
             name: {
                 $like: '%Couchbase%',
             }
@@ -159,7 +159,7 @@ describe('test removeMany function', async () => {
         });
         assert.strictEqual(findbefore.rows.length, 2);
 
-        const response: IManyQueryResponse = await Airplane.removeMany({
+        const response = await Airplane.removeMany<AirplaneInterface>({
             name: 'should not find any'
         },
         {

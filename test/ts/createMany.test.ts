@@ -3,12 +3,12 @@ import chai, { expect } from 'chai';
 import deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import { IManyQueryResponse, SearchConsistency } from 'ottoman';
 import { bird, eagle, hawk } from './setup/fixtures';
-import { getMongooseModel, getOttomanModel } from './setup/model';
+import { AirplaneInterface, getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
 chai.use(deepEqualInAnyOrder);
 
-describe.skip('test createMany function', async () => {
+describe('test createMany function', async () => {
     before(async () => {
         await removeDocuments();
     });
@@ -55,7 +55,7 @@ describe.skip('test createMany function', async () => {
 
     it('ottoman - should create multi doc successfully', async () => {
         const Airplane = getOttomanModel();
-        const response: IManyQueryResponse = await Airplane.createMany([
+        const response = await Airplane.createMany<AirplaneInterface, AirplaneInterface>([
             hawk,
             eagle,
         ]);
@@ -66,8 +66,8 @@ describe.skip('test createMany function', async () => {
                 success: 2,
                 match_number: 2,
                 data: [
-                    response.message.data![0],
-                    response.message.data![1]
+                    response.message.data[0],
+                    response.message.data[1]
                 ],
                 errors: [],
             }
@@ -94,7 +94,7 @@ describe.skip('test createMany function', async () => {
     it('ottoman - should create 1 new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
 
-        const response: IManyQueryResponse = await Airplane.createMany([
+        const response = await Airplane.createMany<Partial<AirplaneInterface>, AirplaneInterface>([
             {
                 callsign: 'Hawk',
             },
@@ -119,7 +119,7 @@ describe.skip('test createMany function', async () => {
                 success: 1,
                 match_number: 2,
                 data: [
-                    response.message.data![0],
+                    response.message.data[0],
                 ],
                 errors: [
                     {
@@ -149,7 +149,7 @@ describe.skip('test createMany function', async () => {
     // partial doc is placed first in the array; the rest of the docs are still being created
     it('ottoman - should create 2 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: IManyQueryResponse = await Airplane.createMany([
+        const response = await Airplane.createMany<Partial<AirplaneInterface>, AirplaneInterface>([
             {
                 callsign: 'Hawk',
             },
@@ -163,8 +163,8 @@ describe.skip('test createMany function', async () => {
                 success: 2,
                 match_number: 3,
                 data: [
-                    response.message.data![0],
-                    response.message.data![1],
+                    response.message.data[0],
+                    response.message.data[1],
                 ],
                 errors: [
                     {
@@ -194,7 +194,7 @@ describe.skip('test createMany function', async () => {
     // partial doc is placed in the middle of the array; Behavior other docs would still be created
     it('ottoman - should create 3 new doc, without creating the partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: IManyQueryResponse = await Airplane.createMany([
+        const response = await Airplane.createMany<Partial<AirplaneInterface>, AirplaneInterface>([
             bird,
             {
                 callsign: 'Hawk',
@@ -209,9 +209,9 @@ describe.skip('test createMany function', async () => {
                 success: 3,
                 match_number: 4,
                 data: [
-                    response.message.data![0],
-                    response.message.data![1],
-                    response.message.data![2],
+                    response.message.data[0],
+                    response.message.data[1],
+                    response.message.data[2],
                 ],
                 errors: [
                     {
@@ -241,7 +241,7 @@ describe.skip('test createMany function', async () => {
      // not all required fields are given
      it('ottoman - should not create new doc when using partial doc', async () => {
         const Airplane = getOttomanModel();
-        const response: IManyQueryResponse = await Airplane.createMany([
+        const response = await Airplane.createMany<Partial<AirplaneInterface>, AirplaneInterface>([
             {
                 callsign: 'Hawk',
             },

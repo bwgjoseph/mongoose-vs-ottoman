@@ -4,7 +4,7 @@ import { eagle, hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
 
-describe.only('test $within function', async () => {
+describe('test $within function', async () => {
     before(async () => {
         await removeDocuments();
     });
@@ -17,10 +17,9 @@ describe.only('test $within function', async () => {
         await Airplane.create(hawkAirplane);
 
         const find = await Airplane.find({
-            $within: {
-                search_expr: 'model',
-                target_expr: ['767-300F']
-                }
+            model: {
+                $within: ['767-300F']
+            }
         },
         {
             consistency: SearchConsistency.LOCAL
@@ -38,10 +37,9 @@ describe.only('test $within function', async () => {
         await Airplane.create(hawkAirplane);
 
         const find = await Airplane.find({
-            $within: {
-                search_expr: 'model',
-                target_expr: ['767-300']
-                }
+            model: {
+                $within: ['767-300']
+            }
         },
         {
             consistency: SearchConsistency.LOCAL

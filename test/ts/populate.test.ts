@@ -46,7 +46,6 @@ describe.skip('test populate function', async () => {
         assert.deepStrictEqual(populateA.post, post);
 
         const { rows: populateB } = await commentModel.find({}, { populate: 'post' });
-        console.log(populateB);
         assert.deepStrictEqual(populateB[0].post, post);
 
         const { rows: populateC } = await commentModel.find({}, { populate: { post: { select: ['id', 'title'] }} });

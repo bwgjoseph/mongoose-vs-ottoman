@@ -33,20 +33,18 @@ describe('test $nin function', async () => {
         const eagleAirplane = new Airplane(eagle);
         await Airplane.create(eagleAirplane);
         await Airplane.create(hawkAirplane);
+
         const find = await Airplane.find({
-            $not: [{
-                $in : {
-                    search_expr: 'model',
-                    target_expr: ['767-300F'],
-                }
-            }]
+            model : {
+                $notIn : ['767-300F']
+            }
         },
         {
             consistency: SearchConsistency.LOCAL
         });
         assert.strictEqual(find.rows.length, 1);
+        assert.strictEqual(find.rows[0].model, 'A380');
 
         await removeDocuments();
-        assert.strictEqual(find.rows[0].model, 'A380');
     });
 });
