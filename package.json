@@ -11,19 +11,19 @@
   "author": "bwgjoseph",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.13.3",
+    "mongoose": "^5.13.5",
     "object-sizeof": "^1.6.1",
     "ottoman": "2.0.0-beta.3"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
     "@types/deep-equal-in-any-order": "^1.0.1",
-    "@types/mocha": "^8.2.3",
+    "@types/mocha": "^9.0.0",
     "@types/sinon": "^10.0.2",
     "chai": "^4.3.4",
     "deep-equal-in-any-order": "^1.1.8",
-    "mocha": "^9.0.2",
-    "sinon": "^11.1.1",
+    "mocha": "^9.0.3",
+    "sinon": "^11.1.2",
     "ts-node": "^10.1.0",
     "typescript": "4.3.5"
   }
