@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   mongo:
-    image: mongo:4.4.0
+    image: mongo:5.0.1
     container_name: mo-mongo
     ports:
       - 28017:27017
@@ -23,9 +23,11 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
     restart: unless-stopped
+    depends_on:
+      - mongo
 
   couchbase:
-    image: couchbase:enterprise-7.0.0-beta
+    image: couchbase:enterprise-7.0.0
     container_name: mo-couchbase
     ports:
       - 8091:8091
