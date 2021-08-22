@@ -48,6 +48,7 @@ const schema = new Schema({
 
 /**
  * To run standalone
+ * [23/8] not working - timeout - beta.3
  */
 describe.skip('test manage bucket, scope and collection', async () => {
     before(async () => {

@@ -17,6 +17,7 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
 
 /**
  * To run standalone
+ * [23/8] not working - cluster object was closed - beta.3
  */
 describe.skip('test drop bucket, scope and collection', async () => {
     before(async () => {

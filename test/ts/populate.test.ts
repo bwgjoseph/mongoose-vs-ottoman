@@ -32,6 +32,7 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
 
 /**
  * To run standalone
+ * [23/8] not working - feature not available - beta.3
  */
 describe.skip('test populate function', async () => {
     before(async () => {
