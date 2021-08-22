@@ -11,9 +11,9 @@
   "author": "bwgjoseph",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.13.5",
+    "mongoose": "^5.13.7",
     "object-sizeof": "^1.6.1",
-    "ottoman": "2.0.0-beta.3"
+    "ottoman": "2.0.0-beta.8"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
@@ -21,10 +21,10 @@
     "@types/mocha": "^9.0.0",
     "@types/sinon": "^10.0.2",
     "chai": "^4.3.4",
-    "deep-equal-in-any-order": "^1.1.8",
-    "mocha": "^9.0.3",
+    "deep-equal-in-any-order": "^1.1.10",
+    "mocha": "^9.1.0",
     "sinon": "^11.1.2",
-    "ts-node": "^10.1.0",
+    "ts-node": "^10.2.1",
     "typescript": "4.3.5"
   }
 }
