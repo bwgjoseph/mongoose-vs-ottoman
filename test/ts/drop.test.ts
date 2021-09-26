@@ -5,7 +5,7 @@ let ottoman: Ottoman;
 const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
     ottoman = new Ottoman({ scopeName: 'testDropScope', collectionName: 'testDropCollection', consistency });
 
-    ottoman.connect({
+    await ottoman.connect({
         connectionString: 'couchbase://localhost',
         bucketName: 'testDropBucket',
         username: 'user',

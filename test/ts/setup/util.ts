@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { QueryScanConsistency } from 'couchbase';
 import { getDefaultInstance } from 'ottoman';
 
 const assertAirline = (actual: any, expected: any) => {
@@ -8,14 +9,11 @@ const assertAirline = (actual: any, expected: any) => {
 }
 
 const removeDocuments = async () => {
-    // console.log(getDefaultInstance().models);
-    // console.log(getOttomanInstances());
-
     const query = `
     DELETE FROM \`testBucket\`
     `
     try {
-        await getDefaultInstance().cluster.query(query, { scanConsistency: 'request_plus' });
+        await getDefaultInstance().cluster.query(query, { scanConsistency: QueryScanConsistency.RequestPlus });
     } catch (err) {
         console.error(err);
         throw err;

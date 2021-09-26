@@ -21,7 +21,7 @@ const initOttoman = async () => {
         ottoman = new Ottoman({ collectionName: '_default' });
     }
 
-    ottoman.connect({
+    await ottoman.connect({
         connectionString: 'couchbase://localhost',
         bucketName: 'testBucket',
         username: 'user',

@@ -3,6 +3,7 @@ import { getDefaultInstance, SearchConsistency } from 'ottoman';
 import { eagle, hawk, vulture } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
+import { QueryScanConsistency } from 'couchbase';
 
 describe('test $limit function', async () => {
     before(async () => {
@@ -109,7 +110,7 @@ describe('test $limit function', async () => {
         const query = `
             SELECT * FROM \`testBucket\` LIMIT 0
             `;
-        const queryFind = await getDefaultInstance().cluster.query(query, { consistency: 'request_plus' });
+        const queryFind = await getDefaultInstance().cluster.query(query, { scanConsistency: QueryScanConsistency.RequestPlus });
 
         assert.ok(queryFind.rows.length === 0, 'expected to have 0 result, with limit 0');
 
@@ -142,7 +143,7 @@ describe('test $limit function', async () => {
         const query = `
             SELECT * FROM \`testBucket\` LIMIT -10
             `;
-        const queryFind = await getDefaultInstance().cluster.query(query, { consistency: 'request_plus' });
+        const queryFind = await getDefaultInstance().cluster.query(query, { scanConsistency: QueryScanConsistency.RequestPlus });
 
         assert.ok(queryFind.rows.length === 0, 'expected to have 0 result, with limit -1');
 
