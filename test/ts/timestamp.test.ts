@@ -25,7 +25,7 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
 /**
  * To run standalone
  */
-describe('test timestamp feature', async () => {
+describe.skip('test timestamp feature', async () => {
     before(async () => {
         await initOttoman();
     });

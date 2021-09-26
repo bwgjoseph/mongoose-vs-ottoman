@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { Ottoman, registerGlobalPlugin, Schema, SearchConsistency } from 'ottoman';
+import { getModel, model, Ottoman, registerGlobalPlugin, Schema, SearchConsistency } from 'ottoman';
 import { removeDocuments } from './setup/util';
 
 const pluginLog = (pSchema: any) => {
@@ -19,21 +19,6 @@ registerGlobalPlugin(pluginLog2);
 
 let ottoman: Ottoman;
 
-const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ scopeName: 'testScope123', collectionName: 'testCollection', consistency });
-
-    await ottoman.connect({
-        connectionString: 'couchbase://localhost',
-        bucketName: 'testBucket',
-        username: 'user',
-        password: 'password'
-    });
-
-    await ottoman.start();
-
-    await removeDocuments();
-}
-
 const schema = new Schema({
     name: {
         type: String,
@@ -46,23 +31,41 @@ const schema = new Schema({
     plugin: String,
 })
 
+const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
+    ottoman = new Ottoman({ consistency });
+
+    await ottoman.connect({
+        connectionString: 'couchbase://localhost',
+        bucketName: 'testBucket',
+        username: 'user',
+        password: 'password'
+    });
+
+    await ottoman.start();
+
+    model('myschema', schema, { idKey: '_id' });
+
+    await removeDocuments();
+}
+
 /**
  * To run standalone
- * [23/8] not working - timeout - beta.3
+ * See #113
  */
-describe.skip('test manage bucket, scope and collection', async () => {
+describe.skip('test register global plugins', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });
 
-    it('ottoman - should create scope and collection', async () => {
-        const MySchema = ottoman.model('myschema', schema, { idKey: '_id' });
+    it('ottoman - should trigger pluginLog and pluginLog2', async () => {
+        const MySchema = getModel('myschema');
         const schemaData = new MySchema({
             name: 'hello',
             operational: true,
         });
 
         const doc = await MySchema.create(schemaData);
-        assert.strictEqual(doc.plugin, 'registered from plugin 2!');
+        assert.strictEqual(doc.operational, false); // plugin
+        assert.strictEqual(doc.plugin, 'registered from plugin 2!'); // plugin2
     });
 });
