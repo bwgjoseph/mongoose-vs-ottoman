@@ -27,7 +27,7 @@ services:
       - mongo
 
   couchbase:
-    image: couchbase:enterprise-7.0.0
+    image: couchbase:enterprise-7.0.1
     container_name: mo-couchbase
     ports:
       - 8091:8091

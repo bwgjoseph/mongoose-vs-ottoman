@@ -41,7 +41,6 @@ describe('test findOneAndRemove function', async () => {
             await Airplane.findOneAndRemove({ extension: 'abc1' });
         } catch (error) {
             if (error instanceof DocumentNotFoundError) {
-                console.log(error);
                 assert.strictEqual(error.name, 'DocumentNotFoundError');
                 assert.strictEqual(error.message, 'document not found');
             } else {
