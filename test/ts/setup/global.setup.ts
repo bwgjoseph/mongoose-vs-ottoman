@@ -3,11 +3,7 @@ import { getDefaultInstance, Ottoman } from 'ottoman';
 import { removeDocuments } from './util';
 
 const initMongoose = async () => {
-    mongoose.set('useFindAndModify', false);
-
     await mongoose.connect('mongodb://root:password@localhost:28017/test?authSource=admin', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
         family: 4
     });
 

@@ -11,7 +11,7 @@
   "author": "bwgjoseph",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.13.9",
+    "mongoose": "^6.0.7",
     "object-sizeof": "^1.6.1",
     "ottoman": "2.0.0-beta.9"
   },

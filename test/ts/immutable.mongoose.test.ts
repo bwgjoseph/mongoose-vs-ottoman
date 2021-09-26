@@ -1,15 +1,8 @@
 import assert from 'assert';
 import mongoose from 'mongoose';
-import { Ottoman } from 'ottoman';
-
-let ottoman: Ottoman;
 
 const initMongoose = async () => {
-    mongoose.set('useFindAndModify', false);
-
     await mongoose.connect('mongodb://root:password@localhost:28017/test?authSource=admin', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
         family: 4
     });
 
