@@ -1,6 +1,6 @@
 import assert from 'assert';
 import chai, { expect } from 'chai';
-import { IManyQueryResponse, SearchConsistency } from 'ottoman';
+import { DocumentNotFoundError, IManyQueryResponse, SearchConsistency, ValidationError } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -21,8 +21,12 @@ describe('test error message', async () => {
         try {
             await Airplane.create({ ...hawkAirplane, capacity: 1000 });
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
@@ -111,8 +115,7 @@ describe('test error message', async () => {
         await removeDocuments();
     });
 
-    // See Github #55
-    it.skip('ottoman - test findOneAndUpdate error', async () => {
+    it('ottoman - test findOneAndUpdate error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
@@ -122,16 +125,18 @@ describe('test error message', async () => {
 
             await Airplane.findOneAndUpdate({ callsign: 'Eagle' }, { callsign: 'BabyHawk' });
         } catch (error) {
-            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
-            assert.strictEqual(error.name, 'DocumentNotFoundError');
-            assert.strictEqual(error.message, 'document not found');
+            if (error instanceof DocumentNotFoundError) {
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, 'document not found');
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
     });
 
-    // See Github #55
-    it.skip('ottoman - test removeById error', async () => {
+    it('ottoman - test removeById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
@@ -139,9 +144,12 @@ describe('test error message', async () => {
             await Airplane.create(hawkAirplane);
             await Airplane.removeById('nonExistenceID');
         } catch (error) {
-            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
-            assert.strictEqual(error.name, 'DocumentNotFoundError');
-            assert.strictEqual(error.message, `document not found`);
+            if (error instanceof DocumentNotFoundError) {
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, 'document not found');
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
@@ -170,8 +178,7 @@ describe('test error message', async () => {
         await removeDocuments();
     });
 
-    // See Github #55
-    it.skip('ottoman - test replaceById error', async () => {
+    it('ottoman - test replaceById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
@@ -179,16 +186,18 @@ describe('test error message', async () => {
             await Airplane.create(hawkAirplane);
             await Airplane.replaceById('nosuchid', { callsign: 'hello' });
         } catch(error){
-            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
-            assert.strictEqual(error.name, 'DocumentNotFoundError');
-            assert.strictEqual(error.message, `document not found`);
+            if (error instanceof DocumentNotFoundError) {
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, 'document not found');
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
     });
 
-    // See Github #55
-    it.skip('ottoman - test updateById error', async () => {
+    it('ottoman - test updateById error', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
 
@@ -196,8 +205,12 @@ describe('test error message', async () => {
             await Airplane.create(hawkAirplane);
             await Airplane.updateById('nosuchid', { callsign: 'abc' });
         } catch (error) {
-            assert.strictEqual(error.name, 'DocumentNotFoundError');
-            assert.strictEqual(error.message, 'document not found');
+            if (error instanceof DocumentNotFoundError) {
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, 'document not found');
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
@@ -211,8 +224,12 @@ describe('test error message', async () => {
             const created = await Airplane.create(hawkAirplane);
             await Airplane.updateById(created.id, { capacity: -1 });
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();

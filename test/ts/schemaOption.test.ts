@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { ValidationError } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -80,31 +81,47 @@ describe('test schema options', async () => {
         try {
             await Airplane.create({ ...hawkAirplane, email: 'a' });
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'email' is shorter than the minimum allowed length '5'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'email' is shorter than the minimum allowed length '5'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         try {
             const created = await Airplane.create(hawkAirplane);
             await Airplane.updateById(created.id, { email: 'a' })
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'email' is shorter than the minimum allowed length '5'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'email' is shorter than the minimum allowed length '5'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         try {
             await Airplane.create({ ...hawkAirplane, email: 'morethan15characters' });
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'email' is longer than the maximum allowed length '15'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'email' is longer than the maximum allowed length '15'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         try {
             const created = await Airplane.create(hawkAirplane);
             await Airplane.updateById(created.id, { email: 'morethan15characters' })
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'email' is longer than the maximum allowed length '15'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'email' is longer than the maximum allowed length '15'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
@@ -117,31 +134,47 @@ describe('test schema options', async () => {
         try {
             await Airplane.create({ ...hawkAirplane, capacity: -1 });
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         try {
             const created = await Airplane.create(hawkAirplane);
             await Airplane.updateById(created.id, { capacity: -1 })
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'capacity' is less than the minimum allowed value of '0'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         try {
             await Airplane.create({ ...hawkAirplane, capacity: 551 });
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         try {
             const created = await Airplane.create(hawkAirplane);
             await Airplane.updateById(created.id, { capacity: 551 })
         } catch (error) {
-            assert.strictEqual(error.name, 'ValidationError');
-            assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.name, 'ValidationError');
+                assert.strictEqual(error.message, `Property 'capacity' is more than the maximum allowed value of '550'`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();

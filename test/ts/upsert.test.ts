@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { SearchConsistency } from 'ottoman';
+import { DocumentNotFoundError, SearchConsistency } from 'ottoman';
 import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -141,8 +141,15 @@ describe('test upsert function', async () => {
                     upsert: false,
                 }
             );
-        } catch (err) {
-            assert.ok(err.message === 'document not found');
+        } catch (error) {
+            if (error instanceof DocumentNotFoundError) {
+                // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+                // Wait for #55 to be resolved to switch
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, `document not found`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         const find2 = await Airplane.find({}, { consistency: SearchConsistency.LOCAL });

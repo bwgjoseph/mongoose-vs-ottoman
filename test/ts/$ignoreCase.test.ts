@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { SearchConsistency } from 'ottoman';
+import { DocumentNotFoundError, SearchConsistency } from 'ottoman';
 import { eagle, hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -57,7 +57,7 @@ describe('test $ignoreCase function', async () => {
         await removeDocuments();
     });
 
-    it.skip('ottoman - should NOT be able to find doc using findOne when case not match', async () => {
+    it('ottoman - should NOT be able to find doc using findOne when case not match', async () => {
         const Airplane = getOttomanModel();
         const hawkAirplane = new Airplane(hawk);
         const eagleAirplane = new Airplane({ ...eagle, name: 'mongoose airlinE' });
@@ -70,10 +70,14 @@ describe('test $ignoreCase function', async () => {
                 { consistency: SearchConsistency.LOCAL },
             );
         } catch (error) {
-            // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
-            // Wait for #55 to be resolved to switch
-            assert.strictEqual(error.name, 'DocumentNotFoundError');
-            assert.strictEqual(error.message, `document not found`);
+            if (error instanceof DocumentNotFoundError) {
+                // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+                // Wait for #55 to be resolved to switch
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, `document not found`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
@@ -109,8 +113,15 @@ describe('test $ignoreCase function', async () => {
                 { capacity: 505 },
                 { consistency: SearchConsistency.LOCAL, new: true },
             );
-        } catch (err) {
-            assert.ok(err.message === 'document not found');
+        } catch (error) {
+            if (error instanceof DocumentNotFoundError) {
+                // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+                // Wait for #55 to be resolved to switch
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, `document not found`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();

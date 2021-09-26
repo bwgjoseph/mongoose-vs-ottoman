@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { SearchConsistency } from 'ottoman';
+import { SearchConsistency, ValidationError } from 'ottoman';
 import { hawk } from './setup/fixtures';
 import { getMongooseModel, getOttomanModel } from './setup/model';
 import { assertAirline, removeDocuments } from './setup/util';
@@ -47,8 +47,12 @@ describe('test enum function', async () => {
 
         try {
            await Airplane.create(hawkAirplane);
-        } catch (err) {
-            assert.strictEqual(err.message, `Property 'size' value must be S,M,L`);
+        } catch (error) {
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.message, `Property 'size' value must be S,M,L`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         const find = await Airplane.find(

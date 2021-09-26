@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { model, Schema, SearchConsistency } from 'ottoman';
+import { DocumentNotFoundError, model, Schema, SearchConsistency, ValidationError } from 'ottoman';
 import { hawk } from './setup/fixtures';
 import { getOttomanModel } from './setup/model';
 import { removeDocuments } from './setup/util';
@@ -66,7 +66,11 @@ describe('test replaceById function', async () => {
                 },
             );
         } catch (error) {
-            assert.strictEqual(error.message, `Property 'name' is required, Property 'model' is required`);
+            if (error instanceof ValidationError) {
+                assert.strictEqual(error.message, `Property 'name' is required, Property 'model' is required`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
@@ -100,7 +104,14 @@ describe('test replaceById function', async () => {
                     }
             );
         } catch (error) {
-            assert.strictEqual(error.message, 'document not found');
+            if (error instanceof DocumentNotFoundError) {
+                // printed the error out and the name is DocumentNotFoundError but when doing assertion, it is Error
+                // Wait for #55 to be resolved to switch
+                assert.strictEqual(error.name, 'DocumentNotFoundError');
+                assert.strictEqual(error.message, `document not found`);
+            } else {
+                assert.fail('unexpected exception');
+            }
         }
 
         await removeDocuments();
