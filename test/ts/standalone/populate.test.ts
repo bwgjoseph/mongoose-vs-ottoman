@@ -1,14 +1,15 @@
 import assert from 'assert';
 import { model, Schema, SearchConsistency, Ottoman, set, getModel } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { removeDocuments } from '../setup/util';
 
 let postModel: any;
 let commentModel: any;
+let ottoman: Ottoman;
 
 const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
     set('DEBUG', true);
 
-    const ottoman = new Ottoman({ scopeName: 'samp', collectionName: 'samp1', consistency });
+    ottoman = new Ottoman({ scopeName: 'samp', collectionName: 'samp1', consistency });
 
     await ottoman.connect({
         connectionString: 'couchbase://localhost',
@@ -38,6 +39,10 @@ describe.skip('test populate function', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });
+
+    after(async () => {
+        await ottoman.close();
+    })
 
     it('ottoman - populate', async () => {
         const post = await postModel.create({ title: 'titleA' });

@@ -1,11 +1,11 @@
 import assert from 'assert';
 import { Ottoman, Schema, SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { removeDocuments } from '../setup/util';
 
 let ottoman: Ottoman;
 
 const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ collectionName: '_default', idKey: '_id', consistency });
+    ottoman = new Ottoman({ collectionName: '_default', consistency });
     assert.strictEqual(ottoman.config.consistency, consistency);
 
     await ottoman.connect({
@@ -41,10 +41,14 @@ describe('test model options', async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });
 
-    it('ottoman - change global idKey', async () => {
+    after(async () => {
+        await ottoman.close();
+    })
+
+    it('ottoman - change idKey', async () => {
         assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
-        const Options = ottoman.model('opts', schema );
+        const Options = ottoman.model('opts', schema, { idKey: '_id' });
         const OptData = new Options(opt);
 
         const created = await Options.create(OptData);

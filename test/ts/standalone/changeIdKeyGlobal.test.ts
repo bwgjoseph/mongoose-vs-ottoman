@@ -1,11 +1,11 @@
 import assert from 'assert';
 import { Ottoman, Schema, SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { removeDocuments } from '../setup/util';
 
 let ottoman: Ottoman;
 
 const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NONE) => {
-    ottoman = new Ottoman({ collectionName: '_default', consistency });
+    ottoman = new Ottoman({ collectionName: '_default', idKey: '_id', consistency });
     assert.strictEqual(ottoman.config.consistency, consistency);
 
     await ottoman.connect({
@@ -20,17 +20,6 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
     await removeDocuments();
 }
 
-const baseSchema = new Schema({
-    createdAt: {
-        type: Date,
-        default: () => new Date(),
-    },
-    updatedAt: {
-        type: Date,
-        default: () => new Date(),
-    },
-});
-
 const schema = new Schema({
     name: {
         type: String,
@@ -40,31 +29,35 @@ const schema = new Schema({
         type: Boolean,
         default: true
     },
-}).add(baseSchema);
+});
 
 const opt = {
     name: 'hello',
     operational: true,
 };
 
-describe('test schema add options', async () => {
+describe('test model options', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });
 
-    it('ottoman - add base schema', async () => {
+    after(async () => {
+        await ottoman.close();
+    })
+
+    it('ottoman - change global idKey', async () => {
         assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
-        const MySchema = ottoman.model('myschema', schema, { idKey: '_id' });
-        const schemaData = new MySchema(opt);
+        const Options = ottoman.model('opts', schema );
+        const OptData = new Options(opt);
 
-        const created = await MySchema.create(schemaData);
-        assert.ok(created.createdAt);
-        assert.ok(created.updatedAt);
+        const created = await Options.create(OptData);
+        assert.ok(created._id);
+        assert.ok(!created.id);
 
-        const find = await MySchema.find({});
-        assert.ok(find.rows[0].createdAt);
-        assert.ok(find.rows[0].updatedAt);
+        const find = await Options.find({});
+        assert.ok(find.rows[0]._id);
+        assert.ok(!find.rows[0].id);
         assert.strictEqual(find.rows.length, 1);
 
         await removeDocuments();

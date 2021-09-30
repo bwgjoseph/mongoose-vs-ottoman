@@ -27,6 +27,10 @@ describe.skip('test manage bucket, scope and collection', async () => {
         await initOttoman();
     });
 
+    after(async () => {
+        await ottoman.close();
+    })
+
     it('ottoman - should create bucket', async () => {
         // const bucketOptions: CreateBucketOptions = {
         //     parentSpan: RequestSpan,

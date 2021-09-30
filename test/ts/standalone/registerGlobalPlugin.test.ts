@@ -1,16 +1,18 @@
 import { assert } from 'chai';
 import { getModel, model, Ottoman, registerGlobalPlugin, Schema, SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { removeDocuments } from '../setup/util';
 
 const pluginLog = (pSchema: any) => {
     pSchema.pre('save', function (doc: any) {
         doc.operational = false;
+        return doc;
     });
 };
 
 const pluginLog2 = (pSchema: any) => {
     pSchema.pre('save', function (doc: any) {
         doc.plugin = 'registered from plugin 2!'
+        return doc;
     });
 };
 
@@ -52,10 +54,14 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
  * To run standalone
  * See #113
  */
-describe.skip('test register global plugins', async () => {
+describe('test register global plugins', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });
+
+    after(async () => {
+        await ottoman.close();
+    })
 
     it('ottoman - should trigger pluginLog and pluginLog2', async () => {
         const MySchema = getModel('myschema');

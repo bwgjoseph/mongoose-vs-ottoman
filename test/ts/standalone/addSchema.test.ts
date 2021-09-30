@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { Ottoman, Schema, SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { removeDocuments } from '../setup/util';
 
 let ottoman: Ottoman;
 
@@ -20,6 +20,17 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
     await removeDocuments();
 }
 
+const baseSchema = new Schema({
+    createdAt: {
+        type: Date,
+        default: () => new Date(),
+    },
+    updatedAt: {
+        type: Date,
+        default: () => new Date(),
+    },
+});
+
 const schema = new Schema({
     name: {
         type: String,
@@ -29,31 +40,35 @@ const schema = new Schema({
         type: Boolean,
         default: true
     },
-});
+}).add(baseSchema);
 
 const opt = {
     name: 'hello',
     operational: true,
 };
 
-describe('test model options', async () => {
+describe('test schema add options', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });
 
-    it('ottoman - change idKey', async () => {
+    after(async () => {
+        await ottoman.close();
+    })
+
+    it('ottoman - add base schema', async () => {
         assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
 
-        const Options = ottoman.model('opts', schema, { idKey: '_id' });
-        const OptData = new Options(opt);
+        const MySchema = ottoman.model('myschema', schema, { idKey: '_id' });
+        const schemaData = new MySchema(opt);
 
-        const created = await Options.create(OptData);
-        assert.ok(created._id);
-        assert.ok(!created.id);
+        const created = await MySchema.create(schemaData);
+        assert.ok(created.createdAt);
+        assert.ok(created.updatedAt);
 
-        const find = await Options.find({});
-        assert.ok(find.rows[0]._id);
-        assert.ok(!find.rows[0].id);
+        const find = await MySchema.find({});
+        assert.ok(find.rows[0].createdAt);
+        assert.ok(find.rows[0].updatedAt);
         assert.strictEqual(find.rows.length, 1);
 
         await removeDocuments();

@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { Ottoman, Schema, SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { removeDocuments } from '../setup/util';
 
 let ottoman: Ottoman;
 
@@ -39,9 +39,10 @@ const opt = {
 };
 
 describe('test global options', async () => {
-    before(async () => {
+    afterEach(async () => {
         await removeDocuments();
-    });
+        await ottoman.close();
+    })
 
     it('ottoman - should find doc [global is NONE, local is NONE]', async () => {
         await initOttoman();

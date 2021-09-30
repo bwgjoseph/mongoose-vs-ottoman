@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --require ts-node/register test/ts/*.test.ts --exit",
+    "test-sa": "mocha --require ts-node/register test/ts/standalone/*.test.ts --exit",
     "test-js": "mocha test/js/*.js --exit"
   },
   "keywords": [],

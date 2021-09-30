@@ -30,6 +30,10 @@ describe.skip('test timestamp feature', async () => {
         await initOttoman();
     });
 
+    after(async () => {
+        await ottoman.close();
+    })
+
     it('ottoman - should activate timestamp option', async () => {
         const Model = getModel('tsModel');
         const created = await Model.create({ name: 'hello' });

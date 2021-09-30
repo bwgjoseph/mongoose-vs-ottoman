@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { Ottoman, Schema, SearchConsistency } from 'ottoman';
-import { removeDocuments } from './setup/util';
+import { removeDocuments } from '../setup/util';
 
 let ottoman: Ottoman;
 
@@ -63,6 +63,10 @@ describe('test schema immutable options', async () => {
     before(async () => {
         await initOttoman(SearchConsistency.LOCAL);
     });
+
+    after(async () => {
+        await ottoman.close();
+    })
 
     it('ottoman - ensure immutable fields does not get change using save', async () => {
         assert.strictEqual(ottoman.config.consistency, SearchConsistency.LOCAL);
