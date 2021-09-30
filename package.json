@@ -11,9 +11,9 @@
   "author": "bwgjoseph",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^6.0.7",
+    "mongoose": "^6.0.8",
     "object-sizeof": "^1.6.1",
-    "ottoman": "2.0.0-beta.9"
+    "ottoman": "2.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.22",
