@@ -43,9 +43,9 @@ const initOttoman = async (consistency: SearchConsistency = SearchConsistency.NO
         password: 'password'
     });
 
-    await ottoman.start();
-
     model('myschema', schema, { idKey: '_id' });
+
+    await ottoman.start();
 
     await removeDocuments();
 }
